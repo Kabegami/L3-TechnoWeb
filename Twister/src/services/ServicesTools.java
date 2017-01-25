@@ -5,8 +5,8 @@ import java.sql.SQLException;
 public class ServicesTools {
 
 	public static boolean userExists(String login) throws SQLException{
-		//boolean exists = true;
-		boolean exists = false;
+		boolean exists = true;
+		//boolean exists = false;
 		/* à compléter */
 		
 		return exists;
