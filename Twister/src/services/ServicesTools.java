@@ -35,4 +35,13 @@ public class ServicesTools {
 		return key;
 	}
 	
+	public static void removeSession(int id) throws SQLException{
+		boolean success = true;
+		
+		/*
+		 * retirer la clé associée à cet id de la BDD
+		 */
+
+	}
+	
 }

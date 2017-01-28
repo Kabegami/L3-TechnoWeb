@@ -27,12 +27,12 @@ public class LoginServlet extends HttpServlet {
 	 /**
 	 * This method will handle all GET request.
 	 */
-	 protected void doGet(HttpServletRequest request,
+	 protected void doPost(HttpServletRequest request,
 	 HttpServletResponse response) throws ServletException, IOException {
 	 
 		/* gérer cas si + de 2 arguments */
-		String login = request.getParameter("login");
-		String pwd = request.getParameter("mdp");
+		String login = request.getParameter("username");
+		String pwd = request.getParameter("password");
 		
 		JSONObject user = new JSONObject();
 		user = UserTools.login(login, pwd);
@@ -42,5 +42,4 @@ public class LoginServlet extends HttpServlet {
 		out.println(user);
 	 }
 	 
-
 }

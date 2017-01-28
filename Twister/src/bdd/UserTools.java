@@ -67,16 +67,37 @@ public class UserTools {
 					ret.put("key", key);
 				}
 			}
-		}
-		catch (SQLException e){
+		} catch (SQLException e){
 			
-		}
-		catch (Exception e){
+		} catch (Exception e){
 			/* dont JSONException */
 			
 		}	
 		return ret;
 	}
 	
+	public static JSONObject logout(String login){
+		JSONObject ret = new JSONObject();
+		
+		/* arguments nuls */
+		if (login == null){
+			return ErrorJSON.serviceRefused("Wrong arguments", -1);
+		}	
+		
+		try {
+			if (! ServicesTools.userExists(login)){
+					return ErrorJSON.serviceRefused("User doesn't exist", 1);
+				}
+				else {
+					int id = ServicesTools.getIdUser(login);
+					ServicesTools.removeSession(id);
+				}
+		} catch (SQLException e){
+			
+		} catch (Exception e){
+			
+		}
+		return ret;
+	}
 
 }
