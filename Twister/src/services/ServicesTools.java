@@ -75,7 +75,8 @@ public class ServicesTools {
 		
 		do {
 			key = Password.generateRandomKey();
-			query = "SELECT session_key FROM Sessions WHERE id = " + id;
+			System.out.println(key);
+			query = "SELECT session_key FROM Sessions WHERE session_key = \"" + key + "\"";
 			st.executeQuery(query);
 			ResultSet rs = st.getResultSet();
 			
@@ -85,20 +86,23 @@ public class ServicesTools {
 		} while (keyExists);
 			
 		// on crée une nouvelle session active
-		query = "INSERT INTO Sessions VALUES (" + key + " ," + id + " , NOW(), " + admin + ")";
+		query = "INSERT INTO Sessions VALUES (\"" + key + "\" ," + id + " , NOW(), " + admin + ")";
 		st.executeUpdate(query);
 		st.close(); conn.close();
 		 
 		return key;
 	}
 	
-	public static void removeSession(int id) throws SQLException{
-		boolean success = true;
+	public static boolean removeSession(int id) throws SQLException{
+		int success;
+		Connection conn = Database.getMySQLConnection();
+		Statement st = conn.createStatement();
 		
-		/*
-		 * retirer la clé associée à cet id de la BDD
-		 */
-
+		String query = "DELETE FROM Sessions WHERE id = " + id;
+		success = st.executeUpdate(query);
+		System.out.println(success);
+		st.close(); conn.close();
+		return success == 1;
 	}
 	
 }

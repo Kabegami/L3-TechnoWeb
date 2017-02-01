@@ -55,4 +55,16 @@ public class ServicesToolsTest {
 		}
 		System.out.println("Succès insertSession");
 	}
+	
+	@Test
+	public void testRemoveSession(){
+		try {
+			assertTrue(ServicesTools.removeSession(1));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+		System.out.println("Succès removeSession");
+	}
+	
 }
