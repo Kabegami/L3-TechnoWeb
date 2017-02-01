@@ -13,95 +13,82 @@ public class ServicesTools {
 
 	public static boolean userExists(String login) throws SQLException{
 		boolean exists = false;
-		try {
-			Connection conn = Database.getMySQLConnection();
-			String query = "SELECT id FROM Users WHERE login = " + login;
-			Statement st = conn.createStatement();
-			st.executeQuery(query);
-			ResultSet rs = st.getResultSet();
+		Connection conn = Database.getMySQLConnection();
+		Statement st = conn.createStatement();
+
+		String query = "SELECT id FROM Users WHERE login = \'" + login +"\'";
+		st.executeQuery(query);
+		ResultSet rs = st.getResultSet();
 			
-			// vérifie s'il y a une ligne dans le résultat
-			exists = rs.next();
-			rs.close(); st.close(); conn.close();
-		} catch (SQLException e) {
-			
-		}
+		// vérifie s'il y a une ligne dans le résultat
+		exists = rs.next();
+		rs.close(); st.close(); conn.close();
 		return exists;
 	}
 	
-	public static boolean checkPassword(String login, String pwd) 
-			throws BDException{
-		boolean pwd_ok;
+	public static boolean checkPassword(String login, String pwd) throws SQLException{
+		boolean pwd_ok = false;;
+		Connection conn = Database.getMySQLConnection();
+		Statement st = conn.createStatement();
 		
-		try {
-			Connection conn = Database.getMySQLConnection();
-			String query = "SELECT password FROM Users WHERE login = " + login;
-			Statement st = conn.createStatement();
-			st.executeQuery(query);
-			ResultSet rs = st.getResultSet();
-			String pwdDB = rs.getString(1);
-			// vérifie s'il y a une ligne dans le résultat
-
-			rs.close(); st.close(); conn.close();
+		String query = "SELECT mdp FROM Users WHERE login = \'" + login +"\'";
+		st.executeQuery(query);
+		ResultSet rs = st.getResultSet();
+		
+		if (rs.next()){
+			String pwdDB = rs.getString("mdp");
 			pwd_ok = pwd.equals(pwdDB);
-			return pwd_ok;
-			
-		} catch (SQLException e) {
-			throw new BDException("erreur bd");
 		}
+		rs.close(); st.close(); conn.close();
+		
+		return pwd_ok;
+	 
 	}
 	
-	public static int getIdUser(String login){
+	public static int getIdUser(String login) throws SQLException{
 		int id = -1; 
+		Connection conn = Database.getMySQLConnection();
+		Statement st = conn.createStatement();
 		
-		/* accéder à l'id dans la BDD */
-		try {
-			Connection conn = Database.getMySQLConnection();
-
-			Statement st = conn.createStatement();
-			
-			String query = "SELECT * FROM Users";
-			System.out.println(query);
-			st.executeQuery(query);
-			ResultSet rs = st.getResultSet();
-			while(rs.next()){
-				System.out.println(rs.getString("nom"));
-			}
-
-			rs.close(); st.close(); conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		String query = "SELECT id FROM Users WHERE login = \'" + login +"\'";
+		st.executeQuery(query);
+		ResultSet rs = st.getResultSet();
+		//id = rs.getInt("id");
+		if(rs.next()){
+			id = rs.getInt("id");
 		}
+
+		rs.close(); st.close(); conn.close();
 		return id;
-		
 	}
 	
 	/** retourne une clé de session */
-	public static String insertSession(int id, boolean admin)
-			throws BDException{
+	public static String insertSession(int id, boolean admin) throws SQLException{
 		
+		// true si la clé de session existe déjà
 		boolean keyExists;
 		String key = "";
-		/* build the key */
-		try {
-			Connection conn = Database.getMySQLConnection();
-			Statement st = conn.createStatement();
-			
-			do {
+		String query;
+		
+		Connection conn = Database.getMySQLConnection();
+		Statement st = conn.createStatement();
+		
+		do {
 			key = Password.generateRandomKey();
-			String query = "SELECT key FROM Sessions";
+			query = "SELECT session_key FROM Sessions WHERE id = " + id;
 			st.executeQuery(query);
 			ResultSet rs = st.getResultSet();
 			
-			// récupère l'id
+			// vérifie si la clé existe
 			keyExists = rs.next();
 			rs.close();
-			} while (keyExists);
-			st.close(); conn.close();
-		} catch (SQLException e) {
-			throw new BDException("erreur bd");
-		}
-		
+		} while (keyExists);
+			
+		// on crée une nouvelle session active
+		query = "INSERT INTO Sessions VALUES (" + key + " ," + id + " , NOW(), " + admin + ")";
+		st.executeUpdate(query);
+		st.close(); conn.close();
+		 
 		return key;
 	}
 	

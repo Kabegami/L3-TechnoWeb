@@ -14,8 +14,13 @@ public class UserTest {
 		JSONObject obj = new JSONObject();
 		
 		/* test createUser */
-		int id = 0;
-		id = ServicesTools.getIdUser("toto");
+		boolean id = false;
+		try {
+			id = ServicesTools.userExists("toto");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		System.out.println(id);
 	
