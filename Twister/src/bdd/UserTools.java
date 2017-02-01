@@ -1,8 +1,13 @@
 package bdd;
 
 import org.json.JSONObject;
-import java.sql.SQLException;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import services.Database;
 import services.ErrorJSON;
 import services.ServicesTools;
 
@@ -22,11 +27,17 @@ public class UserTools {
 			}
 			/* si l'utilisateur n'existe pas, on l'ajoute */
 			else {
-				/* ajouter utilisateur dans BDD */
+				Connection conn = Database.getMySQLConnection();
+				String query = "INSERT INTO Users VALUES (" + login + ", " + 
+															pwd + " ," + name + " ," +
+															pname + ")";
+				Statement st = conn.createStatement();
+				st.executeUpdate(query);
+				ResultSet rs = st.getResultSet();
+				
+				// vérifie s'il y a une ligne dans le résultat
+				rs.close(); st.close(); conn.close();
 			}
-		}
-		catch (SQLException e){
-			
 		}
 		catch (Exception e){
 			/* dont JSONException */
