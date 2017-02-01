@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.Statement;
 
 import bdd.BDException;
@@ -50,46 +51,53 @@ public class ServicesTools {
 		}
 	}
 	
-	public static int getIdUser(String login) throws BDException{
-		int id = 0; 
+	public static int getIdUser(String login){
+		int id = -1; 
 		
 		/* accéder à l'id dans la BDD */
 		try {
 			Connection conn = Database.getMySQLConnection();
-			String query = "SELECT id FROM Users WHERE login = " + login;
+
 			Statement st = conn.createStatement();
+			
+			String query = "SELECT * FROM Users";
+			System.out.println(query);
 			st.executeQuery(query);
 			ResultSet rs = st.getResultSet();
-			
-			// récupère l'id
-			id = rs.getInt(1);
+			while(rs.next()){
+				System.out.println(rs.getString("nom"));
+			}
 
 			rs.close(); st.close(); conn.close();
-			return id;
 		} catch (SQLException e) {
-			throw new BDException("erreur bd");
+			e.printStackTrace();
 		}
+		return id;
 		
 	}
 	
 	/** retourne une clé de session */
 	public static String insertSession(int id, boolean admin)
-			throws SQLException{
+			throws BDException{
 		
-		
+		boolean keyExists;
+		String key = "";
 		/* build the key */
 		try {
 			Connection conn = Database.getMySQLConnection();
-			String key = 
 			Statement st = conn.createStatement();
+			
+			do {
+			key = Password.generateRandomKey();
+			String query = "SELECT key FROM Sessions";
 			st.executeQuery(query);
 			ResultSet rs = st.getResultSet();
 			
 			// récupère l'id
-			id = rs.getInt(1);
-
-			rs.close(); st.close(); conn.close();
-			return id;
+			keyExists = rs.next();
+			rs.close();
+			} while (keyExists);
+			st.close(); conn.close();
 		} catch (SQLException e) {
 			throw new BDException("erreur bd");
 		}

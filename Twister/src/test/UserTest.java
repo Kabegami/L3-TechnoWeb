@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import org.json.JSONObject;
 
+import bdd.BDException;
 import services.ServicesTools;
 
 public class UserTest {
@@ -13,9 +14,10 @@ public class UserTest {
 		JSONObject obj = new JSONObject();
 		
 		/* test createUser */
-		boolean exists;
-		exists = ServicesTools.userExists("toto");
-		System.out.println(exists);
+		int id = 0;
+		id = ServicesTools.getIdUser("toto");
+
+		System.out.println(id);
 	
 		
 	}

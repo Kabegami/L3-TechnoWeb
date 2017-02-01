@@ -11,27 +11,9 @@ import bdd.BDException;
 
 public class Password {
 	
-	public static String generateRandomKey(int size){
-		try {
+	public static String generateRandomKey(){
 			
-			
-			// Vérifie si la clé est déjà dans la base
-			Connection conn = Database.getMySQLConnection();
-			String query = "SELECT key FROM Session";
-			Statement st = conn.createStatement();
-			
-			// récupère les clés de sessions actives
-			st.executeQuery(query);
-			ResultSet rs = st.getResultSet();
-			
-			while (rs.next()){
-				
-			}
-
-			rs.close(); st.close(); conn.close();
-			return id;
-		} catch (SQLException e) {
-			throw new BDException("erreur bd");
-		}
+			UUID key = UUID.randomUUID();
+			return key.toString();
 	}
 }
