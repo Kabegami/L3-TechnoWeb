@@ -28,6 +28,12 @@ public class Database {
 	public static Connection getMySQLConnection() throws SQLException {
 		Connection conn = null;
 		if (DBStatic.mysql_pooling == false){
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			conn = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + "/" +
 					DBStatic.mysql_db + "?user=" + DBStatic.mysql_username + "&password=" + DBStatic.mysql_password);
 			

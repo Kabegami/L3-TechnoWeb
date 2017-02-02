@@ -5,11 +5,11 @@ import org.json.JSONException;
 
 public class ErrorJSON {
 	
-	public static JSONObject serviceRefused(String message, int codeError){
+	public static JSONObject serviceRefused(String message, int errorCode){
 		JSONObject ret = new JSONObject();
 		try{
 			ret.put("message", message);
-			ret.put("code_error", new Integer(codeError));
+			ret.put("error_code", new Integer(errorCode));
 		} catch (JSONException e){
 			
 		}

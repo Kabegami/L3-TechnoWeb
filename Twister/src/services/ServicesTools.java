@@ -75,7 +75,7 @@ public class ServicesTools {
 		
 		do {
 			key = Password.generateRandomKey();
-			System.out.println(key);
+			//System.out.println(key);
 			query = "SELECT session_key FROM Sessions WHERE session_key = \"" + key + "\"";
 			st.executeQuery(query);
 			ResultSet rs = st.getResultSet();
@@ -100,7 +100,7 @@ public class ServicesTools {
 		
 		String query = "DELETE FROM Sessions WHERE id = " + id;
 		success = st.executeUpdate(query);
-		System.out.println(success);
+		//System.out.println(success);
 		st.close(); conn.close();
 		return success == 1;
 	}

@@ -1,8 +1,10 @@
 package bdd;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -13,8 +15,8 @@ import services.ServicesTools;
 
 public class UserTools {
 	
-	public static JSONObject createUser(String login, String pwd, String name,
-			String pname){
+	public static JSONObject createUser(String login, String pwd, String lname,
+			String fname){
 		
 		/* arguments nuls */
 		if (login == null || pwd == null){
@@ -28,20 +30,23 @@ public class UserTools {
 			/* si l'utilisateur n'existe pas, on l'ajoute */
 			else {
 				Connection conn = Database.getMySQLConnection();
-				String query = "INSERT INTO Users VALUES (" + login + ", " + 
-															pwd + " ," + name + " ," +
-															pname + ")";
-				Statement st = conn.createStatement();
-				st.executeUpdate(query);
-				ResultSet rs = st.getResultSet();
 				
-				// vérifie s'il y a une ligne dans le résultat
-				rs.close(); st.close(); conn.close();
+				// id auto-increment
+				// schema : (id, login, pwd, nom, prenom)
+				String query = "INSERT INTO Users VALUES (null, ?, ?, ?, ?)";
+				PreparedStatement pst = conn.prepareStatement(query);
+				pst.setString(1, login);
+				pst.setString(2, pwd);
+				pst.setString(3, lname);
+				pst.setString(4, fname);
+				
+				pst.executeUpdate();
+				pst.close(); conn.close();
 			}
 		}
 		catch (Exception e){
 			/* dont JSONException */
-			
+			e.printStackTrace();
 		}	
 		/* succès */
 		JSONObject ret = new JSONObject();
@@ -72,17 +77,17 @@ public class UserTools {
 				}
 				else {
 					int id = ServicesTools.getIdUser(login);
-					
+	
 					/* vérifier si admin ou pas */
 					String key = ServicesTools.insertSession(id, false);
 					ret.put("key", key);
 				}
 			}
 		} catch (SQLException e){
-			
+			e.printStackTrace();
 		} catch (Exception e){
 			/* dont JSONException */
-			
+			e.printStackTrace();
 		}	
 		return ret;
 	}

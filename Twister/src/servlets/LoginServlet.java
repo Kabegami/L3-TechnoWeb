@@ -2,22 +2,25 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import bdd.UserTools;
+import services.ServicesTools;
  
 /**
  * Servlet implementation class NewUserServlet
  */
 public class LoginServlet extends HttpServlet {
- 
-	 /**
+
+	/**
 	 * Default constructor.
 	 */
 	 public LoginServlet() {
@@ -30,16 +33,17 @@ public class LoginServlet extends HttpServlet {
 	 protected void doPost(HttpServletRequest request,
 	 HttpServletResponse response) throws ServletException, IOException {
 	 
-		/* gérer cas si + de 2 arguments */
-		String login = request.getParameter("username");
-		String pwd = request.getParameter("password");
+		String login = request.getParameter("login").toString();
+		String pwd = request.getParameter("pwd").toString();
 		
 		JSONObject user = new JSONObject();
 		user = UserTools.login(login, pwd);
-		 
+		
 	 	response.setContentType( "application/json" );
+	 	//response.sendRedirect("/Gr2_VU/index.html");
+	 	
 		PrintWriter out = response.getWriter ();
 		out.println(user);
+		 
 	 }
-	 
 }

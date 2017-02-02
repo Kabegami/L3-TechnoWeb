@@ -3,8 +3,6 @@ package test;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-import junit.framework.Assert;
-
 import java.sql.SQLException;
 import services.ServicesTools;
 
@@ -48,7 +46,7 @@ public class ServicesToolsTest {
 	@Test
 	public void testInsertSession(){
 		try {
-			assertNotNull(ServicesTools.insertSession(1, false));
+			assertNotNull(ServicesTools.insertSession(2, false));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail();
@@ -59,7 +57,7 @@ public class ServicesToolsTest {
 	@Test
 	public void testRemoveSession(){
 		try {
-			assertTrue(ServicesTools.removeSession(1));
+			assertTrue(ServicesTools.removeSession(2));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail();
