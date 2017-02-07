@@ -13,6 +13,11 @@
     <servlet-name>logout</servlet-name>
     <servlet-class>servlets.LogoutServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>addFriend</servlet-name>
+    <servlet-class>servlets.AddFriendServlet</servlet-class>
+  </servlet>
+  
   <servlet-mapping>
     <servlet-name>create</servlet-name>
     <url-pattern>/user/create</url-pattern>
@@ -25,6 +30,11 @@
     <servlet-name>logout</servlet-name>
     <url-pattern>/auth/logout</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>addFriend</servlet-name>
+    <url-pattern>/friend/add</url-pattern>
+  </servlet-mapping>
+  
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>

@@ -4,15 +4,15 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.sql.SQLException;
-import services.ServicesTools;
+import services.AuthTools;
 
-public class ServicesToolsTest {
+public class AuthToolsTest {
 
 	@Test
 	public void testUserExists() {
 		try {
-			assertTrue(ServicesTools.userExists("toto"));
-			assertFalse(ServicesTools.userExists("tata"));
+			assertTrue(AuthTools.userExists("toto"));
+			assertFalse(AuthTools.userExists("tata"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail();
@@ -23,8 +23,8 @@ public class ServicesToolsTest {
 	@Test
 	public void testCheckPassword(){
 		try {
-			assertTrue(ServicesTools.checkPassword("toto", "123"));
-			assertFalse(ServicesTools.checkPassword("toto", "tefzmfekfek"));
+			assertTrue(AuthTools.checkPassword("toto", "123"));
+			assertFalse(AuthTools.checkPassword("toto", "tefzmfekfek"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail();
@@ -35,7 +35,7 @@ public class ServicesToolsTest {
 	@Test
 	public void testGetIdUser(){
 		try {
-			assertEquals(ServicesTools.getIdUser("toto"), 1);
+			assertEquals(AuthTools.getIdUser("toto"), 2);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail();
@@ -46,7 +46,7 @@ public class ServicesToolsTest {
 	@Test
 	public void testInsertSession(){
 		try {
-			assertNotNull(ServicesTools.insertSession(2, false));
+			assertNotNull(AuthTools.insertSession(2, false));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail();
@@ -55,9 +55,21 @@ public class ServicesToolsTest {
 	}
 	
 	@Test
+	public void testHasSession(){
+		try {
+			assertTrue(AuthTools.hasSession(2));
+			assertFalse(AuthTools.hasSession(1));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+		System.out.println("Succès hasSession");
+	}
+	
+	@Test
 	public void testRemoveSession(){
 		try {
-			assertTrue(ServicesTools.removeSession(2));
+			assertTrue(AuthTools.removeSession(2));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail();

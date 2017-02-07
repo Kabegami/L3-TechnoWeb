@@ -25,22 +25,24 @@ public class NewUserServlet extends HttpServlet {
 	 }
  
 	 /**
-	 * This method will handle all GET request.
+	 * This method will handle all POST request.
 	 */
-	 protected void doGet(HttpServletRequest request,
+	 protected void doPost(HttpServletRequest request,
 	 HttpServletResponse response) throws ServletException, IOException {
-	 
+		
 		String login = request.getParameter("login");
-		String pwd = request.getParameter("mdp");
-		String name = request.getParameter("nom");
-		String pname = request.getParameter("prenom");
+		String pwd = request.getParameter("pwd");
+		String lname = request.getParameter("lname");
+		String fname = request.getParameter("fname");
 		
 		JSONObject user = new JSONObject();
-		user = UserTools.createUser(login, pwd, name, pname);
-		 
-	 	response.setContentType( "application/json" );
+		
+		response.setContentType( "application/json" );
 		PrintWriter out = response.getWriter ();
+		
+		user = UserTools.createUser(login, pwd, lname, fname);
 		out.println(user);
+
 	 }
 	 
 

@@ -10,7 +10,7 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import bdd.UserTools;
 
 import java.sql.SQLException;
-import services.ServicesTools;
+import services.AuthTools;
 
 public class UserToolsTest {
 	

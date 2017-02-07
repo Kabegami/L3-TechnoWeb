@@ -13,7 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import bdd.UserTools;
-import services.ServicesTools;
+import services.AuthTools;
  
 /**
  * Servlet implementation class NewUserServlet
@@ -28,13 +28,13 @@ public class LoginServlet extends HttpServlet {
 	 }
  
 	 /**
-	 * This method will handle all GET request.
+	 * This method will handle all POST request.
 	 */
 	 protected void doPost(HttpServletRequest request,
 	 HttpServletResponse response) throws ServletException, IOException {
 	 
-		String login = request.getParameter("login").toString();
-		String pwd = request.getParameter("pwd").toString();
+		String login = request.getParameter("login");
+		String pwd = request.getParameter("pwd");
 		
 		JSONObject user = new JSONObject();
 		user = UserTools.login(login, pwd);

@@ -9,7 +9,7 @@ import java.sql.Statement;
 
 import bdd.BDException;
 
-public class ServicesTools {
+public class AuthTools {
 
 	public static boolean userExists(String login) throws SQLException{
 		boolean exists = false;
@@ -91,6 +91,19 @@ public class ServicesTools {
 		st.close(); conn.close();
 		 
 		return key;
+	}
+	
+	public static boolean hasSession(int id) throws SQLException{
+		boolean exists = false;
+		Connection conn = Database.getMySQLConnection();
+		Statement st = conn.createStatement();
+		
+		String query = "SELECT id FROM Sessions WHERE id = " + id;
+		ResultSet rs = st.executeQuery(query);
+		
+		exists = rs.next();
+		rs.close(); st.close(); conn.close();
+		return exists;
 	}
 	
 	public static boolean removeSession(int id) throws SQLException{

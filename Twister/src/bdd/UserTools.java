@@ -1,17 +1,14 @@
 package bdd;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import services.Database;
 import services.ErrorJSON;
-import services.ServicesTools;
+import services.AuthTools;
 
 public class UserTools {
 	
@@ -19,12 +16,12 @@ public class UserTools {
 			String fname){
 		
 		/* arguments nuls */
-		if (login == null || pwd == null){
+		if (login == null || pwd == null || lname == null || fname == null){
 			return ErrorJSON.serviceRefused("Wrong arguments", -1);
 		}
 		
 		try {
-			if (ServicesTools.userExists(login)){
+			if (AuthTools.userExists(login)){
 				return ErrorJSON.serviceRefused("User already exists", 1);
 			}
 			/* si l'utilisateur n'existe pas, on l'ajoute */
@@ -63,7 +60,7 @@ public class UserTools {
 		
 		try {
 			/* si l'utilisateur n'existe pas, on refuse */
-			if (! ServicesTools.userExists(login)){
+			if (! AuthTools.userExists(login)){
 				return ErrorJSON.serviceRefused("User doesn't exist", 1);
 			}
 			
@@ -72,14 +69,14 @@ public class UserTools {
 			 * si correct, on lui attribue une clé de session
 			 */
 			else {
-				if (! ServicesTools.checkPassword(login, pwd)){
+				if (! AuthTools.checkPassword(login, pwd)){
 					return ErrorJSON.serviceRefused("Incorrect password", 2);
 				}
 				else {
-					int id = ServicesTools.getIdUser(login);
+					int id = AuthTools.getIdUser(login);
 	
 					/* vérifier si admin ou pas */
-					String key = ServicesTools.insertSession(id, false);
+					String key = AuthTools.insertSession(id, false);
 					ret.put("key", key);
 				}
 			}
@@ -101,17 +98,23 @@ public class UserTools {
 		}	
 		
 		try {
-			if (! ServicesTools.userExists(login)){
+			if (! AuthTools.userExists(login)){
 					return ErrorJSON.serviceRefused("User doesn't exist", 1);
 				}
 				else {
-					int id = ServicesTools.getIdUser(login);
-					ServicesTools.removeSession(id);
+					int id = AuthTools.getIdUser(login);
+					// on vérifie si la session existe
+					if (! AuthTools.hasSession(id)){
+						return ErrorJSON.serviceRefused("User is not logged in", 1);
+					}
+					else {
+						AuthTools.removeSession(id);
+					}
 				}
 		} catch (SQLException e){
-			
+			e.printStackTrace();
 		} catch (Exception e){
-			
+			e.printStackTrace();
 		}
 		return ret;
 	}

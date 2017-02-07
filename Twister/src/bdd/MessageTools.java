@@ -4,7 +4,7 @@ import org.json.JSONObject;
 import java.sql.SQLException;
 
 import services.ErrorJSON;
-import services.ServicesTools;
+import services.AuthTools;
 
 public class MessageTools {
 	
