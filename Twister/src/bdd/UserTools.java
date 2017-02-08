@@ -105,7 +105,7 @@ public class UserTools {
 					int id = AuthTools.getIdUser(login);
 					// on vérifie si la session existe
 					if (! AuthTools.hasSession(id)){
-						return ErrorJSON.serviceRefused("User is not logged in", 1);
+						return ErrorJSON.serviceRefused("User is not logged in", 2);
 					}
 					else {
 						AuthTools.removeSession(id);

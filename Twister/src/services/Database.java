@@ -31,7 +31,6 @@ public class Database {
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			conn = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + "/" +

@@ -1,5 +1,7 @@
 package bdd;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Connection;
@@ -7,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import services.Database;
 import services.ErrorJSON;
@@ -70,6 +74,47 @@ public class FriendTools {
 			e.printStackTrace();
 		}
 		return res;
+	}
+	
+	public static JSONObject listFriends(int id){
+		JSONObject finalQuery = new JSONObject();
+		JSONArray friends = new JSONArray();
+
+		if (id == 0){
+			return ErrorJSON.serviceRefused("Wrong arguments", -1);
+		}	
+		try {
+			if (! AuthTools.userExists(id)){
+				return ErrorJSON.serviceRefused("User doesn't exist", 1);
+			}
+			else {
+				// user non connecté
+				if (! AuthTools.hasSession(id)){
+					return ErrorJSON.serviceRefused("User is not logged in", 2);
+				}
+				else {
+					Connection conn = Database.getMySQLConnection();
+					Statement st = conn.createStatement();
+					
+					String query = "SELECT id_to FROM Friends WHERE id_from = " + id;
+					ResultSet rs = st.executeQuery(query);
+					while (rs.next()){
+						JSONObject res = new JSONObject();
+						int id_to = rs.getInt("id_to");
+						res.put("id", id_to);
+						res.put("username", AuthTools.getLoginUser(id_to));
+						friends.put(res);
+					}
+					finalQuery.put("friends", friends);
+				}
+			}
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return finalQuery;
 	}
 	
 	

@@ -26,6 +26,21 @@ public class AuthTools {
 		return exists;
 	}
 	
+	public static boolean userExists(int id) throws SQLException{
+		boolean exists = false;
+		Connection conn = Database.getMySQLConnection();
+		Statement st = conn.createStatement();
+
+		String query = "SELECT login FROM Users WHERE id = " + id;
+		st.executeQuery(query);
+		ResultSet rs = st.getResultSet();
+			
+		// vérifie s'il y a une ligne dans le résultat
+		exists = rs.next();
+		rs.close(); st.close(); conn.close();
+		return exists;
+	}
+	
 	public static boolean checkPassword(String login, String pwd) throws SQLException{
 		boolean pwd_ok = false;;
 		Connection conn = Database.getMySQLConnection();
@@ -60,6 +75,23 @@ public class AuthTools {
 
 		rs.close(); st.close(); conn.close();
 		return id;
+	}
+	
+	public static String getLoginUser(int id) throws SQLException{
+		String login = "";
+		Connection conn = Database.getMySQLConnection();
+		Statement st = conn.createStatement();
+		
+		String query = "SELECT login FROM Users WHERE id = " + id;
+		st.executeQuery(query);
+		ResultSet rs = st.getResultSet();
+		//id = rs.getInt("id");
+		if(rs.next()){
+			login = rs.getString("login");
+		}
+
+		rs.close(); st.close(); conn.close();
+		return login;
 	}
 	
 	/** retourne une clé de session */
