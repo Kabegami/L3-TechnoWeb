@@ -20,18 +20,21 @@ import bdd.UserTools;
  * @apiName NewUser
  * @apiGroup User
  * 
+ * 
  * @apiParam  {String} login Login de l'utilisateur
  * @apiParam  {String} pwd Mot de passe de l'utilisateur
  * @apiParam  {String} lname Nom 
  * @apiParam  {String} fname Prénom
+ * 
+ * @apiSuccessExample {json} Succès:
+ * 			{}
+ * @apiError (ErrorJSON) -1 Mauvais arguments
 
-
+ * @apiError (ErrorJSON) 1 Utilisateur déjà existant
+ * 
  */
 public class NewUserServlet extends HttpServlet {
  
-	 /**
-	 * Default constructor.
-	 */
 	 public NewUserServlet() {
 		 
 	 }

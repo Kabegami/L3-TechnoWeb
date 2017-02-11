@@ -16,8 +16,25 @@ import bdd.UserTools;
 import services.AuthTools;
  
 /**
- * Servlet implementation class NewUserServlet
+ * 
+ * @api {post} /auth/login Connexion
+ * @apiVersion 0.1.0
+ * @apiName Login
+ * @apiGroup Authentification
+ * 
+ * 
+ * @apiParam  {String} login Login de l'utilisateur
+ * @apiParam  {String} pwd Mot de passe de l'utilisateur
+ * 
+ * @apiSuccessExample {json} Succès:
+ * 			{"key" : "110e8400-e29b-11d4-a716-446655440000"}
+ * 
+ * @apiError (ErrorJSON) -1 Mauvais arguments
+ * @apiError (ErrorJSON) 1 Utilisateur non existant
+ * @apiError (ErrorJSON) 2 Mot de passe incorrect
+
  */
+
 public class LoginServlet extends HttpServlet {
 
 	/**

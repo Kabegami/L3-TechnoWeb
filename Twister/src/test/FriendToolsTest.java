@@ -19,7 +19,7 @@ public class FriendToolsTest {
 		JSONObject inverse = new JSONObject();
 		
 		String expected1 = "{}";
-		String expected2 = "{error_code:2,message:\"User is not logged in\"}";
+		//String expected2 = "{error_code:2,message:\"User is not logged in\"}";
 		
 		res = FriendTools.addFriend("toto", "raoul");
 		//inverse = FriendTools.addFriend("jean", "toto");
@@ -45,5 +45,24 @@ public class FriendToolsTest {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	@Test
+	public void testRemoveFriend(){
+		JSONObject res = new JSONObject();
+		JSONObject inverse = new JSONObject();
+		
+		String expected1 = "{}";
+		
+		res = FriendTools.removeFriend("toto", "raoul");
+		//inverse = FriendTools.addFriend("jean", "toto");
+		//System.out.println(inverse);
+		try {
+			JSONAssert.assertEquals(expected1, res, true);
+			//JSONAssert.assertEquals(expected2, inverse, false);
+		} catch (JSONException e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
 }

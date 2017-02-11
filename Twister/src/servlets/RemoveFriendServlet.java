@@ -14,14 +14,14 @@ import bdd.FriendTools;
  
 /**
  * 
- * @api {get} /friend/add Ajout d'ami
+ * @api {get} /friend/remove Retrait d'ami
  * @apiVersion 0.1.0
- * @apiName AddFriend
+ * @apiName RemoveFriend
  * @apiGroup Friends
  * 
  * 
- * @apiParam  {String} login1 Login de l'utilisateur ajoutant un ami
- * @apiParam  {String} login2 Login de l'ami à ajouter
+ * @apiParam  {String} login1 Login de l'utilisateur courant
+ * @apiParam  {String} login2 Login de l'ami à supprimer
  * 
  * @apiSuccessExample {json} Succès:
  * 			{}
@@ -29,16 +29,16 @@ import bdd.FriendTools;
  * @apiError (ErrorJSON) -1 Mauvais arguments
  * @apiError (ErrorJSON) 1 Utilisateur non existant
  * @apiError (ErrorJSON) 2 Utilisateur non connecté
- * @apiError (ErrorJSON) 3 Utilisateurs déjà amis
+ * @apiError (ErrorJSON) 3 Utilisateurs non amis
  * 
  */
 
-public class AddFriendServlet extends HttpServlet {
+public class RemoveFriendServlet extends HttpServlet {
  
 	 /**
 	 * Default constructor.
 	 */
-	 public AddFriendServlet() {
+	 public RemoveFriendServlet() {
 		 
 	 }
  
@@ -56,7 +56,7 @@ public class AddFriendServlet extends HttpServlet {
 		response.setContentType( "application/json" );
 		PrintWriter out = response.getWriter ();
 		
-		res = FriendTools.addFriend(login1, login2);
+		res = FriendTools.removeFriend(login1, login2);
 		out.println(res);
 
 	 }

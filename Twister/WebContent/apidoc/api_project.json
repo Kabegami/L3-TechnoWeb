@@ -4,8 +4,8 @@
   "description": "Une documentation.",
   "title": "Twister - Documentation",
   "header": {
-    "title": "General",
-    "content": "<p>Cette documentation a été générée grâce à <a href=\"http://apidocjs.com/\">ApiDocJS</a>.</p>\n"
+    "title": "Général",
+    "content": "<p>Cette documentation a été générée grâce à <a href=\"http://apidocjs.com/\">apiDocJS</a>.</p>\n"
   },
   "order": [
     "User"
@@ -20,7 +20,7 @@
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-02-11T14:47:06.367Z",
+    "time": "2017-02-11T16:14:44.353Z",
     "url": "http://apidocjs.com",
     "version": "0.17.5"
   }

@@ -3,7 +3,9 @@ package services;
 import org.json.JSONObject;
 import org.json.JSONException;
 
+
 public class ErrorJSON {
+	
 	
 	public static JSONObject serviceRefused(String message, int errorCode){
 		JSONObject ret = new JSONObject();

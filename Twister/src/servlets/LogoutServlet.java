@@ -13,7 +13,22 @@ import org.json.JSONObject;
 import bdd.UserTools;
 
 /**
- * Servlet implementation class LogoutServlet
+ * 
+ * @api {get} /auth/logout Déconnexion
+ * @apiVersion 0.1.0
+ * @apiName Logout
+ * @apiGroup Authentification
+ * 
+ * 
+ * @apiParam  {String} login Login de l'utilisateur
+ * 
+ * @apiSuccessExample {json} Succès:
+ * 			{}
+ * 
+ * @apiError (ErrorJSON) -1 Mauvais arguments
+ * @apiError (ErrorJSON) 1 Utilisateur non existant
+ * @apiError (ErrorJSON) 2 Utilisateur non connecté
+
  */
 
 public class LogoutServlet extends HttpServlet {
