@@ -12,8 +12,20 @@ import org.json.JSONObject;
 
 import bdd.UserTools;
  
+
 /**
- * Servlet implementation class NewUserServlet
+ * 
+ * @api {post} /usr/create Créer un nouvel utilisateur
+ * @apiVersion 0.1.0
+ * @apiName NewUser
+ * @apiGroup User
+ * 
+ * @apiParam  {String} login Login de l'utilisateur
+ * @apiParam  {String} pwd Mot de passe de l'utilisateur
+ * @apiParam  {String} lname Nom 
+ * @apiParam  {String} fname Prénom
+
+
  */
 public class NewUserServlet extends HttpServlet {
  
