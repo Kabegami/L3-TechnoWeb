@@ -121,18 +121,19 @@ public class FriendTools {
 		return res;
 	}
 	
-	public static JSONObject listFriends(int id){
+	public static JSONObject listFriends(String login){
 		JSONObject finalQuery = new JSONObject();
 		JSONArray friends = new JSONArray();
 
-		if (id == 0){
+		if (login == null){
 			return ErrorJSON.serviceRefused("Wrong arguments", -1);
 		}	
 		try {
-			if (! AuthTools.userExists(id)){
+			if (! AuthTools.userExists(login)){
 				return ErrorJSON.serviceRefused("User doesn't exist", 1);
 			}
 			else {
+				int id = AuthTools.getIdUser(login);
 				// user non connecté
 				if (! AuthTools.hasSession(id)){
 					return ErrorJSON.serviceRefused("User is not logged in", 2);

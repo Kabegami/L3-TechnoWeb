@@ -22,7 +22,7 @@ import services.AuthTools;
 
 public class MessageTools {
 	
-	public static JSONObject createMessage(int id, String message){
+	public static JSONObject newMessage(int id, String message){
 		if (id == 0 || message == null){
 			return ErrorJSON.serviceRefused("Wrong arguments", -1);
 		}

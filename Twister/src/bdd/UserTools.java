@@ -1,6 +1,7 @@
 package bdd;
 
 import org.json.JSONObject;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,12 +30,15 @@ public class UserTools {
 			else {
 				Connection conn = Database.getMySQLConnection();
 				
+				// hash le password
+				String pwdHashed = DigestUtils.sha1Hex(pwd);
+				
 				// id auto-increment
 				// schema : (id, login, pwd, nom, prenom)
 				String query = "INSERT INTO Users VALUES (null, ?, ?, ?, ?)";
 				PreparedStatement pst = conn.prepareStatement(query);
 				pst.setString(1, login);
-				pst.setString(2, pwd);
+				pst.setString(2, pwdHashed);
 				pst.setString(3, lname);
 				pst.setString(4, fname);
 				

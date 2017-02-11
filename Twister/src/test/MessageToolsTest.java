@@ -14,7 +14,7 @@ public class MessageToolsTest {
 
 	@Test
 	public void testCreateMessage(){
-		JSONObject obj = MessageTools.createMessage(2, "troisieme message");
+		JSONObject obj = MessageTools.newMessage(2, "troisieme message");
 		//String expected = "{author_id:2, author_username:\"toto\", }";
 		System.out.println(obj);
 		/*

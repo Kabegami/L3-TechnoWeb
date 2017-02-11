@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,11 +57,20 @@ public class LoginServlet extends HttpServlet {
 		JSONObject user = new JSONObject();
 		user = UserTools.login(login, pwd);
 		
-	 	response.setContentType( "application/json" );
-	 	//response.sendRedirect("/Gr2_VU/index.html");
-	 	
-		PrintWriter out = response.getWriter ();
-		out.println(user);
-		 
+		if (! user.has("error_code")){
+			HttpSession session = request.getSession();
+			session.setAttribute("user", login);
+			request.getRequestDispatcher("../welcome.jsp").forward(request, response);
+			//session.setMaxInactiveInterval(1);
+		}
+		else{
+		
+		 	response.setContentType( "application/json" );
+		 	//response.sendRedirect("/Gr2_VU/index.html");
+		 	
+			PrintWriter out = response.getWriter ();
+			out.println(user);
+		}
+			 
 	 }
 }

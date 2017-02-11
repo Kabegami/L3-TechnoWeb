@@ -7,7 +7,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
-import bdd.BDException;
+import org.apache.commons.codec.digest.DigestUtils;
+
 
 public class AuthTools {
 
@@ -42,7 +43,11 @@ public class AuthTools {
 	}
 	
 	public static boolean checkPassword(String login, String pwd) throws SQLException{
-		boolean pwd_ok = false;;
+		boolean pwd_ok = false;
+		
+		// hash du password
+		String pwdHashed = DigestUtils.sha1Hex(pwd);
+
 		Connection conn = Database.getMySQLConnection();
 		Statement st = conn.createStatement();
 		
@@ -50,9 +55,10 @@ public class AuthTools {
 		st.executeQuery(query);
 		ResultSet rs = st.getResultSet();
 		
+		
 		if (rs.next()){
 			String pwdDB = rs.getString("mdp");
-			pwd_ok = pwd.equals(pwdDB);
+			pwd_ok = pwdHashed.equals(pwdDB);
 		}
 		rs.close(); st.close(); conn.close();
 		
@@ -148,6 +154,16 @@ public class AuthTools {
 		//System.out.println(success);
 		st.close(); conn.close();
 		return success == 1;
+	}
+	
+	public static void updateSession(int id) throws SQLException{
+		Connection conn = Database.getMySQLConnection();
+		Statement st = conn.createStatement();
+		
+		String query = "UPDATE Sessions SET timestamp = NOW() WHERE id = " + id;
+		st.executeUpdate(query);
+		//System.out.println(success);
+		st.close(); conn.close();
 	}
 	
 }

@@ -4,7 +4,7 @@
   "description": "Une documentation.",
   "title": "Twister - Documentation",
   "header": {
-    "title": "General",
+    "title": "Général",
     "filename": "header.md"
   },
   "order": [

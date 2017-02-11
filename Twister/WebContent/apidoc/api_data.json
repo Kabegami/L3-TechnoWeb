@@ -189,8 +189,64 @@
   },
   {
     "type": "get",
+    "url": "/friend/list",
+    "title": "Liste les amis",
+    "version": "0.1.0",
+    "name": "ListFriends",
+    "group": "Friends",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "login",
+            "description": "<p>Login de l'utilisateur courant</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Succès:",
+          "content": "{\"friends\":[{\"id\":3,\"username\":\"jean\"},{\"id\":4,\"username\":\"raoul\"}]}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "ErrorJSON": [
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "-1",
+            "description": "<p>Mauvais arguments</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "1",
+            "description": "<p>Utilisateur non existant</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "2",
+            "description": "<p>Utilisateur non connecté</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/servlets/ListFriendsServlet.java",
+    "groupTitle": "Friends"
+  },
+  {
+    "type": "get",
     "url": "/friend/remove",
-    "title": "Ajout d'ami",
+    "title": "Retrait d'ami",
     "version": "0.1.0",
     "name": "RemoveFriend",
     "group": "Friends",
@@ -255,6 +311,62 @@
     },
     "filename": "src/servlets/RemoveFriendServlet.java",
     "groupTitle": "Friends"
+  },
+  {
+    "type": "post",
+    "url": "/message/new",
+    "title": "Nouveau message",
+    "version": "0.1.0",
+    "name": "CreateMessage",
+    "group": "Message",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "login",
+            "description": "<p>Login de l'utilisateur courant</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Succès:",
+          "content": "{}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "ErrorJSON": [
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "-1",
+            "description": "<p>Mauvais arguments</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "1",
+            "description": "<p>Utilisateur non existant</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "2",
+            "description": "<p>Utilisateur non connecté</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/servlets/NewMessageServlet.java",
+    "groupTitle": "Message"
   },
   {
     "type": "post",

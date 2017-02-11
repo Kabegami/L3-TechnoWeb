@@ -1,11 +1,8 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
 <HTML>
 	<HEAD><TITLE>Homepage</TITLE></HEAD>
 		<BODY>
 			<H1>Index</H1>
-				Hello.
-			<p><a href="./login.html">Login page</a></p>
+			Hello ${pageContext.request.userPrincipal.name}
 			<p><a href="./message.html">Create message</a></p>
 		</BODY>
 </HTML>

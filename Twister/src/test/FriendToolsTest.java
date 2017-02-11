@@ -35,7 +35,7 @@ public class FriendToolsTest {
 	
 	@Test
 	public void testListFriends(){
-		JSONObject res = FriendTools.listFriends(2);
+		JSONObject res = FriendTools.listFriends("toto");
 		//System.out.println(res);
 		
 		try {
