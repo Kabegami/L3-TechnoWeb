@@ -55,6 +55,12 @@ define({ "api": [
             "optional": false,
             "field": "2",
             "description": "<p>Mot de passe incorrect</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "3",
+            "description": "<p>Utilisteur déjà connecté</p>"
           }
         ]
       }

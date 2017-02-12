@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,9 +34,11 @@ import services.AuthTools;
  * @apiError (ErrorJSON) -1 Mauvais arguments
  * @apiError (ErrorJSON) 1 Utilisateur non existant
  * @apiError (ErrorJSON) 2 Mot de passe incorrect
+ * @apiError (ErrorJSON) 3 Utilisteur déjà connecté
+
 
  */
-
+@WebServlet("/auth/login")
 public class LoginServlet extends HttpServlet {
 
 	/**
@@ -60,8 +63,8 @@ public class LoginServlet extends HttpServlet {
 		if (! user.has("error_code")){
 			HttpSession session = request.getSession();
 			session.setAttribute("user", login);
-			request.getRequestDispatcher("../welcome.jsp").forward(request, response);
-			//session.setMaxInactiveInterval(1);
+			response.sendRedirect("../welcome.jsp");
+			
 		}
 		else{
 		

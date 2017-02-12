@@ -73,23 +73,26 @@ public class UserTools {
 			 * on vérifie son mot de passe
 			 * si correct, on lui attribue une clé de session
 			 */
-			else {
-				if (! AuthTools.checkPassword(login, pwd)){
-					return ErrorJSON.serviceRefused("Incorrect password", 2);
-				}
-				else {
-					int id = AuthTools.getIdUser(login);
-	
-					/* vérifier si admin ou pas */
-					String key = AuthTools.insertSession(id, false);
-					ret.put("key", key);
-				}
+			if (! AuthTools.checkPassword(login, pwd)){
+				return ErrorJSON.serviceRefused("Incorrect password", 2);
 			}
+			
+			int id = AuthTools.getIdUser(login);
+			if (AuthTools.hasSession(id)){
+				return ErrorJSON.serviceRefused("User already logged in", 3);		
+			}
+
+			/* vérifier si admin ou pas */
+			String key = AuthTools.insertSession(id, false);
+			ret.put("key", key);
+		
 		} catch (SQLException e){
 			e.printStackTrace();
+			return ErrorJSON.serviceRefused("erreur SQL", 100);
 		} catch (Exception e){
 			/* dont JSONException */
 			e.printStackTrace();
+			return ErrorJSON.serviceRefused("erreur", 10000);
 		}	
 		return ret;
 	}

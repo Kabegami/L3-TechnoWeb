@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +31,7 @@ import bdd.UserTools;
  * @apiError (ErrorJSON) 2 Utilisateur non connecté
 
  */
-
+@WebServlet("/auth/logout")
 public class LogoutServlet extends HttpServlet {
 
        

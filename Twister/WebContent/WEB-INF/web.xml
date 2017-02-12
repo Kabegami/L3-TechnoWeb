@@ -1,67 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:web="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+    version="3.0">
   <display-name>Gr2_VU</display-name>
+  <!-- 
   	<session-config> 
 		<session-timeout>1</session-timeout>
 	</session-config>
-  
-  <servlet>
-    <servlet-name>create</servlet-name>
-    <servlet-class>servlets.NewUserServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>login</servlet-name>
-    <servlet-class>servlets.LoginServlet</servlet-class>
-  </servlet>
-   <servlet>
-    <servlet-name>logout</servlet-name>
-    <servlet-class>servlets.LogoutServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>addFriend</servlet-name>
-    <servlet-class>servlets.AddFriendServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>removeFriend</servlet-name>
-    <servlet-class>servlets.RemoveFriendServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>listFriends</servlet-name>
-    <servlet-class>servlets.ListFriendsServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>newMessage</servlet-name>
-    <servlet-class>servlets.NewMessageServlet</servlet-class>
-  </servlet>
-   
-  <servlet-mapping>
-    <servlet-name>create</servlet-name>
-    <url-pattern>/user/create</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>login</servlet-name>
-    <url-pattern>/auth/login</url-pattern>
-  </servlet-mapping>
-    <servlet-mapping>
-    <servlet-name>logout</servlet-name>
-    <url-pattern>/auth/logout</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>addFriend</servlet-name>
-    <url-pattern>/friend/add</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>removeFriend</servlet-name>
-    <url-pattern>/friend/remove</url-pattern>
-  </servlet-mapping>  
-  <servlet-mapping>
-    <servlet-name>listFriends</servlet-name>
-    <url-pattern>/friend/list</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>newMessage</servlet-name>
-    <url-pattern>/message/new</url-pattern>
-  </servlet-mapping>
+    -->
    
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>

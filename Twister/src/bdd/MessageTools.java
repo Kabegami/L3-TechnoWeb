@@ -22,15 +22,17 @@ import services.AuthTools;
 
 public class MessageTools {
 	
-	public static JSONObject newMessage(int id, String message){
-		if (id == 0 || message == null){
+	public static JSONObject newMessage(String login, String message){
+		if (login == null || message == null){
 			return ErrorJSON.serviceRefused("Wrong arguments", -1);
 		}
 		
 		try {
-			if (! AuthTools.userExists(id)){
+			if (! AuthTools.userExists(login)){
 				return ErrorJSON.serviceRefused("User doesn't exist", 1);
 			}
+			
+			int id = AuthTools.getIdUser(login);
 			if (! AuthTools.hasSession(id)){
 				return ErrorJSON.serviceRefused("User is not logged in", 2);
 			}
