@@ -5,5 +5,8 @@
 			<% String user = session.getAttribute("user").toString(); %>
 			Hello ${user}.
 			<p><a href="en/message.html">New message</a></p>
+			
+			<!-- Liste messages -->
+			<p><a href="message/list">Messages list</a></p>
 		</BODY>
 </HTML>

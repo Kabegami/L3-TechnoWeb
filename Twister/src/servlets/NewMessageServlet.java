@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import bdd.MessageTools;
@@ -49,24 +50,32 @@ public class NewMessageServlet extends HttpServlet {
 	 */
 	 protected void doPost(HttpServletRequest request,
 	 HttpServletResponse response) throws ServletException, IOException {
-		
-		//String idS = request.getParameter("id");
-		String message = request.getParameter("message");
-		
+		JSONObject res = new JSONObject();
 		response.setContentType( "application/json" );
 		PrintWriter out = response.getWriter ();
+
+		//String idS = request.getParameter("id");
+		String message = request.getParameter("message");
+		try {
+			res.put("message", message);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		out.println(res);
+
+
 		
+		/*
 		if (message == null){
 			JSONObject err = ErrorJSON.serviceRefused("Missing parameter", -1);
 			out.println(err);
 		}
-		else {
+		else {*/
 			String login = request.getSession().getAttribute("user").toString();
-			JSONObject res = new JSONObject();
-			
 			res = MessageTools.newMessage(login, message);
 			out.println(res);
-		}
+		
 	 }
 	 
 

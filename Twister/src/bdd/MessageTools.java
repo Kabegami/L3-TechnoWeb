@@ -64,18 +64,19 @@ public class MessageTools {
 		return new JSONObject();
 	}
 	
-	public static JSONObject listMessages(int id){
+	public static JSONObject listMessages(String login){
 		JSONObject finalQuery = new JSONObject();
 		JSONArray messages = new JSONArray();
 		
-		if (id == 0){
+		if (login == null){
 			return ErrorJSON.serviceRefused("Wrong arguments", -1);
 		}
 		
 		try {
-			if (! AuthTools.userExists(id)){
+			if (! AuthTools.userExists(login)){
 				return ErrorJSON.serviceRefused("User doesn't exist", 1);
 			}
+			int id = AuthTools.getIdUser(login);
 			if (! AuthTools.hasSession(id)){
 				return ErrorJSON.serviceRefused("User is not logged in", 2);
 			}

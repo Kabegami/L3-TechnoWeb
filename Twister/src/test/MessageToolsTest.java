@@ -30,7 +30,7 @@ public class MessageToolsTest {
 	
 	@Test
 	public void testListMessages(){
-		JSONObject res = MessageTools.listMessages(2);
+		JSONObject res = MessageTools.listMessages("toto");
 		//String expected = "{author_id:2, author_username:\"toto\", }";
 		System.out.println(res);
 	}
