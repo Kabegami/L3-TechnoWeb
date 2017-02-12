@@ -55,6 +55,69 @@
             "optional": false,
             "field": "2",
             "description": "<p>Mot de passe incorrect</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/servlets/ListMessagesServlet.java",
+    "groupTitle": "Authentification"
+  },
+  {
+    "type": "post",
+    "url": "/auth/login",
+    "title": "Connexion",
+    "version": "0.1.0",
+    "name": "Login",
+    "group": "Authentification",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "login",
+            "description": "<p>Login de l'utilisateur</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pwd",
+            "description": "<p>Mot de passe de l'utilisateur</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Succès:",
+          "content": "{\"key\" : \"110e8400-e29b-11d4-a716-446655440000\"}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "ErrorJSON": [
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "-1",
+            "description": "<p>Mauvais arguments</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "1",
+            "description": "<p>Utilisateur non existant</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "2",
+            "description": "<p>Mot de passe incorrect</p>"
           },
           {
             "group": "ErrorJSON",
