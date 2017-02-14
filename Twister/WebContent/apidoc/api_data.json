@@ -408,7 +408,7 @@
     "groupTitle": "Message"
   },
   {
-    "type": "post",
+    "type": "get",
     "url": "/message/search",
     "title": "Chercher un message dans ceux des amis",
     "version": "0.1.0",
@@ -438,7 +438,7 @@
       "examples": [
         {
           "title": "Succès:",
-          "content": "{}",
+          "content": "\t\t\t{\"messages\": [\n    {\n        \"text\": \"second message\",\n        \"author_username\": \"raoul\",\n        \"_id\": {\"$oid\": \"58a35b83e4b052853c124fbc\"},\n        \"author_id\": 4,\n        \"date\": {\"$date\": \"2017-02-14T19:33:23.748Z\"}\n    },\n    {\n        \"text\": \"secondmessage\",\n        \"author_username\": \"jean\",\n        \"_id\": {\"$oid\": \"58a35b46e4b052853c124fba\"},\n        \"author_id\": 3,\n        \"date\": {\"$date\": \"2017-02-14T19:32:22.377Z\"}\n    }\n]}",
           "type": "json"
         }
       ]

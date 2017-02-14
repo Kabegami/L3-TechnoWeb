@@ -18,7 +18,7 @@ import services.ErrorJSON;
  
 /**
  * 
- * @api {post} /message/search Chercher un message dans ceux des amis
+ * @api {get} /message/search Chercher un message dans ceux des amis
  * @apiVersion 0.1.0
  * @apiName SearchMsg
  * @apiGroup Message
@@ -27,7 +27,22 @@ import services.ErrorJSON;
  * @apiParam  {String} query Motif de recherche
  * 
  * @apiSuccessExample {json} Succès:
- * 			{}
+ * 			{"messages": [
+    {
+        "text": "second message",
+        "author_username": "raoul",
+        "_id": {"$oid": "58a35b83e4b052853c124fbc"},
+        "author_id": 4,
+        "date": {"$date": "2017-02-14T19:33:23.748Z"}
+    },
+    {
+        "text": "secondmessage",
+        "author_username": "jean",
+        "_id": {"$oid": "58a35b46e4b052853c124fba"},
+        "author_id": 3,
+        "date": {"$date": "2017-02-14T19:32:22.377Z"}
+    }
+]}
  * 
  * @apiError (ErrorJSON) -1 Mauvais arguments
  * @apiError (ErrorJSON) 2 Utilisateur non connecté
