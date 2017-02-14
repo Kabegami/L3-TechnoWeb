@@ -63,6 +63,11 @@ public class LoginServlet extends HttpServlet {
 		if (! user.has("error_code")){
 			HttpSession session = request.getSession();
 			session.setAttribute("user", login);
+			try {
+				session.setAttribute("key", user.get("key"));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 			response.sendRedirect("../welcome.jsp");
 			
 		}

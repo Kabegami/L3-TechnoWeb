@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import bdd.FriendTools;
@@ -21,14 +22,12 @@ import services.AuthTools;
  * @apiName ListFriends
  * @apiGroup Friends
  * 
- * 
- * @apiParam  {String} login Login de l'utilisateur courant
- * 
+ * @apiParam  {String} key Clé de session de l'utilisateur courant
+
  * @apiSuccessExample {json} Succès:
  * 			{"friends":[{"id":3,"username":"jean"},{"id":4,"username":"raoul"}]}
  * 
- * @apiError (ErrorJSON) -1 Mauvais arguments
- * @apiError (ErrorJSON) 1 Utilisateur non existant
+ * @apiError (ErrorJSON) -1 Mauvais argument
  * @apiError (ErrorJSON) 2 Utilisateur non connecté
  * 
  */
@@ -49,15 +48,19 @@ public class ListFriendsServlet extends HttpServlet {
 	 protected void doGet(HttpServletRequest request,
 	 HttpServletResponse response) throws ServletException, IOException {
 		
-		String login = request.getParameter("login");
-		
-		JSONObject res = new JSONObject();
+		String user = request.getSession().getAttribute("key").toString();
 		
 		response.setContentType( "application/json" );
 		PrintWriter out = response.getWriter ();
 		
-		res = FriendTools.listFriends(login);
-		out.println(res);
+		JSONObject res = new JSONObject();
+		res = FriendTools.listFriends(user);
+		try {
+			out.println(res.toString(4));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	 }
 	 

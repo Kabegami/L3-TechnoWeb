@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 import bdd.FriendTools;
+import services.AuthTools;
  
 /**
  * 
@@ -20,9 +21,8 @@ import bdd.FriendTools;
  * @apiName AddFriend
  * @apiGroup Friends
  * 
- * 
- * @apiParam  {String} login1 Login de l'utilisateur ajoutant un ami
- * @apiParam  {String} login2 Login de l'ami à ajouter
+ * @apiParam  {String} key Clé de session de l'utilisateur courant
+ * @apiParam  {int} id_friend id de l'ami à ajouter
  * 
  * @apiSuccessExample {json} Succès:
  * 			{}
@@ -50,15 +50,16 @@ public class AddFriendServlet extends HttpServlet {
 	 protected void doGet(HttpServletRequest request,
 	 HttpServletResponse response) throws ServletException, IOException {
 		
-		String login1 = request.getParameter("login1");
-		String login2 = request.getParameter("login2");
+		String user = request.getSession().getAttribute("key").toString();
+		String login2 = request.getParameter("idfriend");
 		
+		int id_friend = Integer.parseInt(login2);
 		JSONObject res = new JSONObject();
 		
 		response.setContentType( "application/json" );
 		PrintWriter out = response.getWriter ();
 		
-		res = FriendTools.addFriend(login1, login2);
+		res = FriendTools.addFriend(user, id_friend);
 		out.println(res);
 
 	 }

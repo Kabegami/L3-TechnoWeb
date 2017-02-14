@@ -9,36 +9,38 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import bdd.FriendTools;
+import bdd.MessageTools;
 import services.AuthTools;
+import services.ErrorJSON;
  
 /**
  * 
- * @api {get} /friend/remove Retrait d'ami
+ * @api {post} /message/search Chercher un message dans ceux des amis
  * @apiVersion 0.1.0
- * @apiName RemoveFriend
- * @apiGroup Friends
+ * @apiName SearchMsg
+ * @apiGroup Message
  * 
  * @apiParam  {String} key Clé de session de l'utilisateur courant
- * @apiParam  {String} id_friend id de l'ami à supprimer
+ * @apiParam  {String} query Motif de recherche
  * 
  * @apiSuccessExample {json} Succès:
  * 			{}
  * 
  * @apiError (ErrorJSON) -1 Mauvais arguments
  * @apiError (ErrorJSON) 2 Utilisateur non connecté
- * @apiError (ErrorJSON) 3 Utilisateurs non amis
  * 
  */
-@WebServlet("/friend/remove")
-public class RemoveFriendServlet extends HttpServlet {
+
+@WebServlet("/message/search")
+public class SearchMsgServlet extends HttpServlet {
  
 	 /**
 	 * Default constructor.
 	 */
-	 public RemoveFriendServlet() {
+	 public SearchMsgServlet() {
 		 
 	 }
  
@@ -47,20 +49,28 @@ public class RemoveFriendServlet extends HttpServlet {
 	 */
 	 protected void doGet(HttpServletRequest request,
 	 HttpServletResponse response) throws ServletException, IOException {
-		
-		String user = request.getSession().getAttribute("key").toString();
-		String login2 = request.getParameter("idfriend");
-			
-		int id_friend = Integer.parseInt(login2);
 		JSONObject res = new JSONObject();
-			
 		response.setContentType( "application/json" );
 		PrintWriter out = response.getWriter ();
-			
-		res = FriendTools.removeFriend(user, id_friend);
-		out.println(res);
 
+		//String idS = request.getParameter("id");
+		String query = request.getParameter("query");
+
+		if (query == null){
+			JSONObject err = ErrorJSON.serviceRefused("Missing parameter", -1);
+			out.println(err);
+		}
+		else {
+			String key = request.getSession().getAttribute("key").toString();
+			res = MessageTools.search(key, query);
+			try {
+				out.println(res.toString(4));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 	 }
+
 	 
 
 }

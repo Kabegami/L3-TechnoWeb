@@ -9,12 +9,14 @@ import org.skyscreamer.jsonassert.JSONAssert;
 
 import bdd.MessageTools;
 import bdd.UserTools;
+import services.AuthTools;
 
 public class MessageToolsTest {
 
 	@Test
 	public void testCreateMessage(){
-		JSONObject obj = MessageTools.newMessage("toto", "troisieme message");
+		String key = AuthTools.getKey("toto");
+		JSONObject obj = MessageTools.newMessage(key, "quatrieme message");
 		//String expected = "{author_id:2, author_username:\"toto\", }";
 		System.out.println(obj);
 		/*
@@ -30,7 +32,16 @@ public class MessageToolsTest {
 	
 	@Test
 	public void testListMessages(){
-		JSONObject res = MessageTools.listMessages("toto");
+		String key = AuthTools.getKey("toto");
+		JSONObject res = MessageTools.listMessages(key);
+		//String expected = "{author_id:2, author_username:\"toto\", }";
+		System.out.println(res);
+	}
+	
+	@Test
+	public void testSearchMessages(){
+		String key = AuthTools.getKey("toto");
+		JSONObject res = MessageTools.search(key, "hello");
 		//String expected = "{author_id:2, author_username:\"toto\", }";
 		System.out.println(res);
 	}

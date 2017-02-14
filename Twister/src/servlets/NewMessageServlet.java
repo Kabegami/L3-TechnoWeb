@@ -23,14 +23,13 @@ import services.ErrorJSON;
  * @apiName CreateMessage
  * @apiGroup Message
  * 
- * 
- * @apiParam  {String} login Login de l'utilisateur courant
+ * @apiParam  {String} key Clé de session de l'utilisateur courant
+ * @apiParam  {String} message Message
  * 
  * @apiSuccessExample {json} Succès:
  * 			{}
  * 
  * @apiError (ErrorJSON) -1 Mauvais arguments
- * @apiError (ErrorJSON) 1 Utilisateur non existant
  * @apiError (ErrorJSON) 2 Utilisateur non connecté
  * 
  */
@@ -72,11 +71,26 @@ public class NewMessageServlet extends HttpServlet {
 			out.println(err);
 		}
 		else {*/
-			String login = request.getSession().getAttribute("user").toString();
-			res = MessageTools.newMessage(login, message);
+			String key = request.getSession().getAttribute("key").toString();
+			res = MessageTools.newMessage(key, message);
 			out.println(res);
 		
 	 }
+	 
+	 protected void doGet(HttpServletRequest request,
+			 HttpServletResponse response) throws ServletException, IOException {
+				JSONObject res = new JSONObject();
+				response.setContentType( "application/json" );
+				PrintWriter out = response.getWriter ();
+
+				String key = request.getParameter("key");
+				String message = request.getParameter("message");
+
+				
+				res = MessageTools.newMessage(key, message);
+				out.println(res);
+				
+			 }
 	 
 
 }

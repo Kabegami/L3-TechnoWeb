@@ -8,10 +8,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
 import bdd.UserTools;
+import services.AuthTools;
 
 /**
  * 
@@ -21,13 +23,12 @@ import bdd.UserTools;
  * @apiGroup Authentification
  * 
  * 
- * @apiParam  {String} login Login de l'utilisateur
+ * @apiParam  {String} key Clé de session de l'utilisateur courant
  * 
  * @apiSuccessExample {json} Succès:
  * 			{}
  * 
  * @apiError (ErrorJSON) -1 Mauvais arguments
- * @apiError (ErrorJSON) 1 Utilisateur non existant
  * @apiError (ErrorJSON) 2 Utilisateur non connecté
 
  */
@@ -48,16 +49,22 @@ public class LogoutServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
 		/* gérer cas si + de 2 arguments */
-		String login = request.getParameter("login");
+		//String login = request.getParameter("login");
+		String key = request.getSession().getAttribute("key").toString();
 					
-		JSONObject user = new JSONObject();
-		user = UserTools.logout(login);
-					
-		response.setContentType( "application/json" );
-		PrintWriter out = response.getWriter ();
-
-		out.println(user);
+		JSONObject res = new JSONObject();
+		res = UserTools.logout(key);
+		if (! res.has("error_code")){
+			request.getSession().invalidate();
+			response.sendRedirect("../index.html");
+			
+		}
+		else{	
+			response.setContentType( "application/json" );
+			PrintWriter out = response.getWriter ();
 	
+			out.println(res);
+		}
 	}
 
 }

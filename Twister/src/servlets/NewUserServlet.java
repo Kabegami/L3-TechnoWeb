@@ -30,7 +30,6 @@ import bdd.UserTools;
  * @apiSuccessExample {json} Succès:
  * 			{}
  * @apiError (ErrorJSON) -1 Mauvais arguments
-
  * @apiError (ErrorJSON) 1 Utilisateur déjà existant
  * 
  */

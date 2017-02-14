@@ -97,28 +97,22 @@ public class UserTools {
 		return ret;
 	}
 	
-	public static JSONObject logout(String login){
+	public static JSONObject logout(String key){
 		JSONObject ret = new JSONObject();
 		
 		/* arguments nuls */
-		if (login == null){
+		if (key == null){
 			return ErrorJSON.serviceRefused("Wrong arguments", -1);
 		}	
-		
 		try {
-			if (! AuthTools.userExists(login)){
-					return ErrorJSON.serviceRefused("User doesn't exist", 1);
-				}
-				else {
-					int id = AuthTools.getIdUser(login);
-					// on vérifie si la session existe
-					if (! AuthTools.hasSession(id)){
-						return ErrorJSON.serviceRefused("User is not logged in", 2);
-					}
-					else {
-						AuthTools.removeSession(id);
-					}
-				}
+			// on vérifie si la session existe
+			if (! AuthTools.hasSession(key)){
+				return ErrorJSON.serviceRefused("User is not logged in", 2);
+			}
+			else {
+				AuthTools.removeSession(key);
+			}
+				
 		} catch (SQLException e){
 			e.printStackTrace();
 		} catch (Exception e){

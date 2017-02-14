@@ -32,26 +32,25 @@ public class FriendTools {
 		return exists;
 	}
 
-	public static JSONObject addFriend(String login1, String login2){
+	public static JSONObject addFriend(String key, int id_friend){
 		JSONObject res = new JSONObject();
 		
 		// vérifier que l'utilisateur est connecté
-		if (login1 == null || login2 == null){
+		if (key == null || id_friend < 0){
 			return ErrorJSON.serviceRefused("Wrong arguments", -1);
 		}	
 		try {
-			if (! AuthTools.userExists(login1) || !AuthTools.userExists(login2)){
+			if (! AuthTools.userExists(id_friend)){
 				return ErrorJSON.serviceRefused("User doesn't exist", 1);
 			}
 			else {
-				int id1 = AuthTools.getIdUser(login1);
-				int id2 = AuthTools.getIdUser(login2);
+				int id_user = AuthTools.getIdUserSession(key);
 				
 				// login1 non connecté
-				if (! AuthTools.hasSession(id1)){
+				if (! AuthTools.hasSession(key)){
 					return ErrorJSON.serviceRefused("User is not logged in", 2);
 				}
-				if (alreadyFriends(id1, id2)){
+				if (alreadyFriends(id_user, id_friend)){
 					return ErrorJSON.serviceRefused("Already friends", 3);
 				}
 				else {
@@ -61,8 +60,8 @@ public class FriendTools {
 					// schema : (id_from, id_to, timestamp)
 					String query = "INSERT INTO Friends VALUES (?, ?, null)";
 					PreparedStatement pst = conn.prepareStatement(query);
-					pst.setInt(1, id1);
-					pst.setInt(2, id2);
+					pst.setInt(1, id_user);
+					pst.setInt(2, id_friend);
 					
 					pst.executeUpdate();
 					pst.close(); conn.close();
@@ -76,26 +75,25 @@ public class FriendTools {
 		return res;
 	}
 	
-	public static JSONObject removeFriend(String login1, String login2){
+	public static JSONObject removeFriend(String key, int id_friend){
 		JSONObject res = new JSONObject();
 		
 		// vérifier que l'utilisateur est connecté
-		if (login1 == null || login2 == null){
+		if (key == null || id_friend < 0){
 			return ErrorJSON.serviceRefused("Wrong arguments", -1);
 		}	
 		try {
-			if (! AuthTools.userExists(login1) || !AuthTools.userExists(login2)){
+			if (! AuthTools.userExists(id_friend)){
 				return ErrorJSON.serviceRefused("User doesn't exist", 1);
 			}
 			else {
-				int id1 = AuthTools.getIdUser(login1);
-				int id2 = AuthTools.getIdUser(login2);
+				int id_user = AuthTools.getIdUserSession(key);
 				
 				// login1 non connecté
-				if (! AuthTools.hasSession(id1)){
+				if (! AuthTools.hasSession(key)){
 					return ErrorJSON.serviceRefused("User is not logged in", 2);
 				}
-				if (! alreadyFriends(id1, id2)){
+				if (! alreadyFriends(id_user, id_friend)){
 					return ErrorJSON.serviceRefused("Not friends", 3);
 				}
 				else {
@@ -106,8 +104,8 @@ public class FriendTools {
 					String query = "DELETE FROM Friends WHERE id_from = ? AND"
 							+ " id_to = ?";
 					PreparedStatement pst = conn.prepareStatement(query);
-					pst.setInt(1, id1);
-					pst.setInt(2, id2);
+					pst.setInt(1, id_user);
+					pst.setInt(2, id_friend);
 					
 					pst.executeUpdate();
 					pst.close(); conn.close();
@@ -121,40 +119,37 @@ public class FriendTools {
 		return res;
 	}
 	
-	public static JSONObject listFriends(String login){
+	
+	public static JSONObject listFriends(String key){
 		JSONObject finalQuery = new JSONObject();
 		JSONArray friends = new JSONArray();
 
-		if (login == null){
+		if (key == null){
 			return ErrorJSON.serviceRefused("Wrong arguments", -1);
 		}	
 		try {
-			if (! AuthTools.userExists(login)){
-				return ErrorJSON.serviceRefused("User doesn't exist", 1);
+				// user non connecté
+			if (! AuthTools.hasSession(key)){
+				return ErrorJSON.serviceRefused("User is not logged in", 2);
 			}
 			else {
-				int id = AuthTools.getIdUser(login);
-				// user non connecté
-				if (! AuthTools.hasSession(id)){
-					return ErrorJSON.serviceRefused("User is not logged in", 2);
-				}
-				else {
-					Connection conn = Database.getMySQLConnection();
-					Statement st = conn.createStatement();
-					
-					String query = "SELECT id_to FROM Friends WHERE id_from = " + id;
-					ResultSet rs = st.executeQuery(query);
-					while (rs.next()){
-						JSONObject res = new JSONObject();
-						int id_to = rs.getInt("id_to");
-						res.put("id", id_to);
-						res.put("username", AuthTools.getLoginUser(id_to));
-						friends.put(res);
-					}
-					finalQuery.put("friends", friends);
+				Connection conn = Database.getMySQLConnection();
+				Statement st = conn.createStatement();
+				
+				int id = AuthTools.getIdUserSession(key);
+				String query = "SELECT id_to FROM Friends WHERE id_from = " + id;
+				ResultSet rs = st.executeQuery(query);
+				while (rs.next()){
+					JSONObject res = new JSONObject();
+					int id_to = rs.getInt("id_to");
+					res.put("id", id_to);
+					res.put("username", AuthTools.getLoginUser(id_to));
+					friends.put(res);
 				}
 			}
+			finalQuery.put("friends", friends);
 		}
+		
 		catch (SQLException e){
 			e.printStackTrace();
 		} catch (JSONException e) {

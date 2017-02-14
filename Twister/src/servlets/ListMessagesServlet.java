@@ -15,26 +15,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import bdd.MessageTools;
+import services.AuthTools;
  
 /**
  * 
- * @api {post} /auth/login Connexion
+ * @api {get} /message/list Liste des messages
  * @apiVersion 0.1.0
- * @apiName Login
- * @apiGroup Authentification
+ * @apiName ListMessages
+ * @apiGroup Message
  * 
- * 
- * @apiParam  {String} login Login de l'utilisateur
- * @apiParam  {String} pwd Mot de passe de l'utilisateur
- * 
+ *  @apiParam  {String} key Clé de session de l'utilisateur courant
+ *  
  * @apiSuccessExample {json} Succès:
- * 			{"key" : "110e8400-e29b-11d4-a716-446655440000"}
+ * 			{"messages":[{"text":"test","author_username":"toto","_id":{"$oid":"589af353e4b02b8b69b540be"},"author_id":2,"date":{"$date":"2017-02-08T10:30:43.411Z"}},
+ * 			{"text":"deuxieme message","author_username":"toto","_id":{"$oid":"589afd29e4b0c2f81a2b7eb6"},"author_id":2,"date":{"$date":"2017-02-08T11:12:41.561Z"}}]}
  * 
  * @apiError (ErrorJSON) -1 Mauvais arguments
- * @apiError (ErrorJSON) 1 Utilisateur non existant
- * @apiError (ErrorJSON) 2 Mot de passe incorrect
-
-
+ * @apiError (ErrorJSON) 2 Utilisateur non connecté
  */
 @WebServlet("/message/list")
 public class ListMessagesServlet extends HttpServlet {
@@ -55,10 +52,15 @@ public class ListMessagesServlet extends HttpServlet {
 		JSONObject res = new JSONObject();
 		response.setContentType( "application/json" );
 		 //response.sendRedirect("/Gr2_VU/index.html");
-		String user = request.getSession().getAttribute("user").toString();
+		String user = request.getSession().getAttribute("key").toString();
 		res = MessageTools.listMessages(user);
 		PrintWriter out = response.getWriter ();
-		out.println(res);
+		try {
+			out.println(res.toString(4));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 			 
 	 }
 }

@@ -83,6 +83,24 @@ public class AuthTools {
 		return id;
 	}
 	
+	// récupérer l'id de l'utilisateur connecté
+	public static int getIdUserSession(String key) throws SQLException{
+		int id = -1; 
+		Connection conn = Database.getMySQLConnection();
+		Statement st = conn.createStatement();
+		
+		String query = "SELECT id FROM Sessions WHERE session_key = \'" + key +"\'";
+		st.executeQuery(query);
+		ResultSet rs = st.getResultSet();
+		//id = rs.getInt("id");
+		if(rs.next()){
+			id = rs.getInt("id");
+		}
+
+		rs.close(); st.close(); conn.close();
+		return id;
+	}
+	
 	public static String getLoginUser(int id) throws SQLException{
 		String login = "";
 		Connection conn = Database.getMySQLConnection();
@@ -99,6 +117,7 @@ public class AuthTools {
 		rs.close(); st.close(); conn.close();
 		return login;
 	}
+	
 	
 	/** retourne une clé de session */
 	public static String insertSession(int id, boolean admin) throws SQLException{
@@ -131,6 +150,8 @@ public class AuthTools {
 		return key;
 	}
 	
+	//////////////////////////////////////////	
+	
 	public static boolean hasSession(int id) throws SQLException{
 		boolean exists = false;
 		Connection conn = Database.getMySQLConnection();
@@ -144,6 +165,21 @@ public class AuthTools {
 		return exists;
 	}
 	
+	public static boolean hasSession(String key) throws SQLException{
+		boolean exists = false;
+		Connection conn = Database.getMySQLConnection();
+		Statement st = conn.createStatement();
+		
+		String query = "SELECT id FROM Sessions WHERE session_key = \"" + key + "\"" ;
+		ResultSet rs = st.executeQuery(query);
+		
+		exists = rs.next();
+		rs.close(); st.close(); conn.close();
+		return exists;
+	}
+	
+	//////////////////////////////////////////
+	
 	public static boolean removeSession(int id) throws SQLException{
 		int success;
 		Connection conn = Database.getMySQLConnection();
@@ -156,6 +192,20 @@ public class AuthTools {
 		return success == 1;
 	}
 	
+	public static boolean removeSession(String key) throws SQLException{
+		int success;
+		Connection conn = Database.getMySQLConnection();
+		Statement st = conn.createStatement();
+		
+		String query = "DELETE FROM Sessions WHERE session_key = \"" + key + "\"" ;
+		success = st.executeUpdate(query);
+		//System.out.println(success);
+		st.close(); conn.close();
+		return success == 1;
+	}
+	
+	//////////////////////////////////////////
+	
 	public static void updateSession(int id) throws SQLException{
 		Connection conn = Database.getMySQLConnection();
 		Statement st = conn.createStatement();
@@ -164,6 +214,26 @@ public class AuthTools {
 		st.executeUpdate(query);
 		//System.out.println(success);
 		st.close(); conn.close();
+	}
+	
+	public static String getKey(String login) {
+		String key = null;
+		try {
+			Connection conn = Database.getMySQLConnection();
+			Statement st = conn.createStatement();
+			
+			int id = getIdUser(login);
+			String query = "SELECT session_key FROM Sessions WHERE id = \"" + id+ "\"" ;
+			ResultSet rs = st.executeQuery(query);
+			
+			if (rs.next()){
+				key = rs.getString("session_key");
+			}
+			rs.close(); st.close(); conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return key;
 	}
 	
 }

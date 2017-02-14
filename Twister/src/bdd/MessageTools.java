@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import services.DBStatic;
 import services.ErrorJSON;
@@ -22,18 +23,13 @@ import services.AuthTools;
 
 public class MessageTools {
 	
-	public static JSONObject newMessage(String login, String message){
-		if (login == null || message == null){
+	public static JSONObject newMessage(String key, String message){
+		if (key == null || message == null){
 			return ErrorJSON.serviceRefused("Wrong arguments", -1);
 		}
 		
 		try {
-			if (! AuthTools.userExists(login)){
-				return ErrorJSON.serviceRefused("User doesn't exist", 1);
-			}
-			
-			int id = AuthTools.getIdUser(login);
-			if (! AuthTools.hasSession(id)){
+			if (! AuthTools.hasSession(key)){
 				return ErrorJSON.serviceRefused("User is not logged in", 2);
 			}
 			else {
@@ -42,10 +38,11 @@ public class MessageTools {
 				DBCollection collection = db.getCollection("comments");
 				
 				BasicDBObject comment = new BasicDBObject();
-				String author_login = AuthTools.getLoginUser(id);
+				int author_id = AuthTools.getIdUserSession(key);
+				String author_username = AuthTools.getLoginUser(author_id);
 				
-				comment.put("author_id", id);
-				comment.put("author_username", author_login);
+				comment.put("author_id", author_id);
+				comment.put("author_username", author_username);
 				comment.put("text", message);
 				comment.put("date", new Date());
 				collection.insert(comment);
@@ -64,23 +61,20 @@ public class MessageTools {
 		return new JSONObject();
 	}
 	
-	public static JSONObject listMessages(String login){
+	public static JSONObject listMessages(String key){
 		JSONObject finalQuery = new JSONObject();
 		JSONArray messages = new JSONArray();
 		
-		if (login == null){
+		if (key == null){
 			return ErrorJSON.serviceRefused("Wrong arguments", -1);
 		}
 		
 		try {
-			if (! AuthTools.userExists(login)){
-				return ErrorJSON.serviceRefused("User doesn't exist", 1);
-			}
-			int id = AuthTools.getIdUser(login);
-			if (! AuthTools.hasSession(id)){
+			if (! AuthTools.hasSession(key)){
 				return ErrorJSON.serviceRefused("User is not logged in", 2);
 			}
 			else {
+				int id = AuthTools.getIdUserSession(key);
 				Mongo m = new Mongo(DBStatic.mongo_host, DBStatic.mongo_port);
 				DB db = m.getDB(DBStatic.mongo_db);
 				DBCollection collection = db.getCollection("comments");
@@ -105,33 +99,61 @@ public class MessageTools {
 	}
 	
 	// recherche de messages parmi tous les amis
-	public static JSONObject search(int user_id, String query){
+	public static JSONObject search(String key, String query){
 		JSONObject finalQuery = new JSONObject();
 		JSONArray messages = new JSONArray();
 		
-		if (user_id == 0 || query == null){
+		if (key == null || query == null){
 			return ErrorJSON.serviceRefused("Wrong arguments", -1);
 		}
 		
 		try {
-			if (! AuthTools.userExists(user_id)){
-				return ErrorJSON.serviceRefused("User doesn't exist", 1);
-			}
-			if (! AuthTools.hasSession(user_id)){
+			if (! AuthTools.hasSession(key)){
 				return ErrorJSON.serviceRefused("User is not logged in", 2);
 			}
 			Mongo m = new Mongo(DBStatic.mongo_host, DBStatic.mongo_port);
 			DB db = m.getDB(DBStatic.mongo_db);
 			DBCollection collection = db.getCollection("comments");
+			
+			// initialisation de la liste d'amis
 			List<Integer> friendsID = new ArrayList<Integer>();
+			JSONObject friendsQuery = FriendTools.listFriends(key);
+			JSONArray friends = friendsQuery.getJSONArray("friends");
+			for (int i = 0; i < friends.length(); i++){
+				friendsID.add((Integer)friends.getJSONObject(i).get("id"));
+			}
+			
+			// initialisation de la requete sur MongoDB
+			// liste des amis
+			BasicDBObject friendsFilter = new BasicDBObject();
+			friendsFilter.put("author_id", new BasicDBObject ("$in", friendsID));
+			
+			// recherche du motif
+			BasicDBObject like = new BasicDBObject();
+			like.put("text", Pattern.compile(query));
+			
+			// on combine ces conditions avec $and
+			BasicDBObject queryToDo = new BasicDBObject();
+			List<BasicDBObject> and = new ArrayList<BasicDBObject>();
+			and.add(friendsFilter);
+			and.add(like);
+			queryToDo.put("$and", and);
 			
 			
+			DBCursor cursor = collection.find(queryToDo).sort(new BasicDBObject("date", -1));
+			while (cursor.hasNext()){
+				messages.put(new JSONObject(cursor.next().toString()));
+			}
+			m.close();
+			finalQuery.put("messages", messages);
 			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
-		return new JSONObject();
+		return finalQuery;
 	}
 }

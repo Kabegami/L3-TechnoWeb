@@ -55,69 +55,6 @@ define({ "api": [
             "optional": false,
             "field": "2",
             "description": "<p>Mot de passe incorrect</p>"
-          }
-        ]
-      }
-    },
-    "filename": "src/servlets/ListMessagesServlet.java",
-    "groupTitle": "Authentification"
-  },
-  {
-    "type": "post",
-    "url": "/auth/login",
-    "title": "Connexion",
-    "version": "0.1.0",
-    "name": "Login",
-    "group": "Authentification",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "login",
-            "description": "<p>Login de l'utilisateur</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "pwd",
-            "description": "<p>Mot de passe de l'utilisateur</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "Succès:",
-          "content": "{\"key\" : \"110e8400-e29b-11d4-a716-446655440000\"}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "ErrorJSON": [
-          {
-            "group": "ErrorJSON",
-            "optional": false,
-            "field": "-1",
-            "description": "<p>Mauvais arguments</p>"
-          },
-          {
-            "group": "ErrorJSON",
-            "optional": false,
-            "field": "1",
-            "description": "<p>Utilisateur non existant</p>"
-          },
-          {
-            "group": "ErrorJSON",
-            "optional": false,
-            "field": "2",
-            "description": "<p>Mot de passe incorrect</p>"
           },
           {
             "group": "ErrorJSON",
@@ -145,8 +82,8 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "login",
-            "description": "<p>Login de l'utilisateur</p>"
+            "field": "key",
+            "description": "<p>Clé de session de l'utilisateur courant</p>"
           }
         ]
       }
@@ -168,12 +105,6 @@ define({ "api": [
             "optional": false,
             "field": "-1",
             "description": "<p>Mauvais arguments</p>"
-          },
-          {
-            "group": "ErrorJSON",
-            "optional": false,
-            "field": "1",
-            "description": "<p>Utilisateur non existant</p>"
           },
           {
             "group": "ErrorJSON",
@@ -201,15 +132,15 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "login1",
-            "description": "<p>Login de l'utilisateur ajoutant un ami</p>"
+            "field": "key",
+            "description": "<p>Clé de session de l'utilisateur courant</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "int",
             "optional": false,
-            "field": "login2",
-            "description": "<p>Login de l'ami à ajouter</p>"
+            "field": "id_friend",
+            "description": "<p>id de l'ami à ajouter</p>"
           }
         ]
       }
@@ -270,8 +201,8 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "login",
-            "description": "<p>Login de l'utilisateur courant</p>"
+            "field": "key",
+            "description": "<p>Clé de session de l'utilisateur courant</p>"
           }
         ]
       }
@@ -292,13 +223,7 @@ define({ "api": [
             "group": "ErrorJSON",
             "optional": false,
             "field": "-1",
-            "description": "<p>Mauvais arguments</p>"
-          },
-          {
-            "group": "ErrorJSON",
-            "optional": false,
-            "field": "1",
-            "description": "<p>Utilisateur non existant</p>"
+            "description": "<p>Mauvais argument</p>"
           },
           {
             "group": "ErrorJSON",
@@ -326,15 +251,15 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "login1",
-            "description": "<p>Login de l'utilisateur courant</p>"
+            "field": "key",
+            "description": "<p>Clé de session de l'utilisateur courant</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "login2",
-            "description": "<p>Login de l'ami à supprimer</p>"
+            "field": "id_friend",
+            "description": "<p>id de l'ami à supprimer</p>"
           }
         ]
       }
@@ -356,12 +281,6 @@ define({ "api": [
             "optional": false,
             "field": "-1",
             "description": "<p>Mauvais arguments</p>"
-          },
-          {
-            "group": "ErrorJSON",
-            "optional": false,
-            "field": "1",
-            "description": "<p>Utilisateur non existant</p>"
           },
           {
             "group": "ErrorJSON",
@@ -395,8 +314,15 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "login",
-            "description": "<p>Login de l'utilisateur courant</p>"
+            "field": "key",
+            "description": "<p>Clé de session de l'utilisateur courant</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Message</p>"
           }
         ]
       }
@@ -422,8 +348,52 @@ define({ "api": [
           {
             "group": "ErrorJSON",
             "optional": false,
-            "field": "1",
-            "description": "<p>Utilisateur non existant</p>"
+            "field": "2",
+            "description": "<p>Utilisateur non connecté</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/servlets/NewMessageServlet.java",
+    "groupTitle": "Message"
+  },
+  {
+    "type": "get",
+    "url": "/message/list",
+    "title": "Liste des messages",
+    "version": "0.1.0",
+    "name": "ListMessages",
+    "group": "Message",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "key",
+            "description": "<p>Clé de session de l'utilisateur courant</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Succès:",
+          "content": "{\"messages\":[{\"text\":\"test\",\"author_username\":\"toto\",\"_id\":{\"$oid\":\"589af353e4b02b8b69b540be\"},\"author_id\":2,\"date\":{\"$date\":\"2017-02-08T10:30:43.411Z\"}},\n{\"text\":\"deuxieme message\",\"author_username\":\"toto\",\"_id\":{\"$oid\":\"589afd29e4b0c2f81a2b7eb6\"},\"author_id\":2,\"date\":{\"$date\":\"2017-02-08T11:12:41.561Z\"}}]}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "ErrorJSON": [
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "-1",
+            "description": "<p>Mauvais arguments</p>"
           },
           {
             "group": "ErrorJSON",
@@ -434,7 +404,64 @@ define({ "api": [
         ]
       }
     },
-    "filename": "src/servlets/NewMessageServlet.java",
+    "filename": "src/servlets/ListMessagesServlet.java",
+    "groupTitle": "Message"
+  },
+  {
+    "type": "post",
+    "url": "/message/search",
+    "title": "Chercher un message dans ceux des amis",
+    "version": "0.1.0",
+    "name": "SearchMsg",
+    "group": "Message",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "key",
+            "description": "<p>Clé de session de l'utilisateur courant</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "query",
+            "description": "<p>Motif de recherche</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Succès:",
+          "content": "{}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "ErrorJSON": [
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "-1",
+            "description": "<p>Mauvais arguments</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "2",
+            "description": "<p>Utilisateur non connecté</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/servlets/SearchMsgServlet.java",
     "groupTitle": "Message"
   },
   {
