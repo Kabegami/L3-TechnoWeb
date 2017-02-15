@@ -55,15 +55,6 @@ public class NewMessageServlet extends HttpServlet {
 
 		//String idS = request.getParameter("id");
 		String message = request.getParameter("message");
-		try {
-			res.put("message", message);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		out.println(res);
-
-
 		
 		/*
 		if (message == null){

@@ -10,7 +10,12 @@
 			         <input type="submit" value="Search" />
 			</form>
 			
-			<p><a href="en/message.html">New message</a></p>
+			<form action="message/new" method="post" >
+			 	 Message:<br />
+  					<textarea name="message" rows="5" cols="30"> </textarea><br />
+					<input type="submit" value="Submit" />
+			</form>
+			<!-- ><p><a href="en/message.html">New message</a></p> --
 			
 			<!-- Liste messages -->
 			<p><a href="message/list">Messages list</a></p>
