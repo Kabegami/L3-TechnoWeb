@@ -1,14 +1,25 @@
 <HTML>
-	<HEAD><TITLE>Login page</TITLE></HEAD>
+	<HEAD>
+		<TITLE>Login page</TITLE>
+		<link rel="stylesheet" type="text/css" href="../css/style.css">
+	</HEAD>
 		<BODY>
-			<H1>Login</H1>
-				Hello.
-
-			<form action="../auth/login" method="POST">
-			         Username: <input type="text" name="login">
-			         <br />
-			         Password: <input type="password" name="pwd" />
-			         <input type="submit" value="Submit" />
-			</form>
+			<H1>Login</H1>		
+				<form action="../auth/login" method="POST">
+				<table>
+				 	<tr> 
+				 		<td>Username:</td>
+				 		<td><input type="text" name="login"></td>
+				 	</tr>
+				 	<tr>
+				   		<td>Password:</td>
+				   		<td><input type="password" name="pwd"/></td>
+				    </tr>
+				    <tr>
+				    	<td><input type="submit" value="Submit" /></td>
+				    </tr>
+				</table>
+				</form>
+			
 		</BODY>
 </HTML>

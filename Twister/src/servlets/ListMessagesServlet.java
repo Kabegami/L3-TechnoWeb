@@ -51,7 +51,7 @@ public class ListMessagesServlet extends HttpServlet {
 		
 		JSONObject res = new JSONObject();
 		response.setContentType( "application/json" );
-		 //response.sendRedirect("/Gr2_VU/index.html");
+
 		String user = request.getSession().getAttribute("key").toString();
 		res = MessageTools.listMessages(user);
 		PrintWriter out = response.getWriter ();

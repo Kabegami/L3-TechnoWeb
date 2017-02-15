@@ -66,6 +66,7 @@ public class FriendTools {
 					pst.executeUpdate();
 					pst.close(); conn.close();
 				}
+				AuthTools.updateSession(key);
 			}
 		} catch (SQLException e){
 			e.printStackTrace();
@@ -110,6 +111,7 @@ public class FriendTools {
 					pst.executeUpdate();
 					pst.close(); conn.close();
 				}
+				AuthTools.updateSession(key);
 			}
 		} catch (SQLException e){
 			e.printStackTrace();
@@ -148,6 +150,7 @@ public class FriendTools {
 				}
 			}
 			finalQuery.put("friends", friends);
+			AuthTools.updateSession(key);
 		}
 		
 		catch (SQLException e){

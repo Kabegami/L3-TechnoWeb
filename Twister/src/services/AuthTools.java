@@ -206,11 +206,11 @@ public class AuthTools {
 	
 	//////////////////////////////////////////
 	
-	public static void updateSession(int id) throws SQLException{
+	public static void updateSession(String key) throws SQLException{
 		Connection conn = Database.getMySQLConnection();
 		Statement st = conn.createStatement();
 		
-		String query = "UPDATE Sessions SET timestamp = NOW() WHERE id = " + id;
+		String query = "UPDATE Sessions SET timestamp = NOW() WHERE session_key = \"" + key + "\"";
 		st.executeUpdate(query);
 		//System.out.println(success);
 		st.close(); conn.close();

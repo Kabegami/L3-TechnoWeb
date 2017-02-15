@@ -49,6 +49,9 @@ public class MessageTools {
 				
 				m.close();
 				JSONObject res = new JSONObject(comment.toString());
+				
+				AuthTools.updateSession(key);
+
 				return res;
 			}
 		} catch (UnknownHostException e) {
@@ -87,6 +90,7 @@ public class MessageTools {
 				}
 				m.close();
 				finalQuery.put("messages", messages);
+				AuthTools.updateSession(key);
 			}
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -146,6 +150,8 @@ public class MessageTools {
 			}
 			m.close();
 			finalQuery.put("messages", messages);
+			AuthTools.updateSession(key);
+
 			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
