@@ -2,7 +2,7 @@
 	<head>
 		<title>Homepage</title>
         <meta charset="utf-8">
-		<link rel="stylesheet" type="text/css" href="css/styleindex.css">
+		<link rel="stylesheet" type="text/css" href="../css/styleindex.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway|Source+Sans+Pro" rel="stylesheet">
 	</head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -30,46 +30,49 @@
                 $(this).parent().slideToggle();
                 $(this).parent().removeClass("active");
             });
-
+            
+                        
+            $("#header").load("../header.html");
+            $("#footer").load("../footer.html");
         });
     </script>
     <header>
-        <a href=""><img class="logo" src="img/logo_black.png"/></a>
+        <div id="header"></div>
     </header>
     <nav class="navbar">
             <div class="container">
                 <!-- <img class ="logo" src="img/logo.png" alt="" /> -->
                     <ul>
                         <div class="nav-left">
-                            <li><a href="apidoc/">Documentation</a></li>
+                            <li><a href="/./apidoc/">Documentation</a></li>
                         </div>
                         <div class="nav-right">
                             <li id="signup"> 
-                                <a id="new-user">Sign up</a>
+                                <a id="new-user">S'inscrire</a>
                                 <div class="modal">
                                     <div id="new-user-content">
                                         <span class="close-modal">&times;</span>
-                                        <p>Join us, it's free.</p>
+                                        <p>Rejoignez-nous, c'est gratuit.</p>
                                         </br>
-                                        <form action="user/create" method="POST">
-                                            <input type="text" name="fname" placeholder="First name" required>
-                                            <input type="text" name="lname" placeholder="Last name">
-                                            <input type="text" name="login" placeholder="Username">
-                                            <input type="password" name="pwd" placeholder="Password"/>
-                                            <button type="submit">Sign up</button>
+                                        <form action="../user/create" method="POST">
+                                            <input type="text" name="fname" placeholder="Prénom" required>
+                                            <input type="text" name="lname" placeholder="Nom">
+                                            <input type="text" name="login" placeholder="Pseudo">
+                                            <input type="password" name="pwd" placeholder="Mot de passe"/>
+                                            <button type="submit">S'inscrire</button>
                                         </form>
                                     </div>
                                 </div>    
                             </li>
                             <li id="login">
-                                <a id="login-dropdown">Log in</a>
+                                <a id="login-dropdown">Connexion</a>
                                     <div id="login-content">
                                         <span class="close-toggle">&times;</span>
-                                        <p>Welcome back.</p>
-                                        <form action="auth/login" role="form" method="POST">
-                                            <input id="user" type="text" name="login" placeholder="Username" required>
-                                            <input id="pwd" type="password" name="pwd" placeholder="Password"  required></br>
-                                            <button type="submit">Log In</button>
+                                        <p>Bon retour parmi nous.</p>
+                                        <form action="../auth/login" role="form" method="POST">
+                                            <input id="user" type="text" name="login" placeholder="Pseudo" required>
+                                            <input id="pwd" type="password" name="pwd" placeholder="Mot de passe"  required></br>
+                                            <button type="submit">Se connecter</button>
                                         </form>
                                     </div>  
                             </li>
@@ -87,7 +90,7 @@
         </div>
         -->
     <body>
-        <h1>Welcome on board.</h1>
+        <h1>Bienvenue à bord.</h1>
         <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
         </p>
         
@@ -96,13 +99,6 @@
     </body>
     <hr>
     <footer>
-        <ul>
-            <a href="index.html">English</a>
-            <a href="fr/index.html">Français</a>
-            <a href="es/index.html">Español</a>
-            <a href="pt/index.html">Português</a>
-            <a href="de/index.html">Deutsch</a>
-            <a href="jp/index.html">日本語</a>
-        </ul>
+        <div id="footer"></div>
     </footer>
 </html>

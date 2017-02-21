@@ -5,7 +5,7 @@
 	</head>
 		<body>
 			<h1>Twister</h1>
-			<% String user = session.getAttribute("user").toString(); %>
+			<% String user = session.getAttribute("user").toString();%>
 			Hello ${user}.
 			
 			<form action="message/search" method="get">

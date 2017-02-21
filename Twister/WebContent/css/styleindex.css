@@ -1,57 +1,196 @@
-html {
-	font-family: sans-serif;
+body {
+	font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
 }
 
-h1 {
-    color: navy;
+h1, h2, h3, h4, h5, h6{
+    text-align: center;
+    font-family: 'Raleway', sans-serif;
+    color: #FF7254;
+}
+
+header{
+    margin: -10px -10px;
+    height: 80px;
+    background-color: #1ba0d6;
+}
+
+footer {
+    bottom : 0;
+}
+
+footer a {
     margin-left: 20px;
+    font-size: 11px;
+    color: #000000;
+    font-family: 'Open Sans', sans-serif;
+    text-decoration: none;
 }
 
-.navbar ul {
-    list-style-type: none;
+footer a:hover {
+    color: #1ba0d6;
+    text-decoration: none;
+}
+
+.logo {
+    height: 50px;
+    width: auto;
+    padding: 10px;
+    margin-left: 5%;
+}
+
+
+nav {
+    border: 1px solid #137aa3;
+    margin: 0px -10px;
+    height: 40px;
+    background-color: #1ba0d6;
+}
+
+.close-modal, .close-toggle{
+    position:relative;
+    right: -45%;
+    color: #1ba0d6;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.close-modal:hover,
+.close-modal:focus,
+.close-toggle:hover,
+.close-toggle:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#user {
+    margin-top: 10px;
+}
+
+nav ul {
     margin: 0;
     padding: 0;
-	overflow: hidden;
-    background-color: #f1f1f1;
-    margin-bottom: 20px;
+    list-style: none;
+    position: relative;
+    border-radius: 3px;    
 }
 
-.navbar li {
-	float: left;
+nav .nav-left li{
+    margin-left: 50px;
+    float: left;   
 }
 
-.navbar li a {
-    display: block;
-    color: #000;
-   	text-align: center;
-    padding: 14px 16px;
+nav .nav-left li a:hover {
+    background: #4eb3db;
+    color: #effaff;
+}
+
+nav .nav-left li a {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    font-weight: bold;
+    padding: 0 8px;
     text-decoration: none;
-}
-
-/* Change the link color on hover */
-.navbar li a:hover {
-    background-color: #39abd4;
     color: white;
+    text-shadow: 0 1px 0 #444;
 }
 
-.menu ul {
-    list-style-type: none;
-    width: 200px;
-    background-color: #f1f1f1;
-    float: left;
-    padding: 5px;
-    margin-right: 20px;
+nav .nav-right {
+    margin-right: 50px;
 }
 
-.menu li a {
-    display: block;
-    color: #000;
-    padding: 8px 16px;
+nav .nav-right li {
+    float: right;
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(255,255,255); /* Fallback color */
+    background-color: rgba(255,255,255,0.5); /* white w/ opacity */
+    padding-top: 200px;
+}
+
+nav #new-user-content {
+    width: 250px; 
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    background: white;
+    padding: 10px;
+    box-shadow: 0 2px 2px -1px black;
+    border-radius: 5px;
+    border: 1px solid #a8d7ea;
+}
+
+nav #login-dropdown,
+nav #signup a {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    font-weight: bold;
+    padding: 0 8px;
     text-decoration: none;
+    color: white;
+    text-shadow: 0 1px 0 #444;
 }
 
-/* Change the link color on hover */
-.menu li a:hover {
-    background-color: #39abd4;
+
+nav #login-dropdown:hover,
+nav #login .active,
+nav #signup a:hover {
+    background: #4eb3db;
+    color: #efefef;
+}
+
+nav #login-content {
+    width: 250px;  
+    text-align: center;
+    display: none;
+    position: absolute;
+    top: 40px;   
+    right: 6%;
+    background: white;
+    padding: 10px;
+    box-shadow: 0 2px 2px -1px black;
+    border-radius: 5px;
+    border: 1px solid #a8d7ea;
+}
+
+nav input {
+    font-family: 'Open Sans', sans-serif;
+    margin-bottom: 5px;
+    border-radius: 5px; 
+    padding: 5px 10px;
+    border: 1px solid #1ba0d6;
+}
+
+nav input:focus {
+    background-color: #ffffff;
+    border-color: #FFCE54;
+    outline: none;
+}
+
+
+button[type=submit]{
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+    margin-top:5px;
+    padding:5px 15px; 
+    background:#1ba0d6; 
+    border:0 none;
+    cursor:pointer;
+    border-radius: 5px; 
+}
+
+button[type=submit]:hover{
+    background: #4eb3db; 
     color: white;
 }
