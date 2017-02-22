@@ -1,5 +1,5 @@
 body {
-	font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 14px;
 }
 
@@ -179,7 +179,7 @@ nav input:focus {
 }
 
 
-button[type=submit]{
+input[type=submit]{
     font-family: 'Open Sans', sans-serif;
     color: white;
     margin-top:5px;
@@ -190,7 +190,7 @@ button[type=submit]{
     border-radius: 5px; 
 }
 
-button[type=submit]:hover{
+input[type=submit]:hover{
     background: #4eb3db; 
     color: white;
 }

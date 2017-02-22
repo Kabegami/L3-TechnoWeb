@@ -1,50 +1,119 @@
 html {
-	font-family: sans-serif;
+    font-family: sans-serif;
 }
 
-h1 {
-    color: navy;
-    margin-left: 20px;
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
 }
 
-.menu ul{
-    list-style-type: none;
-    width: 200px;
-    background-color: #f1f1f1;
+h1, h2, h3, h4, h5, h6{
+    font-family: 'Open Sans', sans-serif;
+    color: #FF7254;
+}
+
+header{
+    margin: -10px -10px;
+    height: 80px;
+    background-color: #1ba0d6;
+}
+
+nav {
+    border: 1px solid #137aa3;
+    margin: 0px -10px;
+    height: 40px;
+    background-color: #1ba0d6;
+}
+
+nav .nav-left {
     float: left;
-    padding: 5px;
-    margin-right: 20px;
+    line-height: 40px;
 }
 
-.menu li a {
-    display: block;
-    color: #000;
-    padding: 8px 16px;
-    text-decoration: none;
+nav .nav-right {
+    float: right;
+    line-height: 40px;
 }
 
-/* Change the link color on hover */
-.menu li a:hover {
-    background-color: #39abd4;
+nav .search {
+    margin-left: 50px;
+}
+
+nav .logout {
+    margin-right: 50px;
+}
+
+.verticalLine {
+    border-right: 1px solid black;
+}
+
+input[type=submit]{
+    font-family: 'Open Sans', sans-serif;
     color: white;
-}
-
-textarea {
-	resize: none;
-}
-
-
-input[type=submit] {
-	margin-top:5px;
+    margin-top:5px;
     padding:5px 15px; 
-    background:#ccc; 
+    background:#1ba0d6; 
     border:0 none;
     cursor:pointer;
-    -webkit-border-radius: 5px;
     border-radius: 5px; 
 }
 
-input[type=submit] : hover{
-	background-color: #39abd4;
+input[type=submit]:hover{
+    background: #4eb3db; 
     color: white;
+}
+
+.stats {
+    /*border : 1px solid black;*/
+    float: left;
+    margin-left: 40px;
+    width: 20%;
+}
+
+.main {
+    /*border : 1px solid black;*/
+    float: right;
+    margin-right: 40px;
+    width: 70%;
+}
+
+.message {
+    height: 100px;
+}
+
+.message h4 {
+    margin: 0
+}
+
+.message textarea{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+    resize: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.message-list {
+    position: relative;
+    top: 100px;
+}
+	       
+nav .logout{
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 8px;
+}
+
+nav a{
+    text-decoration:none;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 1px 0 #444;
+}
+
+nav .logout:hover {
+    background: #4eb3db;
+    color: #efefef;
 }
