@@ -37,7 +37,7 @@
     <div class="main">
       <section class="message">
 	<h4>New message</h4>
-	<form action="message/new" method="post" >
+	<form action="message/new" method="get" >
   	  <textarea name="message" rows="5" cols="40"> </textarea><br />
 	  <input type="submit" value="Submit" />
 	</form>	

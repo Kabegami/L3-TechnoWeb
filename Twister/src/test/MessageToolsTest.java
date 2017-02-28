@@ -16,7 +16,7 @@ public class MessageToolsTest {
 	@Test
 	public void testCreateMessage(){
 		String key = AuthTools.getKey("toto");
-		JSONObject obj = MessageTools.newMessage(key, "quatrieme message");
+		JSONObject obj = MessageTools.newMessage(key, "deuxieme message");
 		//String expected = "{author_id:2, author_username:\"toto\", }";
 		System.out.println(obj);
 		/*
@@ -31,9 +31,9 @@ public class MessageToolsTest {
 	}
 	
 	@Test
-	public void testListMessages(){
+	public void testGetMessages(){
 		String key = AuthTools.getKey("toto");
-		JSONObject res = MessageTools.listMessages(key);
+		JSONObject res = MessageTools.getMessages(key);
 		//String expected = "{author_id:2, author_username:\"toto\", }";
 		System.out.println(res);
 	}
@@ -41,7 +41,7 @@ public class MessageToolsTest {
 	@Test
 	public void testSearchMessages(){
 		String key = AuthTools.getKey("toto");
-		JSONObject res = MessageTools.search(key, "hello");
+		JSONObject res = MessageTools.getMessages(key, "hello", -1, -1, -1, -1);
 		//String expected = "{author_id:2, author_username:\"toto\", }";
 		System.out.println(res);
 	}

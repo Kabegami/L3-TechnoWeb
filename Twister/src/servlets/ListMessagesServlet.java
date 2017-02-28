@@ -52,8 +52,8 @@ public class ListMessagesServlet extends HttpServlet {
 		JSONObject res = new JSONObject();
 		response.setContentType( "application/json" );
 
-		String user = request.getSession().getAttribute("key").toString();
-		res = MessageTools.listMessages(user);
+		String user = request.getParameter("key");
+		res = MessageTools.getMessages(user);
 		PrintWriter out = response.getWriter ();
 		try {
 			out.println(res.toString(4));

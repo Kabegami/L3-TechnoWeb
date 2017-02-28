@@ -30,7 +30,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Succès:",
-          "content": "{\"key\" : \"110e8400-e29b-11d4-a716-446655440000\"}",
+          "content": "\t\t\t{\n    \"follows\": [\n        {\n            \"id\": 3,\n            \"username\": \"jean\"\n        },\n        {\n            \"id\": 4,\n            \"username\": \"raoul\"\n        }\n    ],\n    \"id\": 2,\n    \"login\": \"toto\",\n    \"key\": \"f48c863b-6b1f-44c9-8006-287e06efc6ad\"\n}",
           "type": "json"
         }
       ]
@@ -234,7 +234,7 @@ define({ "api": [
         ]
       }
     },
-    "filename": "src/servlets/ListFriendsServlet.java",
+    "filename": "src/servlets/ListFollowsServlet.java",
     "groupTitle": "Friends"
   },
   {
@@ -501,6 +501,13 @@ define({ "api": [
             "optional": false,
             "field": "fname",
             "description": "<p>Prénom</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "mail",
+            "description": "<p>Adresse e-mail</p>"
           }
         ]
       }

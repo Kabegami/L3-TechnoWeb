@@ -35,14 +35,17 @@ public class MessageTools {
 			else {
 				Mongo m = new Mongo(DBStatic.mongo_host, DBStatic.mongo_port);
 				DB db = m.getDB(DBStatic.mongo_db);
-				DBCollection collection = db.getCollection("comments");
+				DBCollection collection = db.getCollection("messages");
 				
 				BasicDBObject comment = new BasicDBObject();
 				int author_id = AuthTools.getIdUserSession(key);
 				String author_username = AuthTools.getLoginUser(author_id);
 				
-				comment.put("author_id", author_id);
-				comment.put("author_username", author_username);
+				BasicDBObject author = new BasicDBObject();						
+				author.put("id", author_id);
+				author.put("username", author_username);
+				
+				comment.put("author", author);
 				comment.put("text", message);
 				comment.put("date", new Date());
 				collection.insert(comment);
@@ -64,7 +67,16 @@ public class MessageTools {
 		return new JSONObject();
 	}
 	
-	public static JSONObject listMessages(String key){
+	public static JSONObject newComment(String key, String id_message, String text){
+		JSONObject res = new JSONObject();
+		
+		// todo
+		
+		return res;
+	}
+	
+	
+	public static JSONObject getMessages(String key){
 		JSONObject finalQuery = new JSONObject();
 		JSONArray messages = new JSONArray();
 		
@@ -80,15 +92,17 @@ public class MessageTools {
 				int id = AuthTools.getIdUserSession(key);
 				Mongo m = new Mongo(DBStatic.mongo_host, DBStatic.mongo_port);
 				DB db = m.getDB(DBStatic.mongo_db);
-				DBCollection collection = db.getCollection("comments");
-				
+				DBCollection collection = db.getCollection("messages");
+
+				// recherche par id de l'auteur
 				BasicDBObject query = new BasicDBObject();
-				query.put("author_id", id);
+				query.put("author.id", id);
 				DBCursor cursor = collection.find(query);
 				while (cursor.hasNext()){
 					messages.put(new JSONObject(cursor.next().toString()));
 				}
 				m.close();
+				
 				finalQuery.put("messages", messages);
 				AuthTools.updateSession(key);
 			}
@@ -102,8 +116,17 @@ public class MessageTools {
 		return finalQuery;
 	}
 	
-	// recherche de messages parmi tous les amis
-	public static JSONObject search(String key, String query){
+	/**
+	 * 
+	 * @param key clé de session
+	 * @param query mots clé
+	 * @param from id de l'utilisateur concerné (-1 si page principale et qu'on veut tout avoir)
+	 * @param id_max -1 si pas de limite
+	 * @param id_min -1 si pas de limite
+	 * @param nb nombre de messages à retourner (-1 si pas de limite)
+	 * @return
+	 */
+	public static JSONObject getMessages(String key, String query, int from, int id_max, int id_min, int nb){
 		JSONObject finalQuery = new JSONObject();
 		JSONArray messages = new JSONArray();
 		
@@ -115,13 +138,15 @@ public class MessageTools {
 			if (! AuthTools.hasSession(key)){
 				return ErrorJSON.serviceRefused("User is not logged in", 2);
 			}
+			
+			// connexion database
 			Mongo m = new Mongo(DBStatic.mongo_host, DBStatic.mongo_port);
 			DB db = m.getDB(DBStatic.mongo_db);
-			DBCollection collection = db.getCollection("comments");
+			DBCollection collection = db.getCollection("messages");
 			
 			// initialisation de la liste d'amis
 			List<Integer> friendsID = new ArrayList<Integer>();
-			JSONObject friendsQuery = FriendTools.listFriends(key);
+			JSONObject friendsQuery = FollowTools.listFollows(key);
 			JSONArray friends = friendsQuery.getJSONArray("friends");
 			for (int i = 0; i < friends.length(); i++){
 				friendsID.add((Integer)friends.getJSONObject(i).get("id"));
@@ -130,7 +155,7 @@ public class MessageTools {
 			// initialisation de la requete sur MongoDB
 			// liste des amis
 			BasicDBObject friendsFilter = new BasicDBObject();
-			friendsFilter.put("author_id", new BasicDBObject ("$in", friendsID));
+			friendsFilter.put("author.id", new BasicDBObject ("$in", friendsID));
 			
 			// recherche du motif
 			BasicDBObject like = new BasicDBObject();

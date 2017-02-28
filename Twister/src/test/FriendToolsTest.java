@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import java.sql.SQLException;
-import bdd.FriendTools;
+import bdd.FollowTools;
 import services.AuthTools;
 
 public class FriendToolsTest {
@@ -24,7 +24,7 @@ public class FriendToolsTest {
 		String expected1 = "{}";
 		//String expected2 = "{error_code:2,message:\"User is not logged in\"}";
 		
-		res = FriendTools.addFriend(key, 4);
+		res = FollowTools.addFollow(key, 4);
 		//inverse = FriendTools.addFriend("jean", "toto");
 		//System.out.println(inverse);
 		try {
@@ -39,7 +39,7 @@ public class FriendToolsTest {
 	@Test
 	public void testListFriends(){
 		String key = AuthTools.getKey("toto");
-		JSONObject res = FriendTools.listFriends(key);
+		JSONObject res = FollowTools.listFollows(key);
 		//System.out.println(res);
 		
 		try {
@@ -64,7 +64,7 @@ public class FriendToolsTest {
 		
 		String expected1 = "{}";
 		
-		res = FriendTools.removeFriend(key, 4);
+		res = FollowTools.stopFollow(key, 4);
 		//inverse = FriendTools.addFriend("jean", "toto");
 		//System.out.println(inverse);
 		try {

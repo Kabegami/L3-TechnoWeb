@@ -16,14 +16,14 @@ import services.Database;
 import services.ErrorJSON;
 import services.AuthTools;
 
-public class FriendTools {
+public class FollowTools {
 	
-	public static boolean alreadyFriends(int id1, int id2) throws SQLException{
+	public static boolean alreadyFollows(int id1, int id2) throws SQLException{
 		boolean exists = false;
 		Connection conn = Database.getMySQLConnection();
 		Statement st = conn.createStatement();
 		
-		String query = "SELECT id_to FROM Friends WHERE id_from = " + id1
+		String query = "SELECT id_to FROM Followers WHERE id_from = " + id1
 						+ " and id_to = " + id2;
 		ResultSet rs = st.executeQuery(query);
 		
@@ -32,7 +32,7 @@ public class FriendTools {
 		return exists;
 	}
 
-	public static JSONObject addFriend(String key, int id_friend){
+	public static JSONObject addFollow(String key, int id_friend){
 		JSONObject res = new JSONObject();
 		
 		// vérifier que l'utilisateur est connecté
@@ -50,15 +50,15 @@ public class FriendTools {
 				if (! AuthTools.hasSession(key)){
 					return ErrorJSON.serviceRefused("User is not logged in", 2);
 				}
-				if (alreadyFriends(id_user, id_friend)){
-					return ErrorJSON.serviceRefused("Already friends", 3);
+				if (alreadyFollows(id_user, id_friend)){
+					return ErrorJSON.serviceRefused("Already Follows", 3);
 				}
 				else {
 					Connection conn = Database.getMySQLConnection();
 					
 					// id auto-increment
 					// schema : (id_from, id_to, timestamp)
-					String query = "INSERT INTO Friends VALUES (?, ?, null)";
+					String query = "INSERT INTO Followers VALUES (?, ?, null)";
 					PreparedStatement pst = conn.prepareStatement(query);
 					pst.setInt(1, id_user);
 					pst.setInt(2, id_friend);
@@ -76,7 +76,7 @@ public class FriendTools {
 		return res;
 	}
 	
-	public static JSONObject removeFriend(String key, int id_friend){
+	public static JSONObject stopFollow(String key, int id_friend){
 		JSONObject res = new JSONObject();
 		
 		// vérifier que l'utilisateur est connecté
@@ -94,15 +94,15 @@ public class FriendTools {
 				if (! AuthTools.hasSession(key)){
 					return ErrorJSON.serviceRefused("User is not logged in", 2);
 				}
-				if (! alreadyFriends(id_user, id_friend)){
-					return ErrorJSON.serviceRefused("Not friends", 3);
+				if (! alreadyFollows(id_user, id_friend)){
+					return ErrorJSON.serviceRefused("Not following", 3);
 				}
 				else {
 					Connection conn = Database.getMySQLConnection();
 					
 					// id auto-increment
 					// schema : (id_from, id_to, timestamp)
-					String query = "DELETE FROM Friends WHERE id_from = ? AND"
+					String query = "DELETE FROM Followers WHERE id_from = ? AND"
 							+ " id_to = ?";
 					PreparedStatement pst = conn.prepareStatement(query);
 					pst.setInt(1, id_user);
@@ -122,9 +122,9 @@ public class FriendTools {
 	}
 	
 	
-	public static JSONObject listFriends(String key){
+	public static JSONObject listFollows(String key){
 		JSONObject finalQuery = new JSONObject();
-		JSONArray friends = new JSONArray();
+		JSONArray follows = new JSONArray();
 
 		if (key == null){
 			return ErrorJSON.serviceRefused("Wrong arguments", -1);
@@ -139,17 +139,17 @@ public class FriendTools {
 				Statement st = conn.createStatement();
 				
 				int id = AuthTools.getIdUserSession(key);
-				String query = "SELECT id_to FROM Friends WHERE id_from = " + id;
+				String query = "SELECT id_to FROM Followers WHERE id_from = " + id;
 				ResultSet rs = st.executeQuery(query);
 				while (rs.next()){
 					JSONObject res = new JSONObject();
 					int id_to = rs.getInt("id_to");
 					res.put("id", id_to);
 					res.put("username", AuthTools.getLoginUser(id_to));
-					friends.put(res);
+					follows.put(res);
 				}
 			}
-			finalQuery.put("friends", friends);
+			finalQuery.put("follows", follows);
 			AuthTools.updateSession(key);
 		}
 		

@@ -26,6 +26,8 @@ import bdd.UserTools;
  * @apiParam  {String} pwd Mot de passe de l'utilisateur
  * @apiParam  {String} lname Nom 
  * @apiParam  {String} fname Prénom
+ * @apiParam  {String} mail Adresse e-mail
+
  * 
  * @apiSuccessExample {json} Succès:
  * 			{}
@@ -50,13 +52,14 @@ public class NewUserServlet extends HttpServlet {
 		String pwd = request.getParameter("pwd");
 		String lname = request.getParameter("lname");
 		String fname = request.getParameter("fname");
+		String mail = request.getParameter("mail");
 		
 		JSONObject user = new JSONObject();
 		
 		response.setContentType( "application/json" );
 		PrintWriter out = response.getWriter ();
 		
-		user = UserTools.createUser(login, pwd, lname, fname);
+		user = UserTools.createUser(login, pwd, lname, fname, mail);
 		out.println(user);
 
 	 }

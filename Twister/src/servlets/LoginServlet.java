@@ -29,7 +29,21 @@ import services.AuthTools;
  * @apiParam  {String} pwd Mot de passe de l'utilisateur
  * 
  * @apiSuccessExample {json} Succès:
- * 			{"key" : "110e8400-e29b-11d4-a716-446655440000"}
+ * 			{
+    "follows": [
+        {
+            "id": 3,
+            "username": "jean"
+        },
+        {
+            "id": 4,
+            "username": "raoul"
+        }
+    ],
+    "id": 2,
+    "login": "toto",
+    "key": "f48c863b-6b1f-44c9-8006-287e06efc6ad"
+}
  * 
  * @apiError (ErrorJSON) -1 Mauvais arguments
  * @apiError (ErrorJSON) 1 Utilisateur non existant
@@ -63,22 +77,26 @@ public class LoginServlet extends HttpServlet {
 		if (! user.has("error_code")){
 			HttpSession session = request.getSession();
 			session.setAttribute("user", login);
-			try {
+			/*try {
 				session.setAttribute("key", user.get("key"));
 			} catch (JSONException e) {
 				e.printStackTrace();
-			}
-			response.sendRedirect("../welcome.jsp");
+			}*/
+			//response.sendRedirect("../welcome.jsp");
 			
 		}
-		else{
+		//else{
 		
 		 	response.setContentType( "application/json" );
 		 	//response.sendRedirect("/Gr2_VU/index.html");
 		 	
 			PrintWriter out = response.getWriter ();
-			out.println(user);
-		}
+			try {
+				out.println(user.toString(4));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		//}
 			 
 	 }
 }

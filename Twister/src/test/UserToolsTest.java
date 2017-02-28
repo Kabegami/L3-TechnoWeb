@@ -16,7 +16,7 @@ public class UserToolsTest {
 	
 	@Test
 	public void testCreateUser(){
-		JSONObject obj = UserTools.createUser("toto", "123", "tata", "titi");
+		JSONObject obj = UserTools.createUser("toto", "123", "tata", "titi", "totomail");
 		String expected = "{message:\"User already exists\",error_code:1}";
 		System.out.println(obj);
 		try {

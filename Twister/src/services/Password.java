@@ -12,7 +12,6 @@ import bdd.BDException;
 public class Password {
 	
 	public static String generateRandomKey(){
-			
 			UUID key = UUID.randomUUID();
 			return key.toString();
 	}

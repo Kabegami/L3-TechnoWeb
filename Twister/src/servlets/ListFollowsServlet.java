@@ -9,38 +9,36 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import bdd.FriendTools;
+import bdd.FollowTools;
 import services.AuthTools;
  
 /**
  * 
- * @api {get} /friend/add Ajout d'ami
+ * @api {get} /friend/list Liste les amis
  * @apiVersion 0.1.0
- * @apiName AddFriend
+ * @apiName ListFriends
  * @apiGroup Friends
  * 
  * @apiParam  {String} key Clé de session de l'utilisateur courant
- * @apiParam  {int} id_friend id de l'ami à ajouter
- * 
+
  * @apiSuccessExample {json} Succès:
- * 			{}
+ * 			{"friends":[{"id":3,"username":"jean"},{"id":4,"username":"raoul"}]}
  * 
- * @apiError (ErrorJSON) -1 Mauvais arguments
- * @apiError (ErrorJSON) 1 Utilisateur non existant
+ * @apiError (ErrorJSON) -1 Mauvais argument
  * @apiError (ErrorJSON) 2 Utilisateur non connecté
- * @apiError (ErrorJSON) 3 Utilisateurs déjà amis
  * 
  */
 
-@WebServlet("/friend/add")
-public class AddFriendServlet extends HttpServlet {
+@WebServlet("/follow/list")
+public class ListFollowsServlet extends HttpServlet {
  
 	 /**
 	 * Default constructor.
 	 */
-	 public AddFriendServlet() {
+	 public ListFollowsServlet() {
 		 
 	 }
  
@@ -50,17 +48,19 @@ public class AddFriendServlet extends HttpServlet {
 	 protected void doGet(HttpServletRequest request,
 	 HttpServletResponse response) throws ServletException, IOException {
 		
-		String user = request.getSession().getAttribute("key").toString();
-		String login2 = request.getParameter("idfriend");
-		
-		int id_friend = Integer.parseInt(login2);
-		JSONObject res = new JSONObject();
+		String user = request.getParameter("key");
 		
 		response.setContentType( "application/json" );
 		PrintWriter out = response.getWriter ();
 		
-		res = FriendTools.addFriend(user, id_friend);
-		out.println(res);
+		JSONObject res = new JSONObject();
+		res = FollowTools.listFollows(user);
+		try {
+			out.println(res.toString(4));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	 }
 	 

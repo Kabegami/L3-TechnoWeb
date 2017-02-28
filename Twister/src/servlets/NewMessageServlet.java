@@ -62,7 +62,7 @@ public class NewMessageServlet extends HttpServlet {
 			out.println(err);
 		}
 		else {*/
-			String key = request.getSession().getAttribute("key").toString();
+			String key = request.getParameter("key");
 			res = MessageTools.newMessage(key, message);
 			out.println(res);
 		

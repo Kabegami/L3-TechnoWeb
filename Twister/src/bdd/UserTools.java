@@ -15,10 +15,10 @@ public class UserTools {
 	
 	
 	public static JSONObject createUser(String login, String pwd, String lname,
-			String fname){
+			String fname, String mail){
 		
 		/* arguments nuls */
-		if (login == null || pwd == null || lname == null || fname == null){
+		if (login == null || pwd == null || lname == null || fname == null || mail == null){
 			return ErrorJSON.serviceRefused("Wrong arguments", -1);
 		}
 		
@@ -35,12 +35,13 @@ public class UserTools {
 				
 				// id auto-increment
 				// schema : (id, login, pwd, nom, prenom)
-				String query = "INSERT INTO Users VALUES (null, ?, ?, ?, ?)";
+				String query = "INSERT INTO Users VALUES (null, ?, ?, ?, ?, ?)";
 				PreparedStatement pst = conn.prepareStatement(query);
 				pst.setString(1, login);
 				pst.setString(2, pwdHashed);
 				pst.setString(3, lname);
 				pst.setString(4, fname);
+				pst.setString(5, mail);
 				
 				pst.executeUpdate();
 				pst.close(); conn.close();
@@ -85,7 +86,10 @@ public class UserTools {
 			/* vérifier si admin ou pas */
 			String key = AuthTools.insertSession(id, false);
 			ret.put("key", key);
-		
+			ret.put("id", id);
+			ret.put("login", login);
+			ret.put("follows", FollowTools.listFollows(key).getJSONArray("follows"));
+	
 		} catch (SQLException e){
 			e.printStackTrace();
 			return ErrorJSON.serviceRefused("erreur SQL", 100);

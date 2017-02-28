@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import bdd.FriendTools;
+import bdd.FollowTools;
 import services.AuthTools;
  
 /**
@@ -32,13 +32,13 @@ import services.AuthTools;
  * @apiError (ErrorJSON) 3 Utilisateurs non amis
  * 
  */
-@WebServlet("/friend/remove")
-public class RemoveFriendServlet extends HttpServlet {
+@WebServlet("/follow/remove")
+public class StopFollowServlet extends HttpServlet {
  
 	 /**
 	 * Default constructor.
 	 */
-	 public RemoveFriendServlet() {
+	 public StopFollowServlet() {
 		 
 	 }
  
@@ -48,7 +48,7 @@ public class RemoveFriendServlet extends HttpServlet {
 	 protected void doGet(HttpServletRequest request,
 	 HttpServletResponse response) throws ServletException, IOException {
 		
-		String user = request.getSession().getAttribute("key").toString();
+		String user = request.getParameter("key");
 		String login2 = request.getParameter("idfriend");
 			
 		int id_friend = Integer.parseInt(login2);
@@ -57,7 +57,7 @@ public class RemoveFriendServlet extends HttpServlet {
 		response.setContentType( "application/json" );
 		PrintWriter out = response.getWriter ();
 			
-		res = FriendTools.removeFriend(user, id_friend);
+		res = FollowTools.stopFollow(user, id_friend);
 		out.println(res);
 
 	 }

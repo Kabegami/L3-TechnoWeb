@@ -50,7 +50,7 @@ public class LogoutServlet extends HttpServlet {
 	
 		/* gérer cas si + de 2 arguments */
 		//String login = request.getParameter("login");
-		String key = request.getSession().getAttribute("key").toString();
+		String key = request.getParameter("key");
 					
 		JSONObject res = new JSONObject();
 		res = UserTools.logout(key);

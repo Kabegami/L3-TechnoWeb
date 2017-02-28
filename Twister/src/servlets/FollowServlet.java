@@ -9,36 +9,38 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import bdd.FriendTools;
+import bdd.FollowTools;
 import services.AuthTools;
  
 /**
  * 
- * @api {get} /friend/list Liste les amis
+ * @api {get} /friend/add Ajout d'ami
  * @apiVersion 0.1.0
- * @apiName ListFriends
+ * @apiName AddFriend
  * @apiGroup Friends
  * 
  * @apiParam  {String} key Clé de session de l'utilisateur courant
-
- * @apiSuccessExample {json} Succès:
- * 			{"friends":[{"id":3,"username":"jean"},{"id":4,"username":"raoul"}]}
+ * @apiParam  {int} id_friend id de l'ami à ajouter
  * 
- * @apiError (ErrorJSON) -1 Mauvais argument
+ * @apiSuccessExample {json} Succès:
+ * 			{}
+ * 
+ * @apiError (ErrorJSON) -1 Mauvais arguments
+ * @apiError (ErrorJSON) 1 Utilisateur non existant
  * @apiError (ErrorJSON) 2 Utilisateur non connecté
+ * @apiError (ErrorJSON) 3 Utilisateurs déjà amis
  * 
  */
 
-@WebServlet("/friend/list")
-public class ListFriendsServlet extends HttpServlet {
+@WebServlet("/follow/add")
+public class FollowServlet extends HttpServlet {
  
 	 /**
 	 * Default constructor.
 	 */
-	 public ListFriendsServlet() {
+	 public FollowServlet() {
 		 
 	 }
  
@@ -48,19 +50,17 @@ public class ListFriendsServlet extends HttpServlet {
 	 protected void doGet(HttpServletRequest request,
 	 HttpServletResponse response) throws ServletException, IOException {
 		
-		String user = request.getSession().getAttribute("key").toString();
+		String user = request.getParameter("key");
+		String login2 = request.getParameter("idfriend");
+		
+		int id_friend = Integer.parseInt(login2);
+		JSONObject res = new JSONObject();
 		
 		response.setContentType( "application/json" );
 		PrintWriter out = response.getWriter ();
 		
-		JSONObject res = new JSONObject();
-		res = FriendTools.listFriends(user);
-		try {
-			out.println(res.toString(4));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		res = FollowTools.addFollow(user, id_friend);
+		out.println(res);
 
 	 }
 	 

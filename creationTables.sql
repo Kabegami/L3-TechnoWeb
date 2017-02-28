@@ -3,10 +3,11 @@ CREATE TABLE Users (
        login VARCHAR(32) UNIQUE,
        mdp VARCHAR(40),
        nom VARCHAR(255),
-       prenom VARCHAR(255)
+       prenom VARCHAR(255),
+       mail VARCHAR(255)
 );
 
-CREATE TABLE Friends (
+CREATE TABLE Followers (
        id_from INTEGER,
        id_to INTEGER,
        timestamp TIMESTAMP,
