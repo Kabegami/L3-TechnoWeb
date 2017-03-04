@@ -12,10 +12,10 @@ import java.sql.SQLException;
 import bdd.FollowTools;
 import services.AuthTools;
 
-public class FriendToolsTest {
+public class FollowToolsTest {
 
 	@Test
-	public void testAddFriend(){
+	public void testAddFollow(){
 		String key = AuthTools.getKey("toto");
 
 		JSONObject res = new JSONObject();
@@ -37,16 +37,16 @@ public class FriendToolsTest {
 	}
 	
 	@Test
-	public void testListFriends(){
+	public void testListFollows(){
 		String key = AuthTools.getKey("toto");
 		JSONObject res = FollowTools.listFollows(key);
 		//System.out.println(res);
 		
 		try {
-			System.out.println(res.get("friends"));
-			JSONArray friends = res.getJSONArray("friends");
-			for (int i = 0; i < friends.length(); i++){
-				System.out.println(friends.getJSONObject(i).get("id"));
+			System.out.println(res.get("follows"));
+			JSONArray follows = res.getJSONArray("follows");
+			for (int i = 0; i < follows.length(); i++){
+				System.out.println(follows.getJSONObject(i).get("id"));
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -56,7 +56,7 @@ public class FriendToolsTest {
 	}
 	
 	@Test
-	public void testRemoveFriend(){
+	public void testStopFollow(){
 		String key = AuthTools.getKey("toto");
 
 		JSONObject res = new JSONObject();

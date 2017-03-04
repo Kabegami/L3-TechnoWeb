@@ -36,7 +36,8 @@ public class UserToolsTest {
 	
 	@Test
 	public void testLogout(){
-		JSONObject obj = UserTools.logout("toto");
+		String key = AuthTools.getKey("toto");
+		JSONObject obj = UserTools.logout(key);
 		System.out.println(obj);
 	}
 	

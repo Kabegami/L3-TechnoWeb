@@ -25,3 +25,12 @@ CREATE TABLE Sessions (
        INDEX(session_key, id, timestamp)
 );
 
+CREATE TABLE Blocked (
+       id_from INTEGER,
+       id_to INTEGER,
+       timestamp TIMESTAMP,
+       PRIMARY KEY(id_from, id_to),
+       FOREIGN KEY(id_from) REFERENCES Users(id),
+       FOREIGN KEY(id_to) REFERENCES Users(id)
+);
+

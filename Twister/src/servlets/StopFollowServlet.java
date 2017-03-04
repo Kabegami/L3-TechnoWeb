@@ -16,20 +16,20 @@ import services.AuthTools;
  
 /**
  * 
- * @api {get} /friend/remove Retrait d'ami
+ * @api {get} /follow/remove Supprime l'utilisateur des profils suivis
  * @apiVersion 0.1.0
- * @apiName RemoveFriend
- * @apiGroup Friends
+ * @apiName StopFollow
+ * @apiGroup Follow
  * 
  * @apiParam  {String} key Clé de session de l'utilisateur courant
- * @apiParam  {String} id_friend id de l'ami à supprimer
+ * @apiParam  {String} id_follow id à supprimer des profils suivis
  * 
  * @apiSuccessExample {json} Succès:
  * 			{}
  * 
  * @apiError (ErrorJSON) -1 Mauvais arguments
  * @apiError (ErrorJSON) 2 Utilisateur non connecté
- * @apiError (ErrorJSON) 3 Utilisateurs non amis
+ * @apiError (ErrorJSON) 3 Utilisateur non suivi
  * 
  */
 @WebServlet("/follow/remove")
@@ -49,15 +49,15 @@ public class StopFollowServlet extends HttpServlet {
 	 HttpServletResponse response) throws ServletException, IOException {
 		
 		String user = request.getParameter("key");
-		String login2 = request.getParameter("idfriend");
+		String login2 = request.getParameter("id_follow");
 			
-		int id_friend = Integer.parseInt(login2);
+		int id_follow = Integer.parseInt(login2);
 		JSONObject res = new JSONObject();
 			
 		response.setContentType( "application/json" );
 		PrintWriter out = response.getWriter ();
 			
-		res = FollowTools.stopFollow(user, id_friend);
+		res = FollowTools.stopFollow(user, id_follow);
 		out.println(res);
 
 	 }

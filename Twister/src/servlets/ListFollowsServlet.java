@@ -17,15 +17,15 @@ import services.AuthTools;
  
 /**
  * 
- * @api {get} /friend/list Liste les amis
+ * @api {get} /follow/list Liste les utilisateurs suivis
  * @apiVersion 0.1.0
- * @apiName ListFriends
- * @apiGroup Friends
+ * @apiName ListFollows
+ * @apiGroup Follow
  * 
  * @apiParam  {String} key Clé de session de l'utilisateur courant
 
  * @apiSuccessExample {json} Succès:
- * 			{"friends":[{"id":3,"username":"jean"},{"id":4,"username":"raoul"}]}
+ * 			{"follows":[{"id":3,"username":"jean"},{"id":4,"username":"raoul"}]}
  * 
  * @apiError (ErrorJSON) -1 Mauvais argument
  * @apiError (ErrorJSON) 2 Utilisateur non connecté

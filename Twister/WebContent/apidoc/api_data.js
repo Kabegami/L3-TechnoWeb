@@ -120,11 +120,11 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/friend/add",
-    "title": "Ajout d'ami",
+    "url": "/block/add",
+    "title": "Bloquer un utilisateur",
     "version": "0.1.0",
-    "name": "AddFriend",
-    "group": "Friends",
+    "name": "BlockUser",
+    "group": "Block",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -139,8 +139,8 @@ define({ "api": [
             "group": "Parameter",
             "type": "int",
             "optional": false,
-            "field": "id_friend",
-            "description": "<p>id de l'ami à ajouter</p>"
+            "field": "id_block",
+            "description": "<p>id de l'utilisateur à bloquer</p>"
           }
         ]
       }
@@ -179,71 +179,21 @@ define({ "api": [
             "group": "ErrorJSON",
             "optional": false,
             "field": "3",
-            "description": "<p>Utilisateurs déjà amis</p>"
+            "description": "<p>Utilisateurs déjà bloqué</p>"
           }
         ]
       }
     },
-    "filename": "src/servlets/AddFriendServlet.java",
-    "groupTitle": "Friends"
+    "filename": "src/servlets/BlockUserServlet.java",
+    "groupTitle": "Block"
   },
   {
     "type": "get",
-    "url": "/friend/list",
-    "title": "Liste les amis",
+    "url": "/block/remove",
+    "title": "Supprime l'utilisateur des profils bloqués",
     "version": "0.1.0",
-    "name": "ListFriends",
-    "group": "Friends",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "key",
-            "description": "<p>Clé de session de l'utilisateur courant</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "Succès:",
-          "content": "{\"friends\":[{\"id\":3,\"username\":\"jean\"},{\"id\":4,\"username\":\"raoul\"}]}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "ErrorJSON": [
-          {
-            "group": "ErrorJSON",
-            "optional": false,
-            "field": "-1",
-            "description": "<p>Mauvais argument</p>"
-          },
-          {
-            "group": "ErrorJSON",
-            "optional": false,
-            "field": "2",
-            "description": "<p>Utilisateur non connecté</p>"
-          }
-        ]
-      }
-    },
-    "filename": "src/servlets/ListFollowsServlet.java",
-    "groupTitle": "Friends"
-  },
-  {
-    "type": "get",
-    "url": "/friend/remove",
-    "title": "Retrait d'ami",
-    "version": "0.1.0",
-    "name": "RemoveFriend",
-    "group": "Friends",
+    "name": "UnblockUser",
+    "group": "Block",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -256,10 +206,10 @@ define({ "api": [
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "int",
             "optional": false,
-            "field": "id_friend",
-            "description": "<p>id de l'ami à supprimer</p>"
+            "field": "id_block",
+            "description": "<p>id à supprimer des profils bloqués</p>"
           }
         ]
       }
@@ -292,13 +242,195 @@ define({ "api": [
             "group": "ErrorJSON",
             "optional": false,
             "field": "3",
-            "description": "<p>Utilisateurs non amis</p>"
+            "description": "<p>Utilisateur non bloqué</p>"
           }
         ]
       }
     },
-    "filename": "src/servlets/RemoveFriendServlet.java",
-    "groupTitle": "Friends"
+    "filename": "src/servlets/UnblockUserServlet.java",
+    "groupTitle": "Block"
+  },
+  {
+    "type": "get",
+    "url": "/follow/add",
+    "title": "Suivre un profil",
+    "version": "0.1.0",
+    "name": "Follow",
+    "group": "Follow",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "key",
+            "description": "<p>Clé de session de l'utilisateur courant</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id_follow",
+            "description": "<p>id de l'utilisateur à suivre</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Succès:",
+          "content": "{}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "ErrorJSON": [
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "-1",
+            "description": "<p>Mauvais arguments</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "1",
+            "description": "<p>Utilisateur non existant</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "2",
+            "description": "<p>Utilisateur non connecté</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "3",
+            "description": "<p>Utilisateurs déjà suivi</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/servlets/FollowServlet.java",
+    "groupTitle": "Follow"
+  },
+  {
+    "type": "get",
+    "url": "/follow/list",
+    "title": "Liste les utilisateurs suivis",
+    "version": "0.1.0",
+    "name": "ListFollows",
+    "group": "Follow",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "key",
+            "description": "<p>Clé de session de l'utilisateur courant</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Succès:",
+          "content": "{\"follows\":[{\"id\":3,\"username\":\"jean\"},{\"id\":4,\"username\":\"raoul\"}]}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "ErrorJSON": [
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "-1",
+            "description": "<p>Mauvais argument</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "2",
+            "description": "<p>Utilisateur non connecté</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/servlets/ListFollowsServlet.java",
+    "groupTitle": "Follow"
+  },
+  {
+    "type": "get",
+    "url": "/follow/remove",
+    "title": "Supprime l'utilisateur des profils suivis",
+    "version": "0.1.0",
+    "name": "StopFollow",
+    "group": "Follow",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "key",
+            "description": "<p>Clé de session de l'utilisateur courant</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id_follow",
+            "description": "<p>id à supprimer des profils suivis</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Succès:",
+          "content": "{}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "ErrorJSON": [
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "-1",
+            "description": "<p>Mauvais arguments</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "2",
+            "description": "<p>Utilisateur non connecté</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "3",
+            "description": "<p>Utilisateur non suivi</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/servlets/StopFollowServlet.java",
+    "groupTitle": "Follow"
   },
   {
     "type": "post",

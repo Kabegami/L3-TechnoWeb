@@ -11,39 +11,30 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import bdd.FollowTools;
-import services.AuthTools;
+import bdd.BlockTools;
  
 /**
  * 
- * @api {get} /follow/add Suivre un profil
+ * @api {get} /block/remove Supprime l'utilisateur des profils bloqués
  * @apiVersion 0.1.0
- * @apiName Follow
- * @apiGroup Follow
+ * @apiName UnblockUser
+ * @apiGroup Block
  * 
  * @apiParam  {String} key Clé de session de l'utilisateur courant
- * @apiParam  {int} id_follow id de l'utilisateur à suivre
+ * @apiParam  {int} id_block id à supprimer des profils bloqués
  * 
  * @apiSuccessExample {json} Succès:
  * 			{}
  * 
  * @apiError (ErrorJSON) -1 Mauvais arguments
- * @apiError (ErrorJSON) 1 Utilisateur non existant
  * @apiError (ErrorJSON) 2 Utilisateur non connecté
- * @apiError (ErrorJSON) 3 Utilisateurs déjà suivi
+ * @apiError (ErrorJSON) 3 Utilisateur non bloqué
  * 
  */
 
-@WebServlet("/follow/add")
-public class FollowServlet extends HttpServlet {
- 
-	 /**
-	 * Default constructor.
-	 */
-	 public FollowServlet() {
-		 
-	 }
- 
+@WebServlet("/block/remove")
+public class UnblockUserServlet extends HttpServlet {
+
 	 /**
 	 * This method will handle all GET request.
 	 */
@@ -51,15 +42,15 @@ public class FollowServlet extends HttpServlet {
 	 HttpServletResponse response) throws ServletException, IOException {
 		
 		String user = request.getParameter("key");
-		String login2 = request.getParameter("id_follow");
-		
-		int id_follow = Integer.parseInt(login2);
+		String login2 = request.getParameter("id_block");
+			
+		int id_block = Integer.parseInt(login2);
 		JSONObject res = new JSONObject();
-		
+			
 		response.setContentType( "application/json" );
 		PrintWriter out = response.getWriter ();
-		
-		res = FollowTools.addFollow(user, id_follow);
+			
+		res = BlockTools.unblockUser(user, id_block);
 		out.println(res);
 
 	 }

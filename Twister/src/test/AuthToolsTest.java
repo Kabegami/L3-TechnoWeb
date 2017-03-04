@@ -76,5 +76,18 @@ public class AuthToolsTest {
 		}
 		System.out.println("Succès removeSession");
 	}
+
+	
+	@Test
+	public void testCheckSession(){
+		String key = AuthTools.getKey("toto");
+		try {
+			//AuthTools.updateSession(key);
+			AuthTools.checkSession(key);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
 	
 }

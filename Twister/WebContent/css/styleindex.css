@@ -17,6 +17,7 @@ header{
 
 footer {
     bottom : 0;
+    margin-left: 40px;
 }
 
 footer a {
@@ -77,7 +78,7 @@ nav ul {
 }
 
 nav .nav-left li{
-    margin-left: 50px;
+    margin-left: 100px;
     float: left;   
 }
 
@@ -98,7 +99,7 @@ nav .nav-left li a {
 }
 
 nav .nav-right {
-    margin-right: 50px;
+    margin-right: 100px;
 }
 
 nav .nav-right li {
@@ -182,7 +183,8 @@ nav input:focus {
 input[type=submit]{
     font-family: 'Open Sans', sans-serif;
     color: white;
-    margin-top:5px;
+    margin-top:20px;
+    margin-bottom:20px;
     padding:5px 15px; 
     background:#1ba0d6; 
     border:0 none;
@@ -193,4 +195,9 @@ input[type=submit]{
 input[type=submit]:hover{
     background: #4eb3db; 
     color: white;
+}
+
+.main-content {
+    margin-left: 100px;
+    margin-right: 100px;
 }

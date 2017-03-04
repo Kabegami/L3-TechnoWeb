@@ -2,15 +2,24 @@ package services;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
 
 public class AuthTools {
+	
+	/* --------------------------------------------------------------
+	*	Checkers
+	* -------------------------------------------------------------- */
+
 
 	public static boolean userExists(String login) throws SQLException{
 		boolean exists = false;
@@ -66,6 +75,12 @@ public class AuthTools {
 	 
 	}
 	
+	
+	/* --------------------------------------------------------------
+	*	Getters
+	* -------------------------------------------------------------- */
+	
+	
 	public static int getIdUser(String login) throws SQLException{
 		int id = -1; 
 		Connection conn = Database.getMySQLConnection();
@@ -118,6 +133,49 @@ public class AuthTools {
 		return login;
 	}
 	
+	public static String getKey(String login) {
+		String key = null;
+		try {
+			Connection conn = Database.getMySQLConnection();
+			Statement st = conn.createStatement();
+			
+			int id = getIdUser(login);
+			String query = "SELECT session_key FROM Sessions WHERE id = \"" + id+ "\"" ;
+			ResultSet rs = st.executeQuery(query);
+			
+			if (rs.next()){
+				key = rs.getString("session_key");
+			}
+			rs.close(); st.close(); conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return key;
+	}
+	
+	public static String getKey(int id) {
+		String key = null;
+		try {
+			Connection conn = Database.getMySQLConnection();
+			Statement st = conn.createStatement();
+			
+			String query = "SELECT session_key FROM Sessions WHERE id = \"" + id+ "\"" ;
+			ResultSet rs = st.executeQuery(query);
+			
+			if (rs.next()){
+				key = rs.getString("session_key");
+			}
+			rs.close(); st.close(); conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return key;
+	}
+	
+	/* --------------------------------------------------------------
+	*	Session
+	* -------------------------------------------------------------- */
+	
 	
 	/** retourne une clé de session */
 	public static String insertSession(int id, boolean admin) throws SQLException{
@@ -149,9 +207,7 @@ public class AuthTools {
 		 
 		return key;
 	}
-	
-	//////////////////////////////////////////	
-	
+
 	public static boolean hasSession(int id) throws SQLException{
 		boolean exists = false;
 		Connection conn = Database.getMySQLConnection();
@@ -177,9 +233,7 @@ public class AuthTools {
 		rs.close(); st.close(); conn.close();
 		return exists;
 	}
-	
-	//////////////////////////////////////////
-	
+
 	public static boolean removeSession(int id) throws SQLException{
 		int success;
 		Connection conn = Database.getMySQLConnection();
@@ -204,7 +258,11 @@ public class AuthTools {
 		return success == 1;
 	}
 	
-	//////////////////////////////////////////
+	
+	/* --------------------------------------------------------------
+	*	Session checkers (Timeout)
+	* -------------------------------------------------------------- */
+	
 	
 	public static void updateSession(String key) throws SQLException{
 		Connection conn = Database.getMySQLConnection();
@@ -212,28 +270,38 @@ public class AuthTools {
 		
 		String query = "UPDATE Sessions SET timestamp = NOW() WHERE session_key = \"" + key + "\"";
 		st.executeUpdate(query);
-		//System.out.println(success);
 		st.close(); conn.close();
 	}
 	
-	public static String getKey(String login) {
-		String key = null;
-		try {
-			Connection conn = Database.getMySQLConnection();
-			Statement st = conn.createStatement();
-			
-			int id = getIdUser(login);
-			String query = "SELECT session_key FROM Sessions WHERE id = \"" + id+ "\"" ;
-			ResultSet rs = st.executeQuery(query);
-			
-			if (rs.next()){
-				key = rs.getString("session_key");
-			}
-			rs.close(); st.close(); conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+	public static boolean checkSession(String key) throws SQLException{
+		boolean check = hasSession(key);
+		
+		// utilisateur non connecté
+		if (! check){
+			return false;
 		}
-		return key;
+		
+		Connection conn = Database.getMySQLConnection();
+		Statement st = conn.createStatement();
+		String query = "SELECT timestamp FROM Sessions WHERE session_key = \"" + key + "\"" ;
+		ResultSet rs = st.executeQuery(query);
+		
+		// durée de session inactive : 30 minutes
+		long max_duration = TimeUnit.MILLISECONDS.convert(30, TimeUnit.MINUTES);
+		if (rs.next()){
+			Timestamp timestamp = rs.getTimestamp("timestamp");
+			Date date = timestamp;
+			Date now = new Date();
+			if (now.getTime() - date.getTime() > max_duration){
+				removeSession(key);
+				check = false;
+			}
+		}
+		st.close(); conn.close();
+		return check;
+		
+
 	}
+	
 	
 }

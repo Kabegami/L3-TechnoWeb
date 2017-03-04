@@ -29,7 +29,7 @@ public class MessageTools {
 		}
 		
 		try {
-			if (! AuthTools.hasSession(key)){
+			if (! AuthTools.checkSession(key)){
 				return ErrorJSON.serviceRefused("User is not logged in", 2);
 			}
 			else {
@@ -85,7 +85,7 @@ public class MessageTools {
 		}
 		
 		try {
-			if (! AuthTools.hasSession(key)){
+			if (! AuthTools.checkSession(key)){
 				return ErrorJSON.serviceRefused("User is not logged in", 2);
 			}
 			else {
@@ -135,7 +135,7 @@ public class MessageTools {
 		}
 		
 		try {
-			if (! AuthTools.hasSession(key)){
+			if (! AuthTools.checkSession(key)){
 				return ErrorJSON.serviceRefused("User is not logged in", 2);
 			}
 			
