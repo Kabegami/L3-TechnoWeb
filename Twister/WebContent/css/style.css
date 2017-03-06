@@ -8,21 +8,21 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6{
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Raleway', sans-serif;
     color: #FF7254;
 }
 
-header{
+/* header{
     margin: -10px -10px;
     height: 80px;
     background-color: #1ba0d6;
-}
+} */
 
 nav {
-    border: 1px solid #137aa3;
+    /* border: 1px solid #137aa3; */
     margin: 0px -10px;
     height: 40px;
-    background-color: #1ba0d6;
+    /*background-color: #1ba0d6;*/
 }
 
 nav .nav-left {
@@ -33,14 +33,35 @@ nav .nav-left {
 nav .nav-right {
     float: right;
     line-height: 40px;
+    margin-right: 100px;
 }
 
 nav .search {
     margin-left: 50px;
 }
 
-nav .logout {
-    margin-right: 50px;
+nav .logout{
+    font-family: 'Raleway', sans-serif;
+    font-weight: 300;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 8px;
+    text-decoration: none;
+    color: #212121;
+    /* text-shadow: 0 1px 0 #444; */
+}
+
+nav a{
+    text-decoration:none;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 1px 0 #444;
+}
+
+nav .logout:hover {
+    background: #4eb3db;
+    color: #efefef;
 }
 
 .verticalLine {
@@ -70,22 +91,21 @@ input[type=submit]:hover{
     width: 20%;
 }
 
-.main {
-    /*border : 1px solid black;*/
-    float: right;
-    margin-right: 40px;
-    width: 70%;
+.messages {
+    display: flex;
+    flex-direction: column;
+    
 }
 
-.message {
+.message-box {
     height: 100px;
 }
 
-.message h4 {
+.message-box h4 {
     margin: 0
 }
 
-.message textarea{
+.message-box textarea{
     font-family: 'Open Sans', sans-serif;
     font-size: 13px;
     resize: none;
@@ -98,22 +118,23 @@ input[type=submit]:hover{
     position: relative;
     top: 100px;
 }
-	       
-nav .logout{
-    display: inline-block;
-    height: 40px;
-    line-height: 40px;
-    padding: 0 8px;
+
+.main-separator {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: 50px;
+    margin-right: 50px;
 }
 
-nav a{
-    text-decoration:none;
-    color: white;
-    font-weight: bold;
-    text-shadow: 0 1px 0 #444;
+.main-separator hr {
+    border-top: 1px solid #ccc;
 }
 
-nav .logout:hover {
-    background: #4eb3db;
-    color: #efefef;
+.main-content {
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.stats {
+    float: left;
 }

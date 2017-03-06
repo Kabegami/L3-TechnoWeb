@@ -26,27 +26,31 @@
 	</div>
     </nav>
 
+    <div class="main-separator">
+      <hr>
+    </div>
     
-    <% String user = session.getAttribute("user").toString();%>
-    <h3>Hello ${user}.</h3>
-    
-    <aside class="stats verticalLine">
-      Stats
-    </aside>
+   
+    <div class="main-content">
+      <% String user = session.getAttribute("user").toString();%>
+      <h3>Hello ${user}.</h3>
+      <aside class="stats verticalLine">
+	Stats
+      </aside>
+      <div class="messages">
+	<section class="message-box">
+	  <h4>New message</h4>
+	  <form action="message/new" method="get" >
+  	    <textarea name="message" rows="5" cols="40"> </textarea><br />
+	    <input type="submit" value="Submit" />
+	  </form>	
+	</section>
 
-    <div class="main">
-      <section class="message">
-	<h4>New message</h4>
-	<form action="message/new" method="get" >
-  	  <textarea name="message" rows="5" cols="40"> </textarea><br />
-	  <input type="submit" value="Submit" />
-	</form>	
-      </section>
-
-      <section class="message-list">
-	<hr>
-	<h4>Liste de messages ici</h4>
-      </section>
+	<section class="message-list">
+	  <hr>
+	  <h4>Liste de messages ici</h4>
+	</section>
+      </div>
     </div>
   </body>
 </html>
