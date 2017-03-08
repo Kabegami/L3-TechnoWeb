@@ -7,9 +7,10 @@
 		<link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway:300,400" rel="stylesheet">		
 	</head>
 	<body>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	  <script src="index.js"></script>
+	  <script>
+            $(document).ready(function() {
             $("#login-dropdown").click(function(){
                 $("#login-content").slideToggle();
                 $("#login").toggleClass("active");
@@ -32,7 +33,9 @@
                 $(this).parent().slideToggle();
                 $(this).parent().removeClass("active");
             });
-
+	    $("#test-button").click(function(){
+	    test();
+	    });
         });
     </script>
     <header>
@@ -95,7 +98,8 @@
             <hr>
         </div>
         <div class="main-content">
-            <h1>Welcome on board.</h1>
+          <h1>Welcome on board.</h1>
+	  <button id="test-button">Test Button</button>
             <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
             </p>
 
@@ -111,10 +115,10 @@
 	<span class="footer-left">
             <a href="index.html">English</a>
             <a href="fr/index.html">Français</a>
-            <a href="es/index.html">Español</a>
+            <!-- <a href="es/index.html">Español</a>
             <a href="pt/index.html">Português</a>
             <a href="de/index.html">Deutsch</a>
-            <a href="jp/index.html">日本語</a>
+            <a href="jp/index.html">日本語</a> -->
 	</span>
         <span class="footer-right">
           <a href="apidoc/">Documentation</a>
