@@ -121,6 +121,10 @@ function makeMainPanel(fromId, fromLogin, query){
     env.maxId = -1;
 }
 
+function pageUser(id, login){
+    makeMainPanel(id, login, "");
+}
+
 function completeMessages(){
 
 

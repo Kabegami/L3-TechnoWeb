@@ -7,37 +7,19 @@
 		<link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway:300,400" rel="stylesheet">		
 	</head>
 	<body>
-	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	  <script src="index.js"></script>
-	  <script>
-            $(document).ready(function() {
-            $("#login-dropdown").click(function(){
-                $("#login-content").slideToggle();
-                $("#login").toggleClass("active");
-            });
-            // pour eviter le slideToggle et le hide en meme temps
-            $('#login-dropdown').click(function(e) {
-                e.stopPropagation();
-            });
-            $("#new-user").click(function(){
-                $(this).next().show();
-                $("#new-user-content").show();
-                $("#signup").toggleClass("active");
-            });
-            $(".close-modal").click(function(){
-                $(this).parent().hide();
-                $(this).parent().parent().hide();
-            });
-            $(".close-toggle").click(function(){
-                //this.parentNode.style.display = "none";
-                $(this).parent().slideToggle();
-                $(this).parent().removeClass("active");
-            });
+	  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> -->
+	  <script src="http://code.jquery.com/jquery-latest.js"></script>
+	  <script src="js/jquery.appear.js"></script>
+	  <script src="js/index.js"></script>
+	  <script src="js/connexion.js"></script>
+	  <script type="text/javascript">
+	    $(document).ready(function(){
+	    $(init);
 	    $("#test-button").click(function(){
-	    test();
+	    pageUser(1, "toto");
 	    });
-        });
-    </script>
+	    });
+	  </script>
     <header>
         <!-- <a href=""><img class="logo" src="img/logo_black.png"/></a> -->
     </header>
@@ -52,10 +34,10 @@
                         </div>
                         <div class="nav-right">
                             <li id="signup"> 
-                                <a id="new-user">Sign up</a>
+                                <a id="new-user" onClick="makeRegistrationPanel()">Sign up</a>
                                 <div class="modal">
                                     <div id="new-user-content">
-                                        <span class="close-modal">&times;</span>
+                                        <span class="close-modal" onClick="closeModal(this)">&times;</span>
                                         <p>Join us, it's free.</p>
                                         </br>
                                         <form action="user/create" method="POST">
@@ -70,14 +52,15 @@
                                 </div>    
                             </li>
                             <li id="login">
-                                <a id="login-dropdown">Log in</a>
+                                <a id="login-dropdown" onClick="makeConnectionPanel()">Log in</a>
                                     <div id="login-content">
-                                        <span class="close-toggle">&times;</span>
+                                        <span class="close-toggle" onClick="closeDropdown(this)">&times;</span>
                                         <p>Welcome back.</p>
-                                        <form action="auth/login" role="form" method="POST">
+                                        <!-- <form action="auth/login" role="form" method="POST">-->
+					<form>
                                             <input id="user" type="text" name="login" placeholder="Username" required>
                                             <input id="pwd" type="password" name="pwd" placeholder="Password"  required></br>
-                                            <input type="submit" value="Log In"></input>
+                                            <input id="login-submit" type="submit" value="Log In"></input>
                                         </form>
                                     </div>  
                             </li>
