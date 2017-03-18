@@ -16,6 +16,8 @@
 	    $(document).ready(function(){
 	    $(init);
 	    $("#test-button").click(function(){
+	    $("body").css("display", "none");
+	    $("body").fadeIn(1000);
 	    pageUser(1, "toto");
 	    });
 	    });

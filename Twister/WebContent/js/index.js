@@ -104,7 +104,7 @@ function setVirtualMessages() {
     var com1 = new Comment(2, user2, "hello", Date(Date.now()));
     var com2 = new Comment(3, user3, "femaofkaeof", Date(Date.now()));
     var mes1 = new Message(1, user1, "yo", Date(Date.now()-1000), [com1, com2]);
-    return mes1;
+    localdb.push(mes1);
 }
 
 function makeMainPanel(fromId, fromLogin, query){
@@ -130,21 +130,18 @@ function makeMainPanel(fromId, fromLogin, query){
   <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js\"></script> \
   <body> \
     <header> \
-      <!-- TODO --> \
     </header> \
     <nav class=\"navbar\"> \
-      <div class=\"nav-left\"> \
-	<div class=\"search\"> \
+     <a href=\"\"><img class=\"logo\" src=\"img/logo_black.png\"/></a> \
+     <div class=\"search\"> \
 	  <form action=\"message/search\" method=\"get\"> \
 	    <input type=\"text\" placerholder=\"Search\" name=\"query\"> \
 	    <input type=\"submit\" value=\"Search\" /> \
 	  </form> \
-	</div> \
       </div> \
-      <div class=\"nav-right\"> \
-	<div class=\"logout\"> \
-	  <a href=\"auth/logout\">Logout</a> \
-	</div> \
+      <div class=\"logout\"> \
+	 Logout\
+      </div> \
     </nav> \
  \
     <div class=\"main-separator\"> \
@@ -153,31 +150,29 @@ function makeMainPanel(fromId, fromLogin, query){
      \
     \
     <div class=\"main-content\"> \
-      <% String user = session.getAttribute(\"user\").toString();%> \
-      <h3>Hello ${user}.</h3> \
-      <aside class=\"stats verticalLine\"> \
-	Stats \
-      </aside> \
+      <div class=\"stats\"> \
+	Stats</br> \
+      </div> \
       <div class=\"messages\"> \
-	<section class=\"message-box\"> \
+	<div class=\"message-box\"> \
 	  <h4>New message</h4> \
 	  <form action=\"message/new\" method=\"get\" > \
   	    <textarea name=\"message\" rows=\"5\" cols=\"40\"> </textarea><br /> \
 	    <input type=\"submit\" value=\"Submit\" /> \
 	  </form>	 \
-	</section> \
+	</div> \
  \
-	<section class=\"message-list\"> \
+	<div class=\"message-list\"> \
 	  <hr> \
 	  <h4>Liste de messages ici</h4> \
-	</section> \
+	</div> \
       </div> \
     </div> \
   </body> \
 </html> \
 ";
     $("body").html(mainCode);
-    completeMessages();
+    //completeMessages();
     
 }
 
@@ -186,9 +181,33 @@ function pageUser(id, login){
 }
 
 function completeMessages(){
-
-
+    if (! env.noConnection){
+	// communication serveur
+    }
+    else {
+		var tab = getFromLocalDb();
+		completeMessagesResponse(JSON.stringify(tab));
+    }
 }
+
+function completeMessagesResponse(rep){
+    var tab = JSON.parse(rep, revival);
+    for (var i = 0; i < tab.length; i++){
+	var m = tab[i];
+	alert(m.getHtml());
+    }
+}
+
+function getFromLocalDb(from, minId, maxId, nbMax){
+    var tab = [];
+
+    // page d'accueil
+    if (from < 0){
+	
+    }
+    return localdb;
+}
+
 
 /* --------------------------------------------------------
    DROPDOWN et CLOSE

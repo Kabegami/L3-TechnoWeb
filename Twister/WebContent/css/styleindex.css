@@ -191,7 +191,7 @@ input[type=submit]:hover{
 }
 
 .main-separator {
-    margin-top: 30px;
+    /*margin-top: 30px;*/
     margin-bottom: 30px;
     margin-left: 7%;
     margin-right: 7%;
@@ -217,7 +217,7 @@ footer a:hover {
     text-decoration: none;
 }
 
-footer .footer-left a{
+footer a{
     color: #000000;
     margin-right: 20px;
     text-decoration: none;
@@ -225,7 +225,7 @@ footer .footer-left a{
 
 footer .footer-left{
     float: left;
-    margin-left: 5%;
+    margin-left: 10%;
 }
 
 footer .footer-right {

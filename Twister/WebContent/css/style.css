@@ -1,10 +1,14 @@
 html {
     font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
 }
 
 body {
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
+    display: flex;
+    flex-direction: column;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -20,24 +24,15 @@ h1, h2, h3, h4, h5, h6{
 
 nav {
     /* border: 1px solid #137aa3; */
-    margin: 0px -10px;
+    display:flex;
+    flex-direction: row;
     height: 40px;
+    margin-left: 8%;
     /*background-color: #1ba0d6;*/
 }
 
-nav .nav-left {
-    float: left;
-    line-height: 40px;
-}
-
-nav .nav-right {
-    float: right;
-    line-height: 40px;
-    margin-right: 100px;
-}
-
 nav .search {
-    margin-left: 50px;
+    
 }
 
 nav .logout{
@@ -50,18 +45,14 @@ nav .logout{
     text-decoration: none;
     color: #212121;
     /* text-shadow: 0 1px 0 #444; */
-}
-
-nav a{
-    text-decoration:none;
-    color: white;
-    font-weight: bold;
-    text-shadow: 0 1px 0 #444;
+    margin-left: auto;
+    margin-right: 10%;
 }
 
 nav .logout:hover {
     background: #4eb3db;
     color: #efefef;
+    cursor: pointer;
 }
 
 .verticalLine {
@@ -86,15 +77,15 @@ input[type=submit]:hover{
 
 .stats {
     /*border : 1px solid black;*/
-    float: left;
-    margin-left: 40px;
     width: 20%;
 }
 
 .messages {
     display: flex;
     flex-direction: column;
-    
+    /*border : 1px solid black;*/
+    margin-left: 20px;
+    width: 80%;
 }
 
 .message-box {
@@ -112,6 +103,13 @@ input[type=submit]:hover{
     border-radius: 5px;
     margin-top: 10px;
     margin-bottom: 10px;
+    width: 100%;
+}
+
+.message-box textarea:focus{
+    background-color: #ffffff;
+    border-color: #FFCE54;
+    outline: none;
 }
 
 .message-list {
@@ -120,10 +118,10 @@ input[type=submit]:hover{
 }
 
 .main-separator {
-    margin-top: 30px;
+    /*margin-top: 30px;*/
     margin-bottom: 30px;
-    margin-left: 50px;
-    margin-right: 50px;
+    margin-left: 7%;
+    margin-right: 7%;
 }
 
 .main-separator hr {
@@ -131,10 +129,7 @@ input[type=submit]:hover{
 }
 
 .main-content {
-    margin-left: 100px;
-    margin-right: 100px;
-}
-
-.stats {
-    float: left;
+    display:flex;
+    margin-left: 10%;
+    margin-right: 10%;
 }
