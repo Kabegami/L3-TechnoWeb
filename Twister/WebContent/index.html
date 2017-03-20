@@ -9,17 +9,26 @@
 	<body>
 	  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> -->
 	  <script src="http://code.jquery.com/jquery-latest.js"></script>
-	  <script src="js/jquery.appear.js"></script>
 	  <script src="js/index.js"></script>
+	  <script src="js/jquery.appear.js"></script>
+	  <script src="js/message.js"></script>
 	  <script src="js/connexion.js"></script>
 	  <script type="text/javascript">
 	    $(document).ready(function(){
-	    $(init);
-	    $("#test-button").click(function(){
-	    $("body").css("display", "none");
-	    $("body").fadeIn(1000);
-	    pageUser(1, "toto");
-	    });
+	    	$(init);
+	    	$("#test-button").click(function(){
+	    		$("body").css("display", "none");
+	    		$("body").fadeIn(1000);
+	    		pageUser(1, "toto", "");
+	    	});
+	    	$(document).on('click', '.expand-comments', function(){
+	    		var id = $(this).parent().parent().get(0).id;
+				developpeMessage(id.substring(id.length-1));
+			});
+			$(document).on('click', '.reduce-comments', function(){
+				var id = $(this).parent().parent().get(0).id;
+				reduceMessage(id.substring(id.length-1));
+			});
 	    });
 	  </script>
     <header>
@@ -85,6 +94,8 @@
         <div class="main-content">
           <h1>Welcome on board.</h1>
 	  <button id="test-button">Test Button</button>
+	      	  <button class="test-button2">Test Button2</button>
+
             <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
             </p>
 

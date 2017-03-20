@@ -1,7 +1,7 @@
 body {
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
-    background-color: #f4f4f4;
+    background-color: #f5f7ff;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -113,7 +113,7 @@ nav #new-user-content {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
-    background: #f4f4f4;
+    background: #f5f7ff;
     padding: 10px;
     box-shadow: 0 2px 2px -1px black;
     border-radius: 5px;
@@ -149,7 +149,7 @@ nav #login-content {
     position: absolute;
     top: 40px;   
     right: 6%;
-    background: #f4f4f4;
+    background: #f5f7ff;
     padding: 10px;
     box-shadow: 0 2px 2px -1px black;
     border-radius: 5px;
