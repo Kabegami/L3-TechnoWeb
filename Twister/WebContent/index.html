@@ -17,9 +17,11 @@
 	    $(document).ready(function(){
 	    	$(init);
 	    	$("#test-button").click(function(){
-	    		$("body").css("display", "none");
-	    		$("body").fadeIn(1000);
-	    		pageUser(1, "toto", "");
+
+	    	});
+	    	$("#login-form").submit(function(e) {
+	    		e.preventDefault();
+	    		connection(this);
 	    	});
 	    	$(document).on('click', '.expand-comments', function(){
 	    		var id = $(this).parent().parent().get(0).id;
@@ -51,7 +53,7 @@
                                         <span class="close-modal" onClick="closeModal(this)">&times;</span>
                                         <p>Join us, it's free.</p>
                                         </br>
-                                        <form action="user/create" method="POST">
+                                        <form>
                                             <input type="text" name="fname" placeholder="First name" required>
                                             <input type="text" name="lname" placeholder="Last name">
                                             <input type="text" name="login" placeholder="Username">
@@ -67,11 +69,10 @@
                                     <div id="login-content">
                                         <span class="close-toggle" onClick="closeDropdown(this)">&times;</span>
                                         <p>Welcome back.</p>
-                                        <!-- <form action="auth/login" role="form" method="POST">-->
-					<form>
-                                            <input id="user" type="text" name="login" placeholder="Username" required>
-                                            <input id="pwd" type="password" name="pwd" placeholder="Password"  required></br>
-                                            <input id="login-submit" type="submit" value="Log In"></input>
+                                        <form id="login-form">
+                                        	<input id="login" type="text" placeholder="Username">
+                                        	<input id="password" type="password" placeholder="Password">
+                                        	<input type="submit" value="Log In">
                                         </form>
                                     </div>  
                             </li>

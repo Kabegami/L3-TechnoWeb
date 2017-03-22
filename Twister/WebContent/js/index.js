@@ -87,7 +87,7 @@ function revival(key, value){
 
 function init() {
     env = new Object();
-    env.noConnection = true;
+    env.noConnection = false;
     setVirtualMessages();
 }
 
@@ -165,6 +165,8 @@ function makeMainPanel(fromId, fromLogin, query){
       </div> \
     </div> \
     ";
+    $("body").css("display", "none");
+	$("body").fadeIn(1000);
     $("body").html(mainCode);
     $('link[href="css/styleindex.css"]').attr('href','css/style.css');
     completeMessages();

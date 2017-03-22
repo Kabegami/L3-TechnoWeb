@@ -156,6 +156,10 @@ nav #login-content {
     border: 1px solid #a8d7ea;
 }
 
+nav #login-content #error-message {
+    color: #ff2f2f;
+}
+
 nav input {
     font-family: 'Open Sans', sans-serif;
     margin-bottom: 5px;

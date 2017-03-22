@@ -52,7 +52,7 @@ import services.AuthTools;
 
 
  */
-@WebServlet("/auth/login")
+@WebServlet(name="loginServlet", urlPatterns="/auth/login")
 public class LoginServlet extends HttpServlet {
 
 	/**
@@ -75,20 +75,7 @@ public class LoginServlet extends HttpServlet {
 		user = UserTools.login(login, pwd);
 		
 		if (! user.has("error_code")){
-			HttpSession session = request.getSession();
-			session.setAttribute("user", login);
-			/*try {
-				session.setAttribute("key", user.get("key"));
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}*/
-			//response.sendRedirect("../welcome.jsp");
-			
-		}
-		//else{
-		
-		 	response.setContentType( "application/json" );
-		 	//response.sendRedirect("/Gr2_VU/index.html");
+			response.setContentType( "application/json" );
 		 	
 			PrintWriter out = response.getWriter ();
 			try {
@@ -96,7 +83,13 @@ public class LoginServlet extends HttpServlet {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-		//}
-			 
+			
+		}			 
 	 }
+	 
+	 protected void doGet(HttpServletRequest request,
+			 HttpServletResponse response) throws ServletException, IOException {
+		 doPost(request, response);
+	 }
+	 
 }
