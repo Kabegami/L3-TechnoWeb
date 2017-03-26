@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -23,8 +24,8 @@ import services.AuthTools;
 
 public class MessageTools {
 	
-	public static JSONObject newMessage(String key, String message){
-		if (key == null || message == null){
+	public static JSONObject newMessage(String key, String text){
+		if (key == null || text == null){
 			return ErrorJSON.serviceRefused("Wrong arguments", -1);
 		}
 		
@@ -37,21 +38,35 @@ public class MessageTools {
 				DB db = m.getDB(DBStatic.mongo_db);
 				DBCollection collection = db.getCollection("messages");
 				
-				BasicDBObject comment = new BasicDBObject();
+				BasicDBObject message = new BasicDBObject();
 				int author_id = AuthTools.getIdUserSession(key);
 				String author_username = AuthTools.getLoginUser(author_id);
 				
+				// auteur
 				BasicDBObject author = new BasicDBObject();						
 				author.put("id", author_id);
-				author.put("username", author_username);
+				author.put("username", author_username);				
+				message.put("author", author);
 				
-				comment.put("author", author);
-				comment.put("text", message);
-				comment.put("date", new Date());
-				collection.insert(comment);
+				// incrémentation id message
+				DBCollection counter = db.getCollection("message_counter");
+				BasicDBObject query = new BasicDBObject("_id", "msg_id");
+				DBCursor cursor = counter.find(query);
+				if (cursor.hasNext()){
+					Double current_id = (Double) cursor.next().get("num");
+					message.put("id", current_id);
+				}
+				BasicDBObject update = new BasicDBObject();
+				update.put("$inc", new BasicDBObject("num", 1));
+				counter.update(new BasicDBObject("_id", "msg_id"), update);
+
+				message.put("text", text);
+				message.put("date", new Date());
+				message.put("comments", new BasicDBList());
+				collection.insert(message);
 				
 				m.close();
-				JSONObject res = new JSONObject(comment.toString());
+				JSONObject res = new JSONObject(message.toString());
 				
 				AuthTools.updateSession(key);
 

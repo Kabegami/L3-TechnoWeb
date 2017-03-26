@@ -7,9 +7,11 @@ html {
 body {
     font-family: 'Open Sans', sans-serif;
     font-size: 13px;
+    font-weight: 300;
+    background-color: #f5f7ff;
     display: flex;
     flex-direction: column;
-    background-color: #f5f7ff;
+    margin: 0;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -24,24 +26,35 @@ h1, h2, h3, h4, h5, h6{
 } */
 
 nav {
-    /* border: 1px solid #137aa3; */
-    display:flex;
-    flex-direction: row;
-    height: 40px;
-    margin-left: 8%;
+    border-bottom: 1px solid #137aa3;
     /*background-color: #1ba0d6;*/
+    box-shadow : 0px 0px 15px 1px rgba(185, 185, 185, 0.3);
+}
+
+.nav-left {
+    float: left;
+    margin-left: 10%;
+}
+
+.nav-right {
+    float: right;
+    margin-right: 10%;
 }
 
 .logo {
-    height: 40px;
+    height: 35px;
     width: auto;
-    padding: 0px;
     margin-right: 5px;
+}
+
+nav .search{
+    display: inline-block;
 }
 
 nav .search textarea{
     height: 20px;
     resize:none;
+    border-radius: 5px;
 }
 
 nav .search textarea:focus{
@@ -49,9 +62,27 @@ nav .search textarea:focus{
     outline: none;
 }
 
+nav .search input[type=submit]{
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+    padding:4px 15px; 
+    background:#1ba0d6; 
+    border:0 none;
+    cursor: pointer;
+    border-radius: 5px;
+    vertical-align:top;
+    margin-left: 5px;
+}
+
+nav .search input[type=submit]:hover{
+    background: #4eb3db; 
+    color: white;
+}
+
 nav .logout{
     font-family: 'Raleway', sans-serif;
     font-weight: 300;
+    font-size: 14px;
     display: inline-block;
     height: 40px;
     line-height: 40px;
@@ -59,8 +90,6 @@ nav .logout{
     text-decoration: none;
     color: #212121;
     /* text-shadow: 0 1px 0 #444; */
-    margin-left: auto;
-    margin-right: 10%;
 }
 
 nav .logout:hover {
@@ -84,7 +113,7 @@ nav .logout:hover {
     border-top: 1px solid #ccc;
 }
 
-input[type=submit]{
+.main-content input[type=submit]{
     font-family: 'Open Sans', sans-serif;
     color: white;
     margin-top:5px;
@@ -95,7 +124,7 @@ input[type=submit]{
     border-radius: 5px; 
 }
 
-input[type=submit]:hover{
+.main-content input[type=submit]:hover{
     background: #4eb3db; 
     color: white;
 }
@@ -105,18 +134,25 @@ input[type=submit]:hover{
     width: 30%;
 }
 
+.main-container{
+    display: flex;
+    flex-direction: row;
+}
+
 .main-content {
     display:flex;
+    width: 100%;
     margin-left: 10%;
     margin-right: 10%;
+    margin-top: 20px;
 }
 
 .messages {
+    width: 70%;
     display: flex;
     flex-direction: column;
     /*border : 1px solid black;*/
     margin-left: 20px;
-    width: 70%;
 }
 
 .message-box {
@@ -148,8 +184,6 @@ input[type=submit]:hover{
     border-top: 1px solid #ccc;
     margin-top: 20px;
 }
-
-
 
 .message-list .message {
     margin-bottom: 10px;
@@ -187,6 +221,7 @@ input[type=submit]:hover{
     border-radius: 5px;
     width: 70%;
     height: 75px;
+    margin-top: 10px;
 }
 
 .message .new-comment textarea:focus{

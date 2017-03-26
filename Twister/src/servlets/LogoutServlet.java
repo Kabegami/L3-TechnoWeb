@@ -46,7 +46,7 @@ public class LogoutServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
 		/* gérer cas si + de 2 arguments */
 		//String login = request.getParameter("login");
@@ -54,17 +54,6 @@ public class LogoutServlet extends HttpServlet {
 					
 		JSONObject res = new JSONObject();
 		res = UserTools.logout(key);
-		if (! res.has("error_code")){
-			request.getSession().invalidate();
-			response.sendRedirect("../index.html");
-			
-		}
-		else{	
-			response.setContentType( "application/json" );
-			PrintWriter out = response.getWriter ();
-	
-			out.println(res);
-		}
 	}
 
 }

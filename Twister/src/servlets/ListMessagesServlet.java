@@ -46,7 +46,7 @@ public class ListMessagesServlet extends HttpServlet {
 	 /**
 	 * This method will handle all GET request.
 	 */
-	 protected void doGet(HttpServletRequest request,
+	 protected void doPost(HttpServletRequest request,
 	 HttpServletResponse response) throws ServletException, IOException {
 		
 		JSONObject res = new JSONObject();
@@ -58,9 +58,13 @@ public class ListMessagesServlet extends HttpServlet {
 		try {
 			out.println(res.toString(4));
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 			 
+	 }
+	 
+	 protected void doGet(HttpServletRequest request,
+			 HttpServletResponse response) throws ServletException, IOException {
+		 doPost(request, response);
 	 }
 }

@@ -77,6 +77,36 @@ function responseConnection(rep){
 	}
 }
 
+function logout(key){
+	console.log("déconnecte " + key);
+	if (! env.noConnection){
+		$.ajax({
+			type: "POST",
+			url: "auth/logout",
+			data: "key=" + key,
+			datatype: "json",
+			success: function(rep){
+				responseLogout(rep);
+			},
+			error: function(xhr, status, err){
+				func_error(xhr.responseText);
+			}
+		});
+	}
+	else {
+		makeHomePage();
+	}
+}
+
+function responseLogout(rep){
+	if (rep.error == undefined){
+		makeHomePage();
+	}
+	else {
+		func_error(rep.error);
+	}
+}
+
 function makeConnectionPanel(){
     $("#login-content").slideToggle();
 }
