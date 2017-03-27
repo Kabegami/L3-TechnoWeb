@@ -42,6 +42,24 @@
 			$(document).on('click', '.logout', function() {
 	    		logout(env.key);
 	    	});
+	    	$(document).on('submit', '#new-message-form', function(e){
+	    		e.preventDefault();
+	    		newMessage($('#new-message').val());
+	    		$('#new-message').fadeOut('normal', function() {
+					$(this).val('');
+					$(this).fadeIn('normal');
+				});
+	    	});
+	    	$(document).on('submit', '#new-comment-form', function(e){
+	    		e.preventDefault();
+	    		var id_msg = $(this).parent().parent().get(0).id;
+	    		var id = id_msg.substring(id_msg.length-1);
+	    		newComment(id, $('#new-comment').val());
+	    		$('#message_' + id + ' #new-comment').fadeOut('normal', function() {
+					$(this).val('');
+					$(this).fadeIn('normal');
+				});
+	    	});
 	    });
 	  </script>
 	<body> 

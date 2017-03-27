@@ -40,8 +40,8 @@ h1, h2, h3, h4, h5, h6{
 
 nav {
     border-bottom: 1px solid #137aa3;
-    /*background-color: #1ba0d6;*/
-    box-shadow : 0px 0px 15px 1px rgba(185, 185, 185, 0.3);
+    background-color: #34749a;
+    box-shadow : 0px 0px 20px 1px rgba(0, 0, 0, 0.3);
 }
 
 .nav-left {
@@ -62,8 +62,8 @@ nav {
 
 nav #new-user:hover,
 nav #login-dropdown:hover {
-    background: #4eb3db;
-    color: #212121;
+    background: #4080a5;
+    color: #ffffff;
     cursor: pointer;
 }
 
@@ -76,8 +76,8 @@ nav #login-dropdown {
     line-height: 40px;
     padding: 0 8px;
     text-decoration: none;
-    color: #212121;
-    /* text-shadow: 0 1px 0 #444; */
+    color: #ffffff;
+    /*text-shadow: 0 1px 0 #444;*/
 }
 
 .modal {
@@ -134,27 +134,28 @@ nav input {
 
 nav input:focus {
     background-color: #ffffff;
-    border-color: #FFCE54;
+    border-color: #4699ff;
     outline: none;
+    box-shadow: 0 0 8px rgba(102,175,233,.6);
 }
 
 
 input[type=submit]{
+    font-size: 14px;
+    font-weight: 300;
     font-family: 'Open Sans', sans-serif;
-    color: white;
-    margin-top:20px;
-    margin-bottom:20px;
-    padding:5px 15px; 
-    background:#1ba0d6; 
-    border:0 none;
-    cursor:pointer;
-    border-radius: 5px; 
+    color: #151515;
+    padding:4px 15px; 
+    background:#f7f7f7; 
+    border: 1px solid #cecece;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
 }
 
 input[type=submit]:hover{
-    background: #4eb3db; 
-    color: white;
-    border: 0;
+    background: #dadada; 
+    color: #151515;
 }
 
 .main-separator {

@@ -77,7 +77,7 @@ public class SearchMsgServlet extends HttpServlet {
 		}
 		else {
 			String key = request.getParameter("key");
-			res = MessageTools.getMessages(key, query, -1, -1, -1, -1);
+			//res = MessageTools.getMessages(key, query, -1, -1, -1, -1);
 			try {
 				out.println(res.toString(4));
 			} catch (JSONException e) {

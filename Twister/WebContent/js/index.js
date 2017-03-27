@@ -1,63 +1,3 @@
-toto = {"id":1, "login":"toto"}
-msg = new Message(1, toto, "blabla", Date(Date.now()));
-
-function test(){
-    return (msg.id + " " + msg.author.login + " " + msg.text + " " + msg.date);
-}
-
-/* --------------------------------------------------------
-   CONSTRUCTEURS
-   ----------------------------------------------------------*/
-
-function Message (id, author, text, date, comments){
-    this.id = id;
-    this.author = author;
-    this.text = text;
-    this.date = date;
-    if (comments == undefined){
-		comments = [];
-    }
-    this.comments = comments;
-}
-
-function Comment (id, author, text, date){
-    this.id = id;
-    this.author = author;
-    this.text = text;
-    this.date = date;
-}
-
-Message.prototype.getHtml = function() {
-	return ("<div id=\"message_" + this.id + "\" class=\"message\"> \n "
-	    + "\t <div class=\"info-message\"> \n "
-	    + "\t \t <span class=\"link author\">" + this.author.login + "</span> \n"
-	    + "\t \t - <span class=\"date\">" + this.date + "</span> \n"
-	    + "\t </div> \n"
-	    + "\t <div class=\"text-message\"> \n \t \t" + this.text + "\n"
-	    + "\t </div> \n "
-	    + "\t <div class=\"bottom-message\"> <span class=\"expand-comments\">&plus;</span></div> \n"
-	    + "\t <div class=\"comments\"> \n"
-	    + "\t </div> \n"
-	    + "\t <div class=\"new-comment\"> \n"
-	    + "\t </div> \n"
-	 
-	+ "</div>"
-	);
-}
-
-Comment.prototype.getHtml = function() {
-    return (
-	"<div id=\"comment_" + this.id + "\" class=\"comment\"> \n "
-	    + "\t <div class=\"info-message\"> \n "
-	    + "\t \t <span class=\"link author\">" + this.author.login + "</span> \n"
-	    + "\t \t - <span class=\"date\">" + this.date + "</span> \n"
-	    + "\t </div> \n"
-	    + "\t <div class=\"text-message\"> \n \t \t" + this.text + "\n"
-	    + "\t </div> \n "
-	+ "</div>"
-    );
-}
-
 /* --------------------------------------------------------
    JSON String -> JSON Object
    ----------------------------------------------------------*/
@@ -137,7 +77,7 @@ function makeMainPanel(fromId, fromLogin, query){
     	<div class=\"nav-left\"> \
 			 <a href=\"\"><img class=\"logo\" src=\"img/logo_black.png\"/></a> \
 			 <div class=\"search\"> \
-			  <form action=\"message/search\" method=\"get\"> \
+			  <form id=\"search-form\"> \
 				<textarea type=\"text\" placerholder=\"Search\" name=\"query\"></textarea> \
 				<input type=\"submit\" value=\"Search\" /> \
 			  </form> \
@@ -151,20 +91,31 @@ function makeMainPanel(fromId, fromLogin, query){
     </nav> \
   	<div class=\"main-container\"> \
 		<div class=\"main-content\"> \
-      		<div class=\"stats verticalLine\"> \
-				<h4>Stats</h4> \
+      		<div class=\"stats-container card\"> \
+      			<div class=\"card-title\">\
+					<h4>Stats</h4> \
+				</div>\
+				<div class=\"stats\">\
+				</div>\
 			</div> \
 			<div class=\"messages\"> \
-				<div class=\"message-box\"> \
-				  <h4>New message</h4> \
-				  <form action=\"message/new\" method=\"get\" > \
-					<textarea name=\"message\" rows=\"5\" cols=\"40\"> </textarea><br /> \
-					<input type=\"submit\" value=\"Submit\" /> \
-				  </form>	 \
+				<div class=\"card\"> \
+					<div class=\"card-title\">\
+				  		<h4>New message</h4> \
+				  	</div>\
+				  	<div class=\"message-box\">\
+						<form id=\"new-message-form\" > \
+							<textarea id=\"new-message\" rows=\"5\" cols=\"40\"> </textarea><br /> \
+							<input type=\"submit\" value=\"Submit\" /> \
+					  	</form>	 \
+					</div>\
 				</div> \
-				<div class=\"message-list\"> \
-				  <hr> \
-				  <h4>Liste de messages ici</h4> \
+				<div class=\"card\"> \
+					<div class=\"card-title\">\
+				  		<h4>Latest messages</h4> \
+				  	</div>\
+				  	<div class=\"message-list\">\
+				  	</div>\
 				</div> \
 			</div> \
 		</div> \
@@ -179,8 +130,9 @@ function makeMainPanel(fromId, fromLogin, query){
 }
 
 function pageUser(id, login){
-    makeMainPanel(id, login, "");
+    makeMainPanel(id, login);
 }
+
 
 
 /* --------------------------------------------------------
@@ -236,9 +188,6 @@ function makeHomePage(){
 				<p>\"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\"\
 				</p>  \
 			</div>\
-			<div class=\"main-separator\">\
-				<hr>\
-			</div>  \
 			<footer>\
 				<span class=\"footer-left\">\
 					<a href=\"index.html\">English</a>\
@@ -261,8 +210,8 @@ function makeRegistrationPanel(){
 	if(! $("#login-content").is(":hidden")){
 		$("#login-content").hide();
 	}
-    $(".modal").show();
-    $("#new-user-content").show();
+    $(".modal").fadeIn('normal');
+    $("#new-user-content").fadeIn('normal');
 }
 
 function closeDropdown(e){
@@ -271,6 +220,6 @@ function closeDropdown(e){
 
 function closeModal(e){
     $(e).parent().hide();
-    $(e).parent().parent().hide();
+    $(e).parent().parent().fadeOut('normal');
 }
 

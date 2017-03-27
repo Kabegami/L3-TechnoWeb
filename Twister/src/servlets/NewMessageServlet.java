@@ -36,25 +36,14 @@ import services.ErrorJSON;
 
 @WebServlet("/message/new")
 public class NewMessageServlet extends HttpServlet {
- 
-	 /**
-	 * Default constructor.
-	 */
-	 public NewMessageServlet() {
-		 
-	 }
- 
-	 /**
-	 * This method will handle all GET request.
-	 */
 	 protected void doPost(HttpServletRequest request,
 	 HttpServletResponse response) throws ServletException, IOException {
 		JSONObject res = new JSONObject();
 		response.setContentType( "application/json" );
 		PrintWriter out = response.getWriter ();
 
-		//String idS = request.getParameter("id");
-		String message = request.getParameter("message");
+		String key = request.getParameter("key");
+		String text = request.getParameter("text");
 		
 		/*
 		if (message == null){
@@ -62,26 +51,15 @@ public class NewMessageServlet extends HttpServlet {
 			out.println(err);
 		}
 		else {*/
-			String key = request.getParameter("key");
-			res = MessageTools.newMessage(key, message);
-			out.println(res);
+		res = MessageTools.newMessage(key, text);
+		out.println(res);
 		
 	 }
 	 
 	 protected void doGet(HttpServletRequest request,
 			 HttpServletResponse response) throws ServletException, IOException {
-				JSONObject res = new JSONObject();
-				response.setContentType( "application/json" );
-				PrintWriter out = response.getWriter ();
-
-				String key = request.getParameter("key");
-				String message = request.getParameter("message");
-
-				
-				res = MessageTools.newMessage(key, message);
-				out.println(res);
-				
-			 }
+				doPost(request, response);
+	 }
 	 
 
 }
