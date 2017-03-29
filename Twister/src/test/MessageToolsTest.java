@@ -53,10 +53,10 @@ public class MessageToolsTest {
 		String key = AuthTools.getKey("toto");
 		String from = String.valueOf(2);
 		String id_max = String.valueOf(-1);
-		String id_min = String.valueOf(3);
+		String id_min = String.valueOf(-1);
 		String nb = String.valueOf(10);
 
-		JSONObject res = MessageTools.getMessages(key, null, from, id_max, id_min, nb) ;
+		JSONObject res = MessageTools.getMessages(key, from, id_max, id_min, nb) ;
 		//String expected = "{author_id:2, author_username:\"toto\", }";
 		System.out.println(res);
 	}

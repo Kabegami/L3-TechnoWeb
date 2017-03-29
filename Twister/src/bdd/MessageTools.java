@@ -197,7 +197,7 @@ public class MessageTools {
 	 * @param nb nombre de messages à retourner (-1 si pas de limite)
 	 * @return
 	 */
-	public static JSONObject getMessages(String key, String query, String from, String id_max, String id_min, String nb){
+	public static JSONObject getMessages(String key, String from, String id_max, String id_min, String nb){
 		JSONObject finalQuery = new JSONObject();
 		JSONArray messages = new JSONArray();
 		
@@ -235,13 +235,6 @@ public class MessageTools {
 			friendsFilter.put("author.id", new BasicDBObject ("$in", friendsID));
 			and.add(friendsFilter);
 
-			// recherche du motif
-			if (query != null){
-				BasicDBObject like = new BasicDBObject();
-				like.put("text", Pattern.compile(query));
-				and.add(like);
-			}
-			
 			// id_min, id_max
 			int id_min2 = Integer.parseInt(id_min);
 			int id_max2 = Integer.parseInt(id_max);
@@ -285,4 +278,6 @@ public class MessageTools {
 		}
 		return finalQuery;
 	}
+	
+	
 }

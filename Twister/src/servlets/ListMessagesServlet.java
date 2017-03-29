@@ -58,7 +58,7 @@ public class ListMessagesServlet extends HttpServlet {
 		String id_max = request.getParameter("id_max");
 		String id_min = request.getParameter("id_min");
 		String nb = request.getParameter("nb");
-		res = MessageTools.getMessages(user, query, from, id_max, id_min, nb);
+		res = MessageTools.getMessages(user, from, id_max, id_min, nb);
 		PrintWriter out = response.getWriter ();
 		try {
 			out.println(res.toString(4));
