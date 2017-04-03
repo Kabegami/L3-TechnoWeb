@@ -56,6 +56,24 @@ public class FollowToolsTest {
 	}
 	
 	@Test
+	public void testListSubscribers(){
+		JSONObject res = FollowTools.listSubscribers(2);
+		//System.out.println(res);
+		
+		try {
+			System.out.println(res.get("subscribers"));
+			JSONArray subscribers = res.getJSONArray("subscribers");
+			for (int i = 0; i < subscribers.length(); i++){
+				System.out.println(subscribers.getJSONObject(i).get("id"));
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Test
 	public void testStopFollow(){
 		String key = AuthTools.getKey("toto");
 

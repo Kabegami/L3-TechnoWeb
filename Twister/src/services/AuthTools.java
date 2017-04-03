@@ -172,6 +172,23 @@ public class AuthTools {
 		return key;
 	}
 	
+	public static Timestamp getRegistrationDate(int id){
+		try {
+			Connection conn = Database.getMySQLConnection();
+			Statement st = conn.createStatement();
+			String query = "SELECT reg_date FROM Users WHERE id = " + id;
+			ResultSet rs = st.executeQuery(query);
+			if(rs.next()){
+				Timestamp ts = rs.getTimestamp("reg_date");
+				return ts;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	/* --------------------------------------------------------------
 	*	Session
 	* -------------------------------------------------------------- */

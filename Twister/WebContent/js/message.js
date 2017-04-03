@@ -117,7 +117,8 @@ function completeMessagesResponse(rep){
 
 		}
     }
-    env.minId = env.messages.length-1;
+    env.minId = tab.messages[0].id;
+    env.maxId = env.messages.length;
 }
 
 function refreshMessages(){
@@ -129,7 +130,7 @@ function refreshMessages(){
 			type: "POST",
 			url: "message/list",
 			data: "key=" + env.key + "&from=" + env.fromId 
-				+ "&id_max=" + env.maxId + "&id_min=" + env.minId + "&nb=" + 10,
+				+ "&id_max=-1&id_min=" + env.minId + "&nb=" + 10,
 			datatype: "text",
 			success: function(rep){
     			refreshMessagesResponse(JSON.stringify(rep));
@@ -142,18 +143,20 @@ function refreshMessages(){
 }
 
 function refreshMessagesResponse(rep){
-	var tab = JSON.parse(rep, revival);
+	tab = JSON.parse(rep, revival);
 	for (var i = tab.messages.length-1; i >= 0; i--){
 		var msg = tab.messages[i];
 		//$(".message-list").prepend(msg.getHtml());
-		$(msg.getHtml()).prependTo(".message-list").hide().slideToggle();
-		env.messages[msg.id] = msg;
-		if (msg.id > env.maxId){
-			env.maxId = msg.id;
-		}
-		if (env.minId < 0 || msg.id < env.minId){
-			env.minId = msg.id;
-		}
+        if (env.messages[msg.id] == undefined){
+            $(msg.getHtml()).prependTo(".message-list").hide().slideToggle();
+            env.messages[msg.id] = msg;
+            if (msg.id > env.maxId){
+                env.maxId = msg.id;
+            }
+            if (env.minId < 0 || msg.id < env.minId){
+                env.minId = msg.id;
+            }
+        }
 	}
 }
 
@@ -182,6 +185,7 @@ function newMessage(text){
 
 function developpeMessage(id){
     var msg = env.messages[id];
+    //console.log(id);
     var el = $("#message_" + id + " .comments");
     for (var i = 0; i < msg.comments.length; i++){
         var com = msg.comments[i];

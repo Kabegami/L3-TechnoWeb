@@ -161,4 +161,67 @@ public class FollowTools {
 	}
 	
 	
+	/* version pour rechercher n'importe quel utilisateur */
+	public static JSONObject listFollows(int id){
+		JSONObject finalQuery = new JSONObject();
+		JSONArray follows = new JSONArray();
+
+		if (id < 0){
+			return ErrorJSON.serviceRefused("Wrong arguments", -1);
+		}	
+		try {
+			Connection conn = Database.getMySQLConnection();
+			Statement st = conn.createStatement();
+				
+			String query = "SELECT id_to FROM Followers WHERE id_from = " + id;
+			ResultSet rs = st.executeQuery(query);
+			while (rs.next()){
+				JSONObject res = new JSONObject();
+				int id_to = rs.getInt("id_to");
+				res.put("id", id_to);
+				res.put("username", AuthTools.getLoginUser(id_to));
+				follows.put(res);
+			}
+			finalQuery.put("follows", follows);
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return finalQuery;
+	}
+	
+	public static JSONObject listSubscribers(int id){
+		JSONObject ret = new JSONObject();
+		if (id < 0){
+			return ErrorJSON.serviceRefused("Wrong arguments", -1);
+		}
+		try {
+			JSONArray subscribers = new JSONArray();
+				
+			Connection conn = Database.getMySQLConnection();
+			Statement st = conn.createStatement();
+		
+			String query = "SELECT id_from FROM Followers WHERE id_to = " + id;
+			ResultSet rs = st.executeQuery(query);
+			while(rs.next()){
+				int id_from = rs.getInt("id_from");
+				String username = AuthTools.getLoginUser(id_from);
+				JSONObject user = new JSONObject();
+				user.put("id",  id_from);
+				user.put("login",  username);
+				subscribers.put(user);
+			}
+			ret.put("subscribers", subscribers);
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
+	
+	
 }

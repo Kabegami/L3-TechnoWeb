@@ -1,11 +1,17 @@
 package bdd;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 
 import services.Database;
 import services.ErrorJSON;
@@ -37,6 +43,7 @@ public class UserTools {
 				// schema : (id, login, pwd, nom, prenom)
 				String query = "INSERT INTO Users VALUES (null, ?, ?, ?, ?, ?)";
 				PreparedStatement pst = conn.prepareStatement(query);
+				
 				pst.setString(1, login);
 				pst.setString(2, pwdHashed);
 				pst.setString(3, lname);
@@ -117,6 +124,43 @@ public class UserTools {
 				AuthTools.removeSession(key);
 			}
 				
+		} catch (SQLException e){
+			e.printStackTrace();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		return ret;
+	}
+	
+	public static JSONObject getUserInfo(String key, String user){
+		JSONObject ret = new JSONObject();
+		
+		if (key == null || user == null){
+			return ErrorJSON.serviceRefused("Wrong arguments", -1);
+		}
+		try {
+			if (! AuthTools.checkSession(key)){
+				return ErrorJSON.serviceRefused("User is not logged in", 2);
+			}
+			if (! AuthTools.userExists(user)){
+				return ErrorJSON.serviceRefused("User doesn't exist", 1);
+			}
+			else {
+				int id = AuthTools.getIdUser(user);
+				ret.put("id", id);
+				ret.put("login", user);
+				
+				Timestamp ts = AuthTools.getRegistrationDate(id);
+				ret.put("registration", ts);
+				
+				JSONArray subscribers = FollowTools.listSubscribers(id).getJSONArray("subscribers");
+				ret.put("subscribers", subscribers);
+				
+				JSONArray follows = FollowTools.listFollows(id).getJSONArray("follows");
+				ret.put("follows", follows);
+				
+				AuthTools.updateSession(key);
+			}
 		} catch (SQLException e){
 			e.printStackTrace();
 		} catch (Exception e){

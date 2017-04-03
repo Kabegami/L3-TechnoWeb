@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Homepage</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Raleway:300,400" rel="stylesheet">		
+	</head>
+    <body>
+        <nav class="navbar">
+			<div class="nav-left">
+				<a href=""><img class="logo" src="img/logo_black.png"/></a>
+                <div class="search">
+                    <form id="search-form">
+				        <textarea type="text" placerholder="Search" name="query">
+                        </textarea>
+				        <input type="submit" value="Search" />
+			         </form>
+			     </div>
+			</div>
+			<div class="nav-right">
+                <div class="logout"> 
+		 	        Logout
+		      </div>
+            </div>
+        </nav>        
+        <div class="main-container">
+            <div class="back-button">&leftarrow; Go back</div>
+            <div class="main-content">
+                <div class="left-profile card">
+                    <div id="userpic">
+                    </div>
+                    <div class="user-details">
+                        <div id="username">
+                            Toto
+                        </div>
+                        <div class="details">
+                            <div>
+                                Registered in 
+                                <span id="register-date"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-profile card">
+                    <div class="bar">
+                        <span class="follow-button">
+                            <span class="plus"> 
+                                &plus; 
+                            </span>
+                            Follow
+                        </span>
+                        <span class="star">&starf;</span>
+                        <span id="subscribers-count">101</span> subscribers
+                        <span class="heart">&hearts;</span>
+                        <span id="follow-count">101</span> followed
+                    </div>
+                    <div class="message-list">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

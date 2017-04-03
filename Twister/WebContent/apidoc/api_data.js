@@ -673,5 +673,68 @@ define({ "api": [
     },
     "filename": "src/servlets/NewUserServlet.java",
     "groupTitle": "User"
+  },
+  {
+    "type": "post",
+    "url": "/user/info",
+    "title": "Informations utilisateur",
+    "version": "0.1.0",
+    "name": "UserInfo",
+    "group": "User",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "key",
+            "description": "<p>Clé de session de l'utilisateur courant</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "key",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Nom de l'utilisateur recherché</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Succès:",
+          "content": "\t\t\t{\n    \"follows\": [\n        {\n            \"id\": 3,\n            \"username\": \"jean\"\n        },\n        {\n            \"id\": 4,\n            \"username\": \"raoul\"\n        }\n    ],\n    \"id\": 2,\n    \"login\": \"toto\",\n    \"subscribers\": [\n        {\n            \"id\": 3,\n            \"login\": \"jean\"\n        },\n        {\n            \"id\": 6,\n            \"login\": \"newtoto\"\n        }\n    ],\n    \"registration\": \"2017-03-08 00:00:00.0\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "ErrorJSON": [
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "-1",
+            "description": "<p>Mauvais arguments</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "1",
+            "description": "<p>Utilisateur non existant</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "2",
+            "description": "<p>Utilisateur non connecté</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/servlets/UserInfoServlet.java",
+    "groupTitle": "User"
   }
 ] });

@@ -1,6 +1,11 @@
 package test;
 
 import java.net.UnknownHostException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.json.JSONException;
@@ -13,6 +18,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.Mongo;
 
 import services.DBStatic;
+import services.Database;
 
 public class Test {
 	public static void main(String[] args){
@@ -27,8 +33,8 @@ public class Test {
 		JSONObject obj = new JSONObject();
 		*/
 		
-		Mongo m;
 		try {
+			/*
 			m = new Mongo(DBStatic.mongo_host, DBStatic.mongo_port);
 			DB db = m.getDB(DBStatic.mongo_db);
 			DBCollection collection = db.getCollection("messages");
@@ -40,13 +46,19 @@ public class Test {
 			while(cursor.hasNext()){
 				Double current_id = (Double) cursor.next().get("num");
 				System.out.println(current_id);
+			}*/
+				Connection conn = Database.getMySQLConnection();
+				Statement st = conn.createStatement();
+				String query = "SELECT reg_date FROM Users";
+				ResultSet rs = st.executeQuery(query);
+				while(rs.next()){
+					Timestamp ts = rs.getTimestamp("reg_date");
+					System.out.println(ts);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-
 
 	}
 }

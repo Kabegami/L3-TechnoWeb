@@ -28,9 +28,63 @@ function revival(key, value){
 function init() {
     env = new Object();
     env.noConnection = false;
-    if (env.noConnection){
-    	setVirtualMessages();
-    }
+    $('body').on('appear', function(event, $affected){
+        $(".message-list").appear(); 
+    });
+    $(document).on('submit', '#login-form', function(e) {
+		e.preventDefault();
+	    connection(this);
+	});
+	$(document).on('click', '#login-dropdown', function(e){
+        e.stopPropagation();
+		makeConnectionPanel();
+	});
+	$(document).on('click', '#new-user', function(){
+	   makeRegistrationPanel();
+	});
+	$(document).on('click', '.close-toggle', function(){
+	   closeDropdown(this);
+	});
+	$(document).on('click', '.close-modal', function(){
+		closeModal(this);
+	});
+	$(document).on('click', '.expand-comments', function(){
+	    var id = $(this).parent().parent().get(0).id;
+		developpeMessage(id.substring(id.indexOf('_') + 1));
+	});
+	$(document).on('click', '.reduce-comments', function(){
+		var id = $(this).parent().parent().get(0).id;
+		reduceMessage(id.substring(id.indexOf('_') + 1));
+	});
+	$(document).on('click', '.logout', function() {
+	   	logout(env.key);
+	});
+	$(document).on('submit', '#new-message-form', function(e){
+		e.preventDefault();
+	    newMessage($('#new-message').val());
+	  	$('#new-message').fadeOut('normal', function() {
+			$(this).val('');
+			$(this).fadeIn('normal');
+		});
+	});
+	$(document).on('submit', '#new-comment-form', function(e){
+	    e.preventDefault();
+	    var id_msg = $(this).parent().parent().get(0).id;
+	    var id = id_msg.substring(id_msg.indexOf('_') + 1);
+	    newComment(id, $('#new-comment').val());
+	    $('#message_' + id + ' #new-comment').fadeOut('normal', function() {
+			$(this).val('');
+			$(this).fadeIn('normal');
+		});
+	});
+    $(document).on('click', '.link', function(){
+		var user = $(this).get(0).innerText;
+		getInfoUser(user);
+    });
+    $(document).on('click', '.back-button', function(){
+		pageBack();
+    });
+
 }
 
 function setVirtualMessages() {
@@ -126,11 +180,49 @@ function makeMainPanel(fromId, fromLogin, query){
     $("body").html(mainCode);
     $('link[href="css/styleindex.css"]').attr('href','css/style.css');
     completeMessages();
-    
 }
 
 function pageUser(id, login){
     makeMainPanel(id, login);
+}
+
+function pageBack(){
+    var mainCode = " \
+		<div class=\"main-content\"> \
+      		<div class=\"stats-container card\"> \
+      			<div class=\"card-title\">\
+					<h4>Stats</h4> \
+				</div>\
+				<div class=\"stats\">\
+				</div>\
+			</div> \
+			<div class=\"messages\"> \
+				<div class=\"card\"> \
+					<div class=\"card-title\">\
+				  		<h4>New message</h4> \
+				  	</div>\
+				  	<div class=\"message-box\">\
+						<form id=\"new-message-form\" > \
+							<textarea id=\"new-message\" rows=\"5\" cols=\"40\"> </textarea><br /> \
+							<input type=\"submit\" value=\"Submit\" /> \
+					  	</form>	 \
+					</div>\
+				</div> \
+				<div class=\"card\"> \
+					<div class=\"card-title\">\
+				  		<h4>Latest messages</h4> \
+				  	</div>\
+				  	<div class=\"message-list\">\
+				  	</div>\
+				</div> \
+			</div> \
+		</div> \
+	</div> \
+    ";
+    $(".main-container").css("display", "none");
+	$(".main-container").fadeIn(500);
+    $(".main-container").html(mainCode);
+    completeMessages();
 }
 
 
@@ -200,10 +292,9 @@ function makeHomePage(){
 		</div>\
 	";
  	$("body").css("display", "none");
-	$("body").fadeIn(1000);
+	$("body").fadeIn(500);
     $("body").html(s);
     $('link[href="css/style.css"]').attr('href','css/styleindex.css');
-    init();
 }
 
 function makeRegistrationPanel(){
