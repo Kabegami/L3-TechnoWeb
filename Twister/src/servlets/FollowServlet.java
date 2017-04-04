@@ -47,7 +47,7 @@ public class FollowServlet extends HttpServlet {
 	 /**
 	 * This method will handle all GET request.
 	 */
-	 protected void doGet(HttpServletRequest request,
+	 protected void doPost(HttpServletRequest request,
 	 HttpServletResponse response) throws ServletException, IOException {
 		
 		String user = request.getParameter("key");
@@ -64,5 +64,9 @@ public class FollowServlet extends HttpServlet {
 
 	 }
 	 
+	 protected void doGet(HttpServletRequest request,
+			 HttpServletResponse response) throws ServletException, IOException {
+		 	doPost(request, response);
+	 }
 
 }

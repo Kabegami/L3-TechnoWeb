@@ -245,7 +245,7 @@ public class MessageTools {
 			}
 			if (id_max2 > 0){
 				BasicDBObject idMaxLimit = new BasicDBObject();
-				idMaxLimit.put("id", new BasicDBObject("$lte", id_max2));
+				idMaxLimit.put("id", new BasicDBObject("$lt", id_max2));
 				and.add(idMaxLimit);
 			}
 			

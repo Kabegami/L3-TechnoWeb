@@ -52,8 +52,8 @@ public class MessageToolsTest {
 	public void testSearchMessages(){
 		String key = AuthTools.getKey("toto");
 		String from = String.valueOf(2);
-		String id_max = String.valueOf(10);
-		String id_min = String.valueOf(9);
+		String id_max = String.valueOf(7);
+		String id_min = String.valueOf(-1);
 		String nb = String.valueOf(10);
 
 		JSONObject res = MessageTools.getMessages(key, from, id_max, id_min, nb) ;

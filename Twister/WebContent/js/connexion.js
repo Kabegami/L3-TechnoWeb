@@ -58,14 +58,15 @@ function connect(login, pass){
 }
 
 function responseConnection(rep){
+	repo = rep;
 	if (rep.error == undefined){
 		env.key = rep.key;
 		env.id = rep.id;
 		env.login = rep.login;
-		env.follows = new Set();
+		env.follows = [];
 		console.log(env.key);
 		for (var i = 0; i < rep.follows.length; i++){
-			env.follows.add(rep.follows[i]);
+			env.follows.push(rep.follows[i].id);
 		}
 		if (env.noConnection) {
 			

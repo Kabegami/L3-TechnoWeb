@@ -251,6 +251,76 @@
     "groupTitle": "Block"
   },
   {
+    "type": "post",
+    "url": "/comment/new",
+    "title": "Nouveau commentaire",
+    "version": "0.1.0",
+    "name": "NewComment",
+    "group": "Comment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "key",
+            "description": "<p>Clé de session de l'utilisateur courant</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id_message",
+            "description": "<p>id du message commenté</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "text",
+            "description": "<p>Texte du comentaire</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Succès:",
+          "content": "{\"id\":2,\"author\":{\"id\":2,\"username\":\"toto\"},\"text\":\"comment\",\"date\":1491315119198}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "ErrorJSON": [
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "-1",
+            "description": "<p>Mauvais arguments</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "-11",
+            "description": "<p>Mauvais arguments</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "2",
+            "description": "<p>Utilisateur non connecté</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/servlets/NewCommentServlet.java",
+    "groupTitle": "Comment"
+  },
+  {
     "type": "get",
     "url": "/follow/add",
     "title": "Suivre un profil",
@@ -433,11 +503,61 @@
     "groupTitle": "Follow"
   },
   {
+    "type": "get",
+    "url": "/message/list",
+    "title": "Liste des messages",
+    "version": "0.1.0",
+    "name": "ListMessages",
+    "group": "Message",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "key",
+            "description": "<p>Clé de session de l'utilisateur courant</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Succès:",
+          "content": "{\"messages\":[{\"text\":\"test\",\"author_username\":\"toto\",\"_id\":{\"$oid\":\"589af353e4b02b8b69b540be\"},\"author_id\":2,\"date\":{\"$date\":\"2017-02-08T10:30:43.411Z\"}},\n{\"text\":\"deuxieme message\",\"author_username\":\"toto\",\"_id\":{\"$oid\":\"589afd29e4b0c2f81a2b7eb6\"},\"author_id\":2,\"date\":{\"$date\":\"2017-02-08T11:12:41.561Z\"}}]}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "ErrorJSON": [
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "-1",
+            "description": "<p>Mauvais arguments</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "2",
+            "description": "<p>Utilisateur non connecté</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/servlets/ListMessagesServlet.java",
+    "groupTitle": "Message"
+  },
+  {
     "type": "post",
     "url": "/message/new",
     "title": "Nouveau message",
     "version": "0.1.0",
-    "name": "CreateMessage",
+    "name": "NewMessage",
     "group": "Message",
     "parameter": {
       "fields": {
@@ -487,56 +607,6 @@
       }
     },
     "filename": "src/servlets/NewMessageServlet.java",
-    "groupTitle": "Message"
-  },
-  {
-    "type": "get",
-    "url": "/message/list",
-    "title": "Liste des messages",
-    "version": "0.1.0",
-    "name": "ListMessages",
-    "group": "Message",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "key",
-            "description": "<p>Clé de session de l'utilisateur courant</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "Succès:",
-          "content": "{\"messages\":[{\"text\":\"test\",\"author_username\":\"toto\",\"_id\":{\"$oid\":\"589af353e4b02b8b69b540be\"},\"author_id\":2,\"date\":{\"$date\":\"2017-02-08T10:30:43.411Z\"}},\n{\"text\":\"deuxieme message\",\"author_username\":\"toto\",\"_id\":{\"$oid\":\"589afd29e4b0c2f81a2b7eb6\"},\"author_id\":2,\"date\":{\"$date\":\"2017-02-08T11:12:41.561Z\"}}]}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "ErrorJSON": [
-          {
-            "group": "ErrorJSON",
-            "optional": false,
-            "field": "-1",
-            "description": "<p>Mauvais arguments</p>"
-          },
-          {
-            "group": "ErrorJSON",
-            "optional": false,
-            "field": "2",
-            "description": "<p>Utilisateur non connecté</p>"
-          }
-        ]
-      }
-    },
-    "filename": "src/servlets/ListMessagesServlet.java",
     "groupTitle": "Message"
   },
   {

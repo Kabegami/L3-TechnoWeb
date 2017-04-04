@@ -45,7 +45,7 @@ public class StopFollowServlet extends HttpServlet {
 	 /**
 	 * This method will handle all GET request.
 	 */
-	 protected void doGet(HttpServletRequest request,
+	 protected void doPost(HttpServletRequest request,
 	 HttpServletResponse response) throws ServletException, IOException {
 		
 		String user = request.getParameter("key");
@@ -62,5 +62,8 @@ public class StopFollowServlet extends HttpServlet {
 
 	 }
 	 
-
+	 protected void doGet(HttpServletRequest request,
+			 HttpServletResponse response) throws ServletException, IOException {
+		 doPost(request, response);
+	 }
 }

@@ -1,35 +1,14 @@
 /* --------------------------------------------------------
-   JSON String -> JSON Object
-   ----------------------------------------------------------*/
-
-function revival(key, value){
-    if (key == "erreur" && value == 0){
-		return value;
-    }
-    if (value.comments != undefined){
-		return new Message(value.id, value.author, value.text, value.date, value.comments);
-    }
-    else if (value.text != undefined){
-		return new Comment(value.id, value.author, value.text, value.date);
-    }
-    else if (key == "date"){
-		return new Date(value);
-    }
-    else {
-		return value;
-    }
-}
-
-
-/* --------------------------------------------------------
    ENVIRONNEMENT DE TEST ET PAGE PRINCIPALE
    ----------------------------------------------------------*/
 
 function init() {
     env = new Object();
     env.noConnection = false;
-    $('body').on('appear', function(event, $affected){
-        $(".message-list").appear(); 
+    $(document.body).on('appear', '.message', function(e, $affected){
+    	completeMessages();
+    	$.clear_appear();
+    	console.log("déclenché");
     });
     $(document).on('submit', '#login-form', function(e) {
 		e.preventDefault();
@@ -84,7 +63,12 @@ function init() {
     $(document).on('click', '.back-button', function(){
 		pageBack();
     });
-
+    $(document).on('click', '.follow-button', function() {
+	   	followUser();
+	});
+    $(document).on('click', '.unfollow-button', function() {
+	   	unfollowUser();
+	});
 }
 
 function setVirtualMessages() {
@@ -222,6 +206,9 @@ function pageBack(){
     $(".main-container").css("display", "none");
 	$(".main-container").fadeIn(500);
     $(".main-container").html(mainCode);
+    env.minId = -1;
+    env.maxId = -1;
+    profile = undefined;
     completeMessages();
 }
 

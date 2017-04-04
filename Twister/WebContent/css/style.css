@@ -383,15 +383,19 @@ nav .logout:hover {
     margin-left: 20px;
 }
 
-.right-profile .bar .follow-button {
+.right-profile .bar .follow-button,
+.right-profile .bar .unfollow-button {
     display: inline-block;
+    text-align: center;
+    width: 70px;
     padding: 5px 10px;
     border-radius: 5px;
     margin: 5px;
     border: 1px solid #d0d0d0;
 }
 
-.right-profile .bar .follow-button:hover{
+.right-profile .bar .follow-button:hover,
+.right-profile .bar .unfollow-button:hover{
     background-color: #e0e0e0; 
     cursor: pointer;
 }

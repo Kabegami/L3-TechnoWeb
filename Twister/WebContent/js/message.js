@@ -51,6 +51,29 @@ Comment.prototype.getHtml = function() {
     );
 }
 
+/* --------------------------------------------------------
+   JSON String -> JSON Object
+   ----------------------------------------------------------*/
+
+function revival(key, value){
+    if (key == "erreur" && value == 0){
+		return value;
+    }
+    if (value.comments != undefined){
+		return new Message(value.id, value.author, value.text, value.date, value.comments);
+    }
+    else if (value.text != undefined){
+		return new Comment(value.id, value.author, value.text, value.date);
+    }
+    else if (key == "date"){
+		return new Date(value);
+    }
+    else {
+		return value;
+    }
+}
+
+
 function getFromLocalDb(from, minId, maxId, nbMax){
      var tab = [];
 
@@ -88,7 +111,7 @@ function completeMessages(){
     		type: "POST",
     		url: "message/list",
     		data: "key=" + env.key + "&from=" + env.fromId 
-				+ "&id_max=" + env.maxId + "&id_min=" + env.minId + "&nb=" + 10,
+				+ "&id_max=" + env.minId + "&id_min=-1&nb=" + 10,
     		datatype: "text",
     		success: function(rep){
     			completeMessagesResponse(JSON.stringify(rep));
@@ -104,21 +127,29 @@ function completeMessages(){
 }
 
 function completeMessagesResponse(rep){
+	// tableau trié par ordre décroissant des id
     var tab = JSON.parse(rep, revival);
-    for (var i = 0; i < tab.messages.length; i++){
-		var m = tab.messages[i];
-		env.messages[m.id] = m;
-    }
-    for (var i = 0; i < env.messages.length; i++){
-		var msg = env.messages[env.messages.length - 1 - i];
-		if (msg != undefined){
-			//$(".message-list").append(msg.getHtml()).fadeIn('normal');
-			$(msg.getHtml()).appendTo(".message-list").hide().slideToggle();
-
+	
+	if (tab.messages.length != 0){
+		var idMax = tab.messages[0].id;
+		var idMin = tab.messages[tab.messages.length-1].id;
+		for (var i = 0; i < tab.messages.length; i++){
+			var m = tab.messages[i];
+			env.messages[m.id] = m;
 		}
-    }
-    env.minId = tab.messages[0].id;
-    env.maxId = env.messages.length;
+		for (var i = idMax; i >= idMin; i--){
+			var msg = env.messages[i];
+			if (msg != undefined){
+				//$(".message-list").append(msg.getHtml());
+				$(msg.getHtml()).appendTo(".message-list").hide().slideToggle();
+			}
+		}
+		env.minId = tab.messages[tab.messages.length-1].id;
+		env.maxId = env.messages.length-1;
+		$("#message_" + env.minId).appear();
+
+		// dernier message affiché pour déclencher le appear des 10 suivants
+	}
 }
 
 function refreshMessages(){
@@ -143,7 +174,7 @@ function refreshMessages(){
 }
 
 function refreshMessagesResponse(rep){
-	tab = JSON.parse(rep, revival);
+	var tab = JSON.parse(rep, revival);
 	for (var i = tab.messages.length-1; i >= 0; i--){
 		var msg = tab.messages[i];
 		//$(".message-list").prepend(msg.getHtml());
@@ -230,7 +261,7 @@ function newComment(id_message, text){
     		data: "key=" + env.key + "&id_message=" + id_message + "&text=" + text,
     		datatype: "text",
     		success: function(rep){
-
+				newCommentResponse(JSON.stringify(rep), id_message);
     		},
     		error: function(xhr, status, err){
     			func_error(status);
@@ -242,6 +273,14 @@ function newComment(id_message, text){
     }
 }
 
-function newCommentResponse(id_message){
-	
-}
+function newCommentResponse(rep, id_message){
+	console.log("ajout commentaire au msg " + id_message);
+	var comment = JSON.parse(rep, revival);
+	var msg = env.messages[id_message];
+	msg.comments.push(comment);
+	el = $("#message_" + id_message + " .comments");
+	var com = msg.comments[msg.comments.length-1];
+	$(com.getHtml()).appendTo(el).hide().fadeIn(500);
+	refreshMessages();
+    //var el = $("#message_" + id_message + " .comments");
+};

@@ -20,7 +20,7 @@ import services.ErrorJSON;
  * 
  * @api {post} /message/new Nouveau message
  * @apiVersion 0.1.0
- * @apiName CreateMessage
+ * @apiName NewMessage
  * @apiGroup Message
  * 
  * @apiParam  {String} key Clé de session de l'utilisateur courant

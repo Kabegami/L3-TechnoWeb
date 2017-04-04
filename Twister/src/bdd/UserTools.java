@@ -3,6 +3,9 @@ package bdd;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.mongodb.BasicDBObject;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.net.UnknownHostException;
@@ -147,8 +150,10 @@ public class UserTools {
 			}
 			else {
 				int id = AuthTools.getIdUser(user);
-				ret.put("id", id);
-				ret.put("login", user);
+				BasicDBObject user2 = new BasicDBObject();
+				user2.put("id", id);
+				user2.put("login", user);
+				ret.put("user", user2);
 				
 				Timestamp ts = AuthTools.getRegistrationDate(id);
 				ret.put("registration", ts);
