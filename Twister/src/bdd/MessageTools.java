@@ -10,6 +10,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 
 import java.net.UnknownHostException;
@@ -17,10 +18,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import services.DBStatic;
 import services.ErrorJSON;
+import services.MapReduce;
 import services.AuthTools;
 
 public class MessageTools {
@@ -197,7 +200,7 @@ public class MessageTools {
 	 * @param nb nombre de messages à retourner (-1 si pas de limite)
 	 * @return
 	 */
-	public static JSONObject getMessages(String key, String from, String id_max, String id_min, String nb){
+	public static JSONObject getMessages(String key, String query, String from, String id_max, String id_min, String nb){
 		JSONObject finalQuery = new JSONObject();
 		JSONArray messages = new JSONArray();
 		
@@ -227,13 +230,103 @@ public class MessageTools {
 			}
 			
 			// initialisation de la requete sur MongoDB
+			
+			// pas de motif de recherche -> tri par ordre chronologique
+			if (query == null){
+				List<BasicDBObject> and = new ArrayList<BasicDBObject>();
+				
+				// liste des amis
+				BasicDBObject friendsFilter = new BasicDBObject();
+				friendsFilter.put("author.id", new BasicDBObject ("$in", friendsID));
+				and.add(friendsFilter);
+	
+				// id_min, id_max
+				int id_min2 = Integer.parseInt(id_min);
+				int id_max2 = Integer.parseInt(id_max);
+				if (id_min2 > 0){
+					BasicDBObject idMinLimit = new BasicDBObject();
+					idMinLimit.put("id", new BasicDBObject("$gt", id_min2));
+					and.add(idMinLimit);
+				}
+				if (id_max2 > 0){
+					BasicDBObject idMaxLimit = new BasicDBObject();
+					idMaxLimit.put("id", new BasicDBObject("$lt", id_max2));
+					and.add(idMaxLimit);
+				}
+				
+				BasicDBObject queryToDo = new BasicDBObject();
+				
+				int nb2 = Integer.parseInt(nb);
+				DBCursor cursor;
+				
+				// on combine les conditions avec $and
+				queryToDo.put("$and", and);
+				System.out.println(queryToDo);
+				if (nb2 > 0){
+					cursor = collection.find(queryToDo).sort(new BasicDBObject("date", -1)).limit(nb2);
+				}
+				else {
+					cursor = collection.find(queryToDo).sort(new BasicDBObject("date", -1));
+				}
+				while (cursor.hasNext()){
+					messages.put(new JSONObject(cursor.next().toString()));
+				}
+			}
+			// tri par score de pertinence
+			else {
+				System.out.println("query not null");
+				MapReduce.callMapReduce(collection);
+				DBCollection index = db.getCollection("output");
+				List<DBObject> listMsg = MapReduce.getMessagesQuery(index, collection, query);
+				for (DBObject msg : listMsg){
+					messages.put(new JSONObject(msg.toString()));
+				}
+			}
+			
+			m.close();
+			finalQuery.put("messages", messages);
+			AuthTools.updateSession(key);
+
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return finalQuery;
+	}
+	
+	// retourne uniquement les messages d'un utilisateur (sans ceux des amis)
+	public static JSONObject getMessagesUser(String key, String from, String id_max, String id_min, String nb){
+		JSONObject finalQuery = new JSONObject();
+		JSONArray messages = new JSONArray();
+		
+		if (key == null || ! NumberUtils.isCreatable(from) || ! NumberUtils.isCreatable(id_max)
+				|| ! NumberUtils.isCreatable(id_min) || ! NumberUtils.isCreatable(nb)){
+			return ErrorJSON.serviceRefused("Wrong arguments", -1);
+		}
+		try {
+			if (! AuthTools.checkSession(key)){
+				return ErrorJSON.serviceRefused("User is not logged in", 2);
+			}
+			
+			// connexion database
+			Mongo m = new Mongo(DBStatic.mongo_host, DBStatic.mongo_port);
+			DB db = m.getDB(DBStatic.mongo_db);
+			DBCollection collection = db.getCollection("messages");
+		
+			
+			// initialisation de la requete sur MongoDB
 			// on combine les conditions avec $and
 			List<BasicDBObject> and = new ArrayList<BasicDBObject>();
 			
-			// liste des amis
-			BasicDBObject friendsFilter = new BasicDBObject();
-			friendsFilter.put("author.id", new BasicDBObject ("$in", friendsID));
-			and.add(friendsFilter);
+			
+			// on ajoute l'id de l'utilisateur courant
+			int own_id = Integer.parseInt(from);
+			BasicDBObject idFilter = new BasicDBObject();
+			idFilter.put("author.id", own_id);
+			and.add(idFilter);
 
 			// id_min, id_max
 			int id_min2 = Integer.parseInt(id_min);
@@ -278,6 +371,5 @@ public class MessageTools {
 		}
 		return finalQuery;
 	}
-	
 	
 }

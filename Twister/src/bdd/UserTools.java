@@ -40,15 +40,15 @@ public class UserTools {
 				Connection conn = Database.getMySQLConnection();
 				
 				// hash le password
-				String pwdHashed = DigestUtils.sha1Hex(pwd);
+				//String pwdHashed = DigestUtils.sha1Hex(pwd);
 				
 				// id auto-increment
-				// schema : (id, login, pwd, nom, prenom)
-				String query = "INSERT INTO Users VALUES (null, ?, ?, ?, ?, ?)";
+				// schema : (id, login, pwd, nom, prenom, mail)
+				String query = "INSERT INTO Users VALUES (null, ?, ?, ?, ?, ?, null)";
 				PreparedStatement pst = conn.prepareStatement(query);
 				
 				pst.setString(1, login);
-				pst.setString(2, pwdHashed);
+				pst.setString(2, pwd);
 				pst.setString(3, lname);
 				pst.setString(4, fname);
 				pst.setString(5, mail);
@@ -89,17 +89,19 @@ public class UserTools {
 			}
 			
 			int id = AuthTools.getIdUser(login);
+			String key = "";
 			if (AuthTools.hasSession(id)){
-				return ErrorJSON.serviceRefused("User already logged in", 3);		
+				key = AuthTools.getKey(id);
+				//return ErrorJSON.serviceRefused("User already logged in", 3);		
 			}
-
-			/* vérifier si admin ou pas */
-			String key = AuthTools.insertSession(id, false);
+			else {
+				/* vérifier si admin ou pas */
+				key = AuthTools.insertSession(id, false);
+			}
 			ret.put("key", key);
 			ret.put("id", id);
 			ret.put("login", login);
 			ret.put("follows", FollowTools.listFollows(key).getJSONArray("follows"));
-	
 		} catch (SQLException e){
 			e.printStackTrace();
 			return ErrorJSON.serviceRefused("erreur SQL", 100);

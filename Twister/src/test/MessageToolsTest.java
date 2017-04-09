@@ -41,23 +41,39 @@ public class MessageToolsTest {
 	}
 	
 	@Test
-	public void testGetMessages(){
+	public void testGetMessagesUser(){
 		String key = AuthTools.getKey("toto");
-		JSONObject res = MessageTools.getMessages(key);
+		String from = String.valueOf(2);
+		String id_max = String.valueOf(-1);
+		String id_min = String.valueOf(-1);
+		String nb = String.valueOf(10);
+
+		JSONObject res = MessageTools.getMessagesUser(key, from, id_max, id_min, nb) ;
 		//String expected = "{author_id:2, author_username:\"toto\", }";
-		System.out.println(res);
+		try {
+			System.out.println(res.toString(4));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
 	public void testSearchMessages(){
 		String key = AuthTools.getKey("toto");
 		String from = String.valueOf(2);
-		String id_max = String.valueOf(7);
+		String id_max = String.valueOf(-1);
 		String id_min = String.valueOf(-1);
 		String nb = String.valueOf(10);
-
-		JSONObject res = MessageTools.getMessages(key, from, id_max, id_min, nb) ;
-		//String expected = "{author_id:2, author_username:\"toto\", }";
-		System.out.println(res);
+		String query = "message";
+		
+		JSONObject res = MessageTools.getMessages(key, query, from, id_max, id_min, nb);
+		try {
+			System.out.println(res.toString(4));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }

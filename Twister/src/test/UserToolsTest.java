@@ -29,6 +29,17 @@ public class UserToolsTest {
 	}
 	
 	@Test
+	public void testCreateUser2(){
+		JSONObject obj = UserTools.createUser("aaa", "123", "aaa", "aaa", "aaamail");
+		try {
+			System.out.println(obj.toString(4));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
 	public void testLogin(){
 		JSONObject obj = UserTools.login("toto", "123");
 		System.out.println(obj);

@@ -71,6 +71,9 @@ nav .search{
 }
 
 nav .search textarea{
+    font-size: 13px;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
     height: 20px;
     resize:none;
     border-radius: 5px;
@@ -134,7 +137,7 @@ nav .logout:hover {
     border-top: 1px solid #ccc;
 }
 
-.main-content input[type=submit]{
+input[type=submit]{
     font-size: 14px;
     font-weight: 300;
     font-family: 'Open Sans', sans-serif;
@@ -147,7 +150,7 @@ nav .logout:hover {
     vertical-align:top;
 }
 
-.main-content input[type=submit]:hover{
+input[type=submit]:hover{
     background-color: #f2f2f2; 
     color: #151515;
 }
@@ -155,7 +158,8 @@ nav .logout:hover {
 .stats-container {
     /*border : 1px solid black;*/
     width: 30%;
-    height: 300px;
+    height: 200px;
+    margin-right: 20px;
 }
 
 .main-container{
@@ -166,19 +170,21 @@ nav .logout:hover {
 
 .main-content {
     display:flex;
-    flex-direction: row;
-    justify-content: center;
+    flex-direction: column;
     margin-left: 10%;
     margin-right: 10%;
     margin-top: 20px;
 }
 
-.messages {
-    width: 70%;
+.main-row {
     display: flex;
-    flex-direction: column;
-    /*border : 1px solid black;*/
-    margin-left: 20px;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.new-message {
+    width: 70%;
+    height: 200px;
 }
 
 .message-box {
@@ -213,18 +219,18 @@ nav .logout:hover {
     margin-top: 20px;
 }
 
-.message-list .message {
+.message, .profile-message {
     padding: 10px 10px;
     border-bottom: 1px solid #dadada;
     /*border-bottom: 1px solid #dadada;*/
 }
 
-.message .text-message {
+.text-message {
     /*background-color: rgb(252, 253, 255);*/
     margin-bottom: 10px;
 }
 
-.message .author{
+.author {
     color: #FF7254;
 }
 
@@ -233,7 +239,7 @@ nav .logout:hover {
     text-decoration: underline;
 }
 
-.message .date {
+.date {
     font-size: 12px;
 }
 
@@ -242,11 +248,11 @@ nav .logout:hover {
     text-align: right;
 }
 
-.message .new-comment {
+.new-comment {
     text-align: right;
 }
 
-.message .new-comment textarea{
+.new-comment textarea{
     font-family: 'Open Sans', sans-serif;
     font-size: 13px;
     resize: none;
@@ -256,7 +262,7 @@ nav .logout:hover {
     margin-top: 10px;
 }
 
-.message .new-comment textarea:focus{
+.new-comment textarea:focus{
     background-color: #ffffff;
     border-color: #4699ff;
     outline: none;
@@ -306,6 +312,15 @@ nav .logout:hover {
 
 
 /* PROFIL */
+
+.main-content-profile,
+.main-content-search{
+    display:flex;
+    flex-direction: row;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 20px;
+}
 
 .back-button {
     display: inline-block;

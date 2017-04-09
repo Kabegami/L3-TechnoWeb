@@ -8,11 +8,17 @@ body {
     margin: 0;
 }
 
-h1, h2, h3, h4, h5, h6{
+h1, h2 {
     text-align: center;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-weight: 300;
-    color: #FF7254;
+    color: #34749a;
+}
+
+h3 {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    color: #2c2c2c;
 }
 
 /* header{
@@ -93,6 +99,45 @@ nav #login-dropdown {
     padding-top: 200px;
 }
 
+.success {
+    width: 250px; 
+    height: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    background: #f5f7ff;
+    padding: 10px;
+    box-shadow: 0 2px 2px -1px black;
+    border-radius: 5px;
+    border: 1px solid #a8d7ea; 
+}
+
+#recovery-password{
+    width: 400px; 
+    height: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    background: #f5f7ff;
+    padding: 10px;
+    box-shadow: 0 2px 2px -1px black;
+    border-radius: 5px;
+    border: 1px solid #a8d7ea; 
+}
+
+#forgot-password {
+    color: #727272;
+}
+
+#forgot-password:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#recovery-password input[type=text] {
+    width: 250px;
+}
+
 nav #new-user-content {
     width: 250px; 
     margin-left: auto;
@@ -119,20 +164,20 @@ nav #login-content {
     border: 1px solid #a8d7ea;
 }
 
-nav #login-content #error-message {
+.error-message, .notif-message {
     color: #ff2f2f;
 }
 
-nav input {
+input {
     font-family: 'Open Sans', sans-serif;
     margin-bottom: 5px;
     border-radius: 5px; 
     padding: 5px 10px;
     border: 1px solid #1ba0d6;
-    background: #f8f8f8;
+    background: rgb(255, 255, 255);
 }
 
-nav input:focus {
+input:focus {
     background-color: #ffffff;
     border-color: #4699ff;
     outline: none;
@@ -154,7 +199,7 @@ input[type=submit]{
 }
 
 input[type=submit]:hover{
-    background: #dadada; 
+    background: #f2f2f2; 
     color: #151515;
 }
 

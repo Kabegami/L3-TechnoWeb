@@ -24,13 +24,17 @@ function check_form(login, pass){
 }
 
 function func_error(msg){
-    var s = "<div id=\"error-message\">" + msg + "</div>";
-    var old_msg = $("#error-message");
+    var s = "<div class=\"error-message\">" + msg + "</div>";
+    var old_msg = $("#login-content .error-message");
     if (old_msg.length == 0){
-		$("#login-content").prepend(s);
+		//$("#login-content").prepend(s);
+		$(s).appendTo("#login-content").hide().fadeIn(500);
     }
     else {
-		old_msg.replaceWith(s);
+		$(old_msg).fadeOut(500, function(){
+        	$(this).replaceWith(s);
+        	$('#login-content .error-message').hide().fadeIn(500);
+        });
     }
 }
 
@@ -43,7 +47,14 @@ function connect(login, pass){
 			data: "login=" + login + "&pwd=" + pass,
 			datatype: "json",
 			success: function(rep){
-				responseConnection(rep);
+				if ('error_code' in rep){
+					if (rep.error_code == 2){
+						func_error("Mot de passe incorrect");
+					}
+				}
+				else {
+					responseConnection(rep);
+				}
 			},
 			error: function(xhr, status, err){
 				func_error(xhr.responseText);
@@ -58,7 +69,6 @@ function connect(login, pass){
 }
 
 function responseConnection(rep){
-	repo = rep;
 	if (rep.error == undefined){
 		env.key = rep.key;
 		env.id = rep.id;
@@ -110,4 +120,80 @@ function responseLogout(rep){
 
 function makeConnectionPanel(){
     $("#login-content").slideToggle();
+}
+
+
+/* MOT DE PASSE OUBLIE */
+
+function makeRecoveryPanel(){
+	closeDropdown($("#login-content .close-toggle"));
+	$(".recovery-modal").fadeIn(500);
+	$("#recovery-password").fadeIn(500);
+}
+
+function func_error_recovery(msg){
+    var s = "<div class=\"notif-message\">" + msg + "</div>";
+    var old_msg = $("#recovery-password .notif-message");
+    if (old_msg.length == 0){
+		//$("#login-content").prepend(s);
+		$(s).appendTo("#recovery-password").hide().fadeIn('fast');
+    }
+    else {
+		$(old_msg).fadeOut(500, function(){
+        	$(this).replaceWith(s);
+        	$('#recovery-password .notif-message').hide().fadeIn('fast');
+        });
+    }
+}
+
+
+function sendPassword(form){
+	var mail = form.mail.value;
+	if (mail.length == 0){
+		func_error_recovery("Email address required");
+	}
+	else {
+		sendPasswordRecovery(mail);
+	}
+}
+
+function sendPasswordRecovery(mail){
+	console.log("recovery " + mail);
+	if (! env.noConnection){
+		$.ajax({
+			type: "POST",
+			url: "user/pass",
+			data: "mail=" + mail,
+			datatype: "json",
+			success: function(rep){
+				responsePasswordRecovery(rep);
+			},
+			error: function(xhr, status, err){
+				func_error(xhr.responseText);
+			}
+		});
+	}
+	else {
+		
+	}
+}
+
+function responsePasswordRecovery(rep){
+	if (rep.error_code == 1){
+		func_error_recovery("Email address not found in the database");
+	}
+	else {
+		var s = "<div class=\"notif-message\">Password successfully sent!</div>";
+		var old_msg = $("#recovery-password .notif-message");
+		if (old_msg.length == 0){
+			//$("#login-content").prepend(s);
+			$(s).appendTo("#recovery-password").hide().fadeIn('fast');
+		}
+		else {
+			$(old_msg).fadeOut(500, function(){
+				$(this).replaceWith(s);
+				$('#recovery-password .notif-message').hide().fadeIn('fast');
+			});
+		}
+	}
 }

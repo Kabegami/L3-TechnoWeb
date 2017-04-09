@@ -5,21 +5,54 @@
 function init() {
     env = new Object();
     env.noConnection = false;
+
+    // back and forward
+    /*$(window).on('popstate', function (e){
+		var state = e.originalEvent.state;
+		if (state != null){
+			document.title = state.title;
+		}
+    });*/
+
+    // chargement progressif des messages
     $(document.body).on('appear', '.message', function(e, $affected){
     	completeMessages();
     	$.clear_appear();
     	console.log("déclenché");
     });
+    $(document.body).on('appear', '.profile-message', function(e, $affected){
+    	completeMessagesProfile();
+    	$.clear_appear();
+    	console.log("déclenché");
+    });
+
+    // page d'accueil
+    // login
     $(document).on('submit', '#login-form', function(e) {
 		e.preventDefault();
 	    connection(this);
+	    //window.history.pushState({page: "home"}, null, 'home');
 	});
 	$(document).on('click', '#login-dropdown', function(e){
         e.stopPropagation();
 		makeConnectionPanel();
 	});
+	$(document).on('click', "#forgot-password", function(){
+		makeRecoveryPanel();
+	})
+	$(document).on('submit', '#forgot-form', function(e){
+		e.preventDefault();
+		sendPassword(this);
+	})
+
+	// enregistrement
 	$(document).on('click', '#new-user', function(){
 	   makeRegistrationPanel();
+	});
+	$(document).on('submit', '#new-user-form', function(e) {
+		e.preventDefault();
+	    register(this);
+	    //window.history.pushState({page: "home"}, null, 'home');
 	});
 	$(document).on('click', '.close-toggle', function(){
 	   closeDropdown(this);
@@ -27,16 +60,16 @@ function init() {
 	$(document).on('click', '.close-modal', function(){
 		closeModal(this);
 	});
+
+	// page utilisateur
+	// messages et commentaires
 	$(document).on('click', '.expand-comments', function(){
 	    var id = $(this).parent().parent().get(0).id;
-		developpeMessage(id.substring(id.indexOf('_') + 1));
+		developpeMessage(parseInt(id.substring(id.indexOf('_') + 1)));
 	});
 	$(document).on('click', '.reduce-comments', function(){
 		var id = $(this).parent().parent().get(0).id;
-		reduceMessage(id.substring(id.indexOf('_') + 1));
-	});
-	$(document).on('click', '.logout', function() {
-	   	logout(env.key);
+		reduceMessage(parseInt(id.substring(id.indexOf('_') + 1)));
 	});
 	$(document).on('submit', '#new-message-form', function(e){
 		e.preventDefault();
@@ -49,19 +82,46 @@ function init() {
 	$(document).on('submit', '#new-comment-form', function(e){
 	    e.preventDefault();
 	    var id_msg = $(this).parent().parent().get(0).id;
-	    var id = id_msg.substring(id_msg.indexOf('_') + 1);
+	    var id = parseInt(id_msg.substring(id_msg.indexOf('_') + 1));
 	    newComment(id, $('#new-comment').val());
 	    $('#message_' + id + ' #new-comment').fadeOut('normal', function() {
 			$(this).val('');
 			$(this).fadeIn('normal');
 		});
 	});
+
+	// search
+	$(document).on('keypress', '.submitEnter', function(e){
+		if (e.which == 13 && !e.shiftKey){
+			$(this.form).submit();
+			e.preventDefault();
+		}
+	});
+	$(document).on('submit', '#search-form', function(e){
+		e.preventDefault();
+		//console.log($('#search-query').val());
+		makeSearchPage();
+		completeMessagesSearch($('#search-query').val());
+		$('#search-query').val('');
+	});
+
+
+
+	// divers
+	// chargement page profil
     $(document).on('click', '.link', function(){
 		var user = $(this).get(0).innerText;
 		getInfoUser(user);
+		var url = '?user=' + user
+		//window.history.pushState({page:url, title: capitalizeFirstLetter(user)}, user, url);
     });
+    $(document).on('click', '.logout', function() {
+	   	logout(env.key);
+	   	//window.history.pushState({page: 'index', title: 'Homepage'}, null, 'index');
+	});
     $(document).on('click', '.back-button', function(){
 		pageBack();
+		//window.history.pushState({page: "home", title: 'Home'}, null, 'home');
     });
     $(document).on('click', '.follow-button', function() {
 	   	followUser();
@@ -106,7 +166,7 @@ function makeMainPanel(fromId, fromLogin, query){
     env.fromId = fromId;
     env.fromLogin = fromLogin;
     env.query = query;
-    env.messages = [];
+    env.messages = new Map();
     env.minId = -1;
     env.maxId = -1;
 
@@ -116,7 +176,7 @@ function makeMainPanel(fromId, fromLogin, query){
 			 <a href=\"\"><img class=\"logo\" src=\"img/logo_black.png\"/></a> \
 			 <div class=\"search\"> \
 			  <form id=\"search-form\"> \
-				<textarea type=\"text\" placerholder=\"Search\" name=\"query\"></textarea> \
+				<textarea id=\"search-query\" class=\"submitEnter\" type=\"text\" placeholder=\"Search\"></textarea> \
 				<input type=\"submit\" value=\"Search\" /> \
 			  </form> \
 			  </div> \
@@ -129,32 +189,32 @@ function makeMainPanel(fromId, fromLogin, query){
     </nav> \
   	<div class=\"main-container\"> \
 		<div class=\"main-content\"> \
-      		<div class=\"stats-container card\"> \
-      			<div class=\"card-title\">\
-					<h4>Stats</h4> \
-				</div>\
-				<div class=\"stats\">\
-				</div>\
-			</div> \
-			<div class=\"messages\"> \
-				<div class=\"card\"> \
+			<div class=\"main-row\">\
+				<div class=\"stats-container card\"> \
 					<div class=\"card-title\">\
-				  		<h4>New message</h4> \
-				  	</div>\
-				  	<div class=\"message-box\">\
-						<form id=\"new-message-form\" > \
-							<textarea id=\"new-message\" rows=\"5\" cols=\"40\"> </textarea><br /> \
-							<input type=\"submit\" value=\"Submit\" /> \
-					  	</form>	 \
+						<h4>Stats</h4> \
+					</div>\
+					<div class=\"stats\">\
 					</div>\
 				</div> \
-				<div class=\"card\"> \
+				<div class=\"new-message card\"> \
+					<div class=\"card-title\">\
+						<h4>New message</h4> \
+					</div>\
+					<div class=\"message-box\">\
+						<form id=\"new-message-form\" > \
+							<textarea id=\"new-message\" class=\"submitEnter\" rows=\"5\" cols=\"40\"> </textarea><br /> \
+							<input type=\"submit\" value=\"Submit\" /> \
+						</form>	 \
+					</div>\
+				</div> \
+			</div> \
+			<div class=\"card\"> \
 					<div class=\"card-title\">\
 				  		<h4>Latest messages</h4> \
 				  	</div>\
 				  	<div class=\"message-list\">\
 				  	</div>\
-				</div> \
 			</div> \
 		</div> \
 	</div> \
@@ -173,41 +233,39 @@ function pageUser(id, login){
 function pageBack(){
     var mainCode = " \
 		<div class=\"main-content\"> \
-      		<div class=\"stats-container card\"> \
-      			<div class=\"card-title\">\
-					<h4>Stats</h4> \
-				</div>\
-				<div class=\"stats\">\
-				</div>\
-			</div> \
-			<div class=\"messages\"> \
-				<div class=\"card\"> \
+			<div class=\"main-row\">\
+				<div class=\"stats-container card\"> \
 					<div class=\"card-title\">\
-				  		<h4>New message</h4> \
-				  	</div>\
-				  	<div class=\"message-box\">\
-						<form id=\"new-message-form\" > \
-							<textarea id=\"new-message\" rows=\"5\" cols=\"40\"> </textarea><br /> \
-							<input type=\"submit\" value=\"Submit\" /> \
-					  	</form>	 \
+						<h4>Stats</h4> \
+					</div>\
+					<div class=\"stats\">\
 					</div>\
 				</div> \
-				<div class=\"card\"> \
+				<div class=\"new-message card\"> \
+					<div class=\"card-title\">\
+						<h4>New message</h4> \
+					</div>\
+					<div class=\"message-box\">\
+						<form id=\"new-message-form\" > \
+							<textarea id=\"new-message\" class=\"submitEnter\" rows=\"5\" cols=\"40\"> </textarea><br /> \
+							<input type=\"submit\" value=\"Submit\" /> \
+						</form>	 \
+					</div>\
+				</div> \
+			</div> \
+			<div class=\"card\"> \
 					<div class=\"card-title\">\
 				  		<h4>Latest messages</h4> \
 				  	</div>\
 				  	<div class=\"message-list\">\
 				  	</div>\
-				</div> \
 			</div> \
 		</div> \
-	</div> \
     ";
     $(".main-container").css("display", "none");
 	$(".main-container").fadeIn(500);
     $(".main-container").html(mainCode);
-    env.minId = -1;
-    env.maxId = -1;
+ 	resetMessages();
     profile = undefined;
     completeMessages();
 }
@@ -219,77 +277,92 @@ function pageBack(){
    ----------------------------------------------------------*/
 
 function makeHomePage(){
-	var s = " \
-	<nav class=\"navbar\"> \
-			<div class=\"nav-left\"> \
-				<div class=\"nav-logo\">\
-					<a href=\"\"><img class=\"logo\" src=\"img/logo_black.png\"/></a>\
+	var s = ' \
+<nav class="navbar">\
+			<div class="nav-left">\
+				<div class="nav-logo">\
+					<a href=""><img class="logo" src="img/logo_black.png"/></a>\
 				</div>\
 			</div>\
-			<div class=\"nav-right\">\
-				<div id=\"login-dropdown\">\
+			<div class="nav-right">\
+				<div id="login-dropdown">\
 					Log in\
 				</div>\
-				<div id=\"login-content\">\
-						<span class=\"close-toggle\">&times;</span>\
-							<p>Welcome back.</p>\
-							<form id=\"login-form\">\
-								<input id=\"login\" type=\"text\" placeholder=\"Username\">\
-								<input id=\"password\" type=\"password\" placeholder=\"Password\">\
-								<input type=\"submit\" value=\"Log In\">\
+				<div id="login-content">\
+						<span class="close-toggle">&times;</span>\
+							<h3>Welcome back.</h3>\
+							<form id="login-form">\
+								<input name="login" type="text" placeholder="Username">\
+								<input name="password" type="password" placeholder="Password">\
+								<input type="submit" value="Log In">\
 							</form>\
+							</br>\
+							<span id="forgot-password">Forgot your password?</span>\
 				</div>\
-				<div id=\"new-user\" onClick=\"makeRegistrationPanel()\">\
+				<div id="new-user" onClick="makeRegistrationPanel()">\
 					Sign up\
 				</div>\
-				<div class=\"modal\">\
-					<div id=\"new-user-content\">\
-						<span class=\"close-modal\" onClick=\"\">&times;</span>\
-							<p>Join us, it's free.</p>\
+				<div class="modal new-user-modal">\
+					<div id="new-user-content">\
+						<span class="close-modal">&times;</span>\
+							<h3>Join us, it\'s free.</h3>\
 							</br>\
-						<form>\
-							<input type=\"text\" name=\"fname\" placeholder=\"First name\" required>\
-							<input type=\"text\" name=\"lname\" placeholder=\"Last name\">\
-							<input type=\"text\" name=\"login\" placeholder=\"Username\">\
-							<input type=\"password\" name=\"pwd\" placeholder=\"Password\">\
-							<input type=\"text\" name=\"mail\" placeholder=\"Email adress\">\
-							<input type=\"submit\" value=\"Sign up\"></input>\
+						<form id="new-user-form">\
+							<input type="text" name="fname" placeholder="First name">\
+							<input type="text" name="lname" placeholder="Last name">\
+							<input type="text" name="login" placeholder="Username">\
+							<input type="password" name="password" placeholder="Password">\
+							<input type="password" name="passwordCheck" placeholder="Password check">\
+							<input type="text" name="mail" placeholder="Email address">\
+							<input type="text" name="mailCheck" placeholder="Email address check">\
+							<input type="submit" value="Sign up">\
 						</form>\
 					</div>\
 				</div>\
 			</div>\
 		</nav>\
-		<div class=\"main-container\">\
-			<div class=\"main-content\">\
+		<div class="main-container">\
+			<div class="main-content">\
+				<div class="modal recovery-modal">\
+					<div id="recovery-password">\
+						<span class="close-modal">&times;</span>\
+						</br>\
+						<p>Please input your email address to recover your password.</p>\
+						<form id="forgot-form">\
+							<input type="text" name="mail" placeholder="Email address" required>\
+							<input type="submit" value="Submit">\
+						</form>\
+					</div>\
+				</div>\
 				<h1>Welcome on board.</h1>\
-				<p>\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"\
+				<p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."\
 				</p>\
-				<p>\"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\"\
+				<p>"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"\
 				</p>  \
 			</div>\
+			<div class="main-separator">\
+				<hr>\
+			</div>  \
 			<footer>\
-				<span class=\"footer-left\">\
-					<a href=\"index.html\">English</a>\
-					<a href=\"fr/index.html\">Français</a>\
+				<span class="footer-left">\
+					<a href="index.html">English</a>\
+					<a href="fr/index.html">Français</a>\
 				</span>\
-				<span class=\"footer-right\">\
-					<a href=\"apidoc/\">Documentation</a>\
+				<span class="footer-right">\
+					<a href="apidoc/">Documentation</a>\
 				</span>\
 			</footer>\
-		</div>\
-	";
+		</div>';
  	$("body").css("display", "none");
 	$("body").fadeIn(500);
     $("body").html(s);
     $('link[href="css/style.css"]').attr('href','css/styleindex.css');
 }
 
-function makeRegistrationPanel(){
-	if(! $("#login-content").is(":hidden")){
-		$("#login-content").hide();
-	}
-    $(".modal").fadeIn('normal');
-    $("#new-user-content").fadeIn('normal');
+function resetMessages(){
+	env.minId = -1;
+	env.maxId = -1;
+	env.messages = new Map();
 }
 
 function closeDropdown(e){

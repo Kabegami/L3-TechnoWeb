@@ -101,10 +101,6 @@ function getFromLocalDb(from, minId, maxId, nbMax){
     return tab;
 }
 
-function compareMessages(a, b){
-	return a.id - b.id;
-}
-
 function completeMessages(){
     if (! env.noConnection){
     	$.ajax({
@@ -129,26 +125,25 @@ function completeMessages(){
 function completeMessagesResponse(rep){
 	// tableau trié par ordre décroissant des id
     var tab = JSON.parse(rep, revival);
-	
+    
 	if (tab.messages.length != 0){
 		var idMax = tab.messages[0].id;
 		var idMin = tab.messages[tab.messages.length-1].id;
 		for (var i = 0; i < tab.messages.length; i++){
 			var m = tab.messages[i];
-			env.messages[m.id] = m;
+			env.messages.set(m.id, m);
 		}
 		for (var i = idMax; i >= idMin; i--){
-			var msg = env.messages[i];
+			var msg = env.messages.get(i);
 			if (msg != undefined){
 				//$(".message-list").append(msg.getHtml());
 				$(msg.getHtml()).appendTo(".message-list").hide().slideToggle();
 			}
 		}
 		env.minId = tab.messages[tab.messages.length-1].id;
-		env.maxId = env.messages.length-1;
-		$("#message_" + env.minId).appear();
-
+		env.maxId = Math.max.apply(null, env.messages.keys())
 		// dernier message affiché pour déclencher le appear des 10 suivants
+		$("#message_" + env.minId).appear();
 	}
 }
 
@@ -178,9 +173,9 @@ function refreshMessagesResponse(rep){
 	for (var i = tab.messages.length-1; i >= 0; i--){
 		var msg = tab.messages[i];
 		//$(".message-list").prepend(msg.getHtml());
-        if (env.messages[msg.id] == undefined){
+        if (env.messages.get(msg.id) == undefined){
             $(msg.getHtml()).prependTo(".message-list").hide().slideToggle();
-            env.messages[msg.id] = msg;
+            env.messages.set(msg.id, msg);
             if (msg.id > env.maxId){
                 env.maxId = msg.id;
             }
@@ -215,7 +210,7 @@ function newMessage(text){
    ----------------------------------------------------------*/
 
 function developpeMessage(id){
-    var msg = env.messages[id];
+    var msg = env.messages.get(id);
     //console.log(id);
     var el = $("#message_" + id + " .comments");
     for (var i = 0; i < msg.comments.length; i++){
@@ -226,7 +221,7 @@ function developpeMessage(id){
     el = $("#message_" + id + " .new-comment");
     var ncomment = " \
        <form id=\"new-comment-form\"> \
-	    <textarea id=\"new-comment\" type=\"text\" placerholder=\"Type here\"></textarea> </br> \
+	    <textarea id=\"new-comment\" class=\"submitEnter\" type=\"text\" placerholder=\"Type here\"></textarea> </br> \
 	    <input type=\"submit\" value=\"Post\" /> \
 	  </form> \
     ";
@@ -237,7 +232,7 @@ function developpeMessage(id){
 }
 
 function reduceMessage(id){
-    var msg = env.messages[id];
+    var msg = env.messages.get(id);
     var el = $("#message_" + id + " .comments");
     el.slideToggle("normal", function(){
         $(this).empty();
@@ -276,7 +271,7 @@ function newComment(id_message, text){
 function newCommentResponse(rep, id_message){
 	console.log("ajout commentaire au msg " + id_message);
 	var comment = JSON.parse(rep, revival);
-	var msg = env.messages[id_message];
+	var msg = env.messages.get(id_message);
 	msg.comments.push(comment);
 	el = $("#message_" + id_message + " .comments");
 	var com = msg.comments[msg.comments.length-1];
@@ -284,3 +279,58 @@ function newCommentResponse(rep, id_message){
 	refreshMessages();
     //var el = $("#message_" + id_message + " .comments");
 };
+
+
+/* --------------------------------------------------------
+   SEARCH
+   ----------------------------------------------------------*/
+
+function makeSearchPage(){
+	var s = '<div class="back-button">&leftarrow; Go back</div>\
+             	<div class="main-content-search">\
+               		<div class="message-list">\
+                        \
+                    </div>\
+                </div>\
+            </div>\
+        </div>\
+    ';
+    $(".main-container").css("display", "none");
+	$(".main-container").fadeIn(500);
+    $(".main-container").html(s);
+	resetMessages();
+}
+
+function completeMessagesSearch(query){
+	console.log("searching " + query);
+	if (! env.noConnection){
+    	$.ajax({
+    		type: "POST",
+    		url: "message/list",
+    		data: "key=" + env.key + "&query=" + query + "&from=" + env.fromId 
+				+ "&id_max=" + env.minId + "&id_min=-1&nb=" + 10,
+    		datatype: "text",
+    		success: function(rep){
+    			completeMessagesSearchResponse(JSON.stringify(rep));
+    		},
+    		error: function(xhr, status, err){
+    			func_error(status);
+    		}
+    	})
+    }
+}
+
+function completeMessagesSearchResponse(rep){
+	// tableau trié par ordre des id
+    var tab = JSON.parse(rep, revival);
+	
+	if (tab.messages.length != 0){
+		for (var i = 0; i < tab.messages.length; i++){
+			var msg = tab.messages[i];
+			env.messages.set(msg.id, msg);
+			//$(".message-list").append(msg.getHtml());
+			$(msg.getHtml()).appendTo(".message-list").hide().slideToggle();
+		}
+	}
+}
+

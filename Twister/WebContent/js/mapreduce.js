@@ -4,7 +4,7 @@ function map(){
     var words = text.match(/\w+/g);
     var tf = {};
     for (var i = 0; i < words.length; i++){
-        if (tf[words[i]] == 0){
+        if (tf[words[i]] == undefined){
             tf[words[i]] = 1;
         }
         else {

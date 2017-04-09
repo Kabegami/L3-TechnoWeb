@@ -518,6 +518,126 @@
             "optional": false,
             "field": "key",
             "description": "<p>Clé de session de l'utilisateur courant</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "query",
+            "description": "<p>mots clé</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "from",
+            "description": "<p>id de l'utilisateur concerné (-1 si page principale et qu'on veut tout avoir)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id_max",
+            "description": "<p>-1 si pas de limite</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id_min",
+            "description": "<p>-1 si pas de limite</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "nb",
+            "description": "<p>nombre de messages à retourner (-1 si pas de limite)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Succès:",
+          "content": "{\"messages\":[{\"text\":\"test\",\"author_username\":\"toto\",\"_id\":{\"$oid\":\"589af353e4b02b8b69b540be\"},\"author_id\":2,\"date\":{\"$date\":\"2017-02-08T10:30:43.411Z\"}},\n{\"text\":\"deuxieme message\",\"author_username\":\"toto\",\"_id\":{\"$oid\":\"589afd29e4b0c2f81a2b7eb6\"},\"author_id\":2,\"date\":{\"$date\":\"2017-02-08T11:12:41.561Z\"}}]}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "ErrorJSON": [
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "-1",
+            "description": "<p>Mauvais arguments</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "2",
+            "description": "<p>Utilisateur non connecté</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/servlets/ListMessagesUserServlet.java",
+    "groupTitle": "Message"
+  },
+  {
+    "type": "get",
+    "url": "/message/list",
+    "title": "Liste des messages",
+    "version": "0.1.0",
+    "name": "ListMessages",
+    "group": "Message",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "key",
+            "description": "<p>Clé de session de l'utilisateur courant</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "query",
+            "description": "<p>mots clé</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "from",
+            "description": "<p>id de l'utilisateur concerné (-1 si page principale et qu'on veut tout avoir)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id_max",
+            "description": "<p>-1 si pas de limite</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "id_min",
+            "description": "<p>-1 si pas de limite</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "nb",
+            "description": "<p>nombre de messages à retourner (-1 si pas de limite)</p>"
           }
         ]
       }
@@ -742,6 +862,56 @@
       }
     },
     "filename": "src/servlets/NewUserServlet.java",
+    "groupTitle": "User"
+  },
+  {
+    "type": "post",
+    "url": "/usr/pass",
+    "title": "Récupérer mot de passe par mail",
+    "version": "0.1.0",
+    "name": "RecoverPassword",
+    "group": "User",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "mail",
+            "description": "<p>Adresse e-mail</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Succès:",
+          "content": "{}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "ErrorJSON": [
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "-1",
+            "description": "<p>Mauvais arguments</p>"
+          },
+          {
+            "group": "ErrorJSON",
+            "optional": false,
+            "field": "1",
+            "description": "<p>Adresse email non trouvée</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/servlets/RecoverPasswordServlet.java",
     "groupTitle": "User"
   },
   {

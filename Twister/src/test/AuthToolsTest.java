@@ -90,4 +90,11 @@ public class AuthToolsTest {
 		}
 	}
 	
+	@Test
+	public void testGetPassword(){
+		String mail = "aaamail";
+		String pass = AuthTools.getPasswordFromMail(mail);
+		System.out.println(pass);
+	}
+	
 }

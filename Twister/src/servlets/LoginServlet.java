@@ -74,18 +74,15 @@ public class LoginServlet extends HttpServlet {
 		JSONObject user = new JSONObject();
 		user = UserTools.login(login, pwd);
 		
-		
-		if (! user.has("error_code")){
-			response.setContentType( "application/json" );
+		response.setContentType( "application/json" );
 		 	
-			PrintWriter out = response.getWriter ();
-			try {
-				out.println(user.toString(4));
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			
-		}	 
+		PrintWriter out = response.getWriter ();
+		try {
+			out.println(user.toString(4));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		 
 	 }
 	 
 	 protected void doGet(HttpServletRequest request,

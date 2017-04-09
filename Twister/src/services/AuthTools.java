@@ -55,7 +55,7 @@ public class AuthTools {
 		boolean pwd_ok = false;
 		
 		// hash du password
-		String pwdHashed = DigestUtils.sha1Hex(pwd);
+		//String pwdHashed = DigestUtils.sha1Hex(pwd);
 
 		Connection conn = Database.getMySQLConnection();
 		Statement st = conn.createStatement();
@@ -67,7 +67,7 @@ public class AuthTools {
 		
 		if (rs.next()){
 			String pwdDB = rs.getString("mdp");
-			pwd_ok = pwdHashed.equals(pwdDB);
+			pwd_ok = pwd.equals(pwdDB);
 		}
 		rs.close(); st.close(); conn.close();
 		
@@ -181,6 +181,23 @@ public class AuthTools {
 			if(rs.next()){
 				Timestamp ts = rs.getTimestamp("reg_date");
 				return ts;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static String getPasswordFromMail(String mail){
+		try {
+			Connection conn = Database.getMySQLConnection();
+			Statement st = conn.createStatement();
+			String query = "SELECT mdp FROM Users WHERE mail = \"" + mail + "\"";
+			ResultSet rs = st.executeQuery(query);
+			if(rs.next()){
+				String pass = rs.getString("mdp");
+				return pass;
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

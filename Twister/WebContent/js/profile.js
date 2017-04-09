@@ -1,6 +1,6 @@
 function makeProfile(){
     var s = '<div class="back-button">&leftarrow; Go back</div>\
-            <div class="main-content">\
+            <div class="main-content-profile">\
                 <div class="left-profile card">\
                     <div id="userpic">\
                     </div>\
@@ -38,6 +38,7 @@ function makeProfile(){
     $(".main-container").css("display", "none");
 	$(".main-container").fadeIn(500);
     $(".main-container").html(s);
+    resetMessages();
 }
 
 function getInfoUser(username){
@@ -73,6 +74,7 @@ function responseInfoUser(rep){
     $("#subscribers-count").text(profile.subscribers.length);
     $("#follow-count").text(profile.follows.length);
     checkFollowStatus(profile.id);
+    completeMessagesProfile();
 }
 
 function capitalizeFirstLetter(string) {
@@ -80,7 +82,7 @@ function capitalizeFirstLetter(string) {
 }
 
 function updateInfoUser(){
-	console.log("update " + username);
+	console.log("update " + profile.login);
 	if (! env.noConnection){
 		$.ajax({
 			type: "POST",
@@ -183,4 +185,52 @@ function unfollowUser(){
 function responseUnfollowUser(rep){
 	env.follows.splice(env.follows.indexOf(profile.id), 1);
 	updateInfoUser(profile.login);
+}
+
+function completeMessagesProfile(){
+    if (! env.noConnection){
+    	$.ajax({
+    		type: "POST",
+    		url: "message/user",
+    		data: "key=" + env.key + "&from=" + profile.id 
+				+ "&id_max=" + env.minId + "&id_min=-1&nb=" + 10,
+    		datatype: "text",
+    		success: function(rep){
+    			completeMessagesProfileResponse(JSON.stringify(rep));
+    		},
+    		error: function(xhr, status, err){
+    			func_error(status);
+    		}
+    	})
+    }
+    else {
+
+    }
+}
+
+function completeMessagesProfileResponse(rep){
+	// tableau trié par ordre décroissant des id
+    var tab = JSON.parse(rep, revival);
+    
+	if (tab.messages.length != 0){
+		var idMax = tab.messages[0].id;
+		var idMin = tab.messages[tab.messages.length-1].id;
+		for (var i = 0; i < tab.messages.length; i++){
+			var m = tab.messages[i];
+			env.messages.set(m.id, m);
+		}
+		for (var i = idMax; i >= idMin; i--){
+			var msg = env.messages.get(i);
+			if (msg != undefined){
+				//$(".message-list").append(msg.getHtml());
+				$(msg.getHtml()).appendTo(".message-list").hide().slideToggle();
+				$("#message_" + i).removeClass('message');
+				$("#message_" + i).addClass('profile-message');
+			}
+		}
+		env.minId = tab.messages[tab.messages.length-1].id;
+		env.maxId = Math.max.apply(null, env.messages.keys())
+		// dernier message affiché pour déclencher le appear des 10 suivants
+		$("#message_" + env.minId).appear();
+	}
 }

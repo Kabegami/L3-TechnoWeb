@@ -38,8 +38,8 @@ import services.AuthTools;
  * @apiError (ErrorJSON) -1 Mauvais arguments
  * @apiError (ErrorJSON) 2 Utilisateur non connecté
  */
-@WebServlet("/message/list")
-public class ListMessagesServlet extends HttpServlet {
+@WebServlet("/message/user")
+public class ListMessagesUserServlet extends HttpServlet {
 
 	 protected void doPost(HttpServletRequest request,
 	 HttpServletResponse response) throws ServletException, IOException {
@@ -48,12 +48,11 @@ public class ListMessagesServlet extends HttpServlet {
 		response.setContentType( "application/json" );
 
 		String user = request.getParameter("key");
-		String query = request.getParameter("query");
 		String from = request.getParameter("from");
 		String id_max = request.getParameter("id_max");
 		String id_min = request.getParameter("id_min");
 		String nb = request.getParameter("nb");
-		res = MessageTools.getMessages(user, query, from, id_max, id_min, nb);
+		res = MessageTools.getMessagesUser(user, from, id_max, id_min, nb);
 		PrintWriter out = response.getWriter ();
 		try {
 			out.println(res.toString(4));

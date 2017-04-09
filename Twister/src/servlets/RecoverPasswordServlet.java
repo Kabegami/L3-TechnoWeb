@@ -9,38 +9,32 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import bdd.UserTools;
+import services.MailRecovery;
  
 
 /**
  * 
- * @api {post} /usr/create Créer un nouvel utilisateur
+ * @api {post} /usr/pass Récupérer mot de passe par mail
  * @apiVersion 0.1.0
- * @apiName NewUser
+ * @apiName RecoverPassword
  * @apiGroup User
  * 
  * 
- * @apiParam  {String} login Login de l'utilisateur
- * @apiParam  {String} pwd Mot de passe de l'utilisateur
- * @apiParam  {String} lname Nom 
- * @apiParam  {String} fname Prénom
  * @apiParam  {String} mail Adresse e-mail
-
  * 
  * @apiSuccessExample {json} Succès:
  * 			{}
  * @apiError (ErrorJSON) -1 Mauvais arguments
- * @apiError (ErrorJSON) 1 Utilisateur déjà existant
+ * @apiError (ErrorJSON) 1 Adresse email non trouvée
  * 
  */
-@WebServlet("/user/create")
-public class NewUserServlet extends HttpServlet {
- 
-	 public NewUserServlet() {
-		 
-	 }
+
+@WebServlet("/user/pass")
+public class RecoverPasswordServlet extends HttpServlet {
  
 	 /**
 	 * This method will handle all POST request.
@@ -48,19 +42,15 @@ public class NewUserServlet extends HttpServlet {
 	 protected void doPost(HttpServletRequest request,
 	 HttpServletResponse response) throws ServletException, IOException {
 		
-		String login = request.getParameter("login");
-		String pwd = request.getParameter("pwd");
-		String lname = request.getParameter("lname");
-		String fname = request.getParameter("fname");
 		String mail = request.getParameter("mail");
 		
-		JSONObject user = new JSONObject();
+		JSONObject res = new JSONObject();
 		
 		response.setContentType( "application/json" );
 		PrintWriter out = response.getWriter ();
-		
-		user = UserTools.createUser(login, pwd, lname, fname, mail);
-		out.println(user);
+		res = MailRecovery.sendPassword(mail);
+		out.println(res.toString());
+
 
 	 }
 	 
