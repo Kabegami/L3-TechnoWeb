@@ -65,7 +65,7 @@ public class MessageToolsTest {
 		String id_max = String.valueOf(-1);
 		String id_min = String.valueOf(-1);
 		String nb = String.valueOf(10);
-		String query = "message";
+		String query = "premier message";
 		
 		JSONObject res = MessageTools.getMessages(key, query, from, id_max, id_min, nb);
 		try {

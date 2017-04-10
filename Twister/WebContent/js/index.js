@@ -115,7 +115,10 @@ function init() {
 		var url = '?user=' + user
 		//window.history.pushState({page:url, title: capitalizeFirstLetter(user)}, user, url);
     });
-    $(document).on('click', '.logout', function() {
+    $(document).on('click', 'nav #info', function(){
+    	$('#user-panel').slideToggle();
+    });
+    $(document).on('click', '#logout', function() {
 	   	logout(env.key);
 	   	//window.history.pushState({page: 'index', title: 'Homepage'}, null, 'index');
 	});
@@ -170,7 +173,7 @@ function makeMainPanel(fromId, fromLogin, query){
     env.minId = -1;
     env.maxId = -1;
 
-      var mainCode = " \
+      var mainCode = '\
     <nav class=\"navbar\"> \
     	<div class=\"nav-left\"> \
 			 <a href=\"\"><img class=\"logo\" src=\"img/logo_black.png\"/></a> \
@@ -182,9 +185,17 @@ function makeMainPanel(fromId, fromLogin, query){
 			  </div> \
 		</div> \
 		<div class=\"nav-right\"> \
-		  <div class=\"logout\"> \
-		 	Logout\
-		  </div> \
+		        <div class="nav-element" id="info">\
+                   Logged as <span id="current-user"></span>\
+                </div>\
+                <div id="user-panel">\
+                    <div class="panel-link" id="settings">\
+                        Settings\
+                    </div>\
+                    <div class="panel-link" id="logout"> \
+                        Logout\
+                    </div>\
+                </div>\
 		</div> \
     </nav> \
   	<div class=\"main-container\"> \
@@ -218,11 +229,12 @@ function makeMainPanel(fromId, fromLogin, query){
 			</div> \
 		</div> \
 	</div> \
-    ";
+    ';
     $("body").css("display", "none");
 	$("body").fadeIn(1000);
     $("body").html(mainCode);
     $('link[href="css/styleindex.css"]').attr('href','css/style.css');
+    $('#current-user').text(capitalizeFirstLetter(env.login));
     completeMessages();
 }
 

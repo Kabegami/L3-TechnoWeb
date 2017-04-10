@@ -287,7 +287,10 @@ function newCommentResponse(rep, id_message){
 
 function makeSearchPage(){
 	var s = '<div class="back-button">&leftarrow; Go back</div>\
-             	<div class="main-content-search">\
+             	<div class="main-content-search card">\
+					<div class=\"card-title\">\
+							<h4>Search results</h4> \
+					</div>\
                		<div class="message-list">\
                         \
                     </div>\
