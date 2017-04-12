@@ -176,7 +176,7 @@ function makeMainPanel(fromId, fromLogin, query){
       var mainCode = '\
     <nav class=\"navbar\"> \
     	<div class=\"nav-left\"> \
-			 <a href=\"\"><img class=\"logo\" src=\"img/logo_black.png\"/></a> \
+			 <img class=\"logo\" src=\"img/logo_black.png\"/>\
 			 <div class=\"search\"> \
 			  <form id=\"search-form\"> \
 				<textarea id=\"search-query\" class=\"submitEnter\" type=\"text\" placeholder=\"Search\"></textarea> \
@@ -293,7 +293,7 @@ function makeHomePage(){
 <nav class="navbar">\
 			<div class="nav-left">\
 				<div class="nav-logo">\
-					<a href=""><img class="logo" src="img/logo_black.png"/></a>\
+					<img class="logo" src="img/logo_black.png"/>\
 				</div>\
 			</div>\
 			<div class="nav-right">\
