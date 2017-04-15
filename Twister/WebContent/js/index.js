@@ -118,6 +118,9 @@ function init() {
     $(document).on('click', 'nav #info', function(){
     	$('#user-panel').slideToggle();
     });
+    $(document).on('click', '#settings', function() {
+		makeSettingsPanel()
+	});
     $(document).on('click', '#logout', function() {
 	   	logout(env.key);
 	   	//window.history.pushState({page: 'index', title: 'Homepage'}, null, 'index');
@@ -176,7 +179,7 @@ function makeMainPanel(fromId, fromLogin, query){
       var mainCode = '\
     <nav class=\"navbar\"> \
     	<div class=\"nav-left\"> \
-			 <img class=\"logo\" src=\"img/logo_black.png\"/>\
+			 <a href=\"\"><img class=\"logo\" src=\"img/logo_black.png\"/></a> \
 			 <div class=\"search\"> \
 			  <form id=\"search-form\"> \
 				<textarea id=\"search-query\" class=\"submitEnter\" type=\"text\" placeholder=\"Search\"></textarea> \
@@ -197,6 +200,31 @@ function makeMainPanel(fromId, fromLogin, query){
                     </div>\
                 </div>\
 		</div> \
+		<div class="modal" id="settings-modal">\
+				<div id="settings-panel">\
+                    <span class="close-modal">&times;</span>\
+                    <table id="settings-table">\
+                        <tbody>\
+                            <tr>\
+                                <td class="label">\
+                                    Theme\
+                                </td>\
+                                <td>\
+                                    <select id="select-theme">\
+                                        <option value="blue" selected>Blue</option>\
+                                        <option value="red">Red</option>\
+                                        <option value="green">Green</option>\
+                                    </select>\
+                                </td>\
+                            </tr>\
+                            <tr>\
+                                <td class="label">Setting</td>\
+                                <td></td>\
+                            </tr>\
+                        </tbody>\
+                    </table>\
+				</div>\
+            </div>\
     </nav> \
   	<div class=\"main-container\"> \
 		<div class=\"main-content\"> \
@@ -293,7 +321,7 @@ function makeHomePage(){
 <nav class="navbar">\
 			<div class="nav-left">\
 				<div class="nav-logo">\
-					<img class="logo" src="img/logo_black.png"/>\
+					<a href=""><img class="logo" src="img/logo_black.png"/></a>\
 				</div>\
 			</div>\
 			<div class="nav-right">\
@@ -347,10 +375,6 @@ function makeHomePage(){
 					</div>\
 				</div>\
 				<h1>Welcome on board.</h1>\
-				<p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."\
-				</p>\
-				<p>"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"\
-				</p>  \
 			</div>\
 			<div class="main-separator">\
 				<hr>\
@@ -386,3 +410,10 @@ function closeModal(e){
     $(e).parent().parent().fadeOut('normal');
 }
 
+function makeSettingsPanel(){
+	if(! $("#user-panel").is(":hidden")){
+		$("#user-panel").hide();
+	}
+    $("#settings-modal").fadeIn('normal');
+    $("#settings-panel").fadeIn('normal');
+}
